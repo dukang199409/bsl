@@ -50,5 +50,8 @@ public interface BslProductInfoMapper {
     List<BslSaleCarInfo> prodSaleCarInfo(QueryCriteria queryCriteria);
     List<BslHalfProdMakeInfo> halfProdMakeInfo(QueryExample queryExample);
     
+    int insertHistoryProductInfo(String dateString);
+    int deleteHistoryProductInfo(String dateString);
+    
     
 }
