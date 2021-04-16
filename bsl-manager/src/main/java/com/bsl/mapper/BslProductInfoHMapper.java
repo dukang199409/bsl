@@ -10,15 +10,11 @@ public interface BslProductInfoHMapper {
 
     int deleteByExample(BslProductInfoHExample example);
 
-    int deleteByPrimaryKey(String prodId);
-
     int insert(BslProductInfoH record);
 
     int insertSelective(BslProductInfoH record);
 
     List<BslProductInfoH> selectByExample(BslProductInfoHExample example);
-
-    BslProductInfoH selectByPrimaryKey(String prodId);
 
     int updateByExampleSelective(@Param("record") BslProductInfoH record, @Param("example") BslProductInfoHExample example);
 
