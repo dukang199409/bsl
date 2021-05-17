@@ -785,7 +785,7 @@
     <result column="prod_ruc" property="prodRuc" jdbcType="VARCHAR" />
     <result column="prod_out_plan" property="prodOutPlan" jdbcType="VARCHAR" />
     <result column="prod_sale_serno" property="prodSaleSerno" jdbcType="VARCHAR" />
-    <result column="upd_date" property="outDate" jdbcType="TIMESTAMP" />
+    <result column="prod_out_date" property="outDate" jdbcType="TIMESTAMP" />
     <result column="prod_dcl_flag" property="prodDclFlag" jdbcType="VARCHAR" />
     <result column="bs_gettype" property="bsGettype" jdbcType="VARCHAR" />
     <result column="prod_name" property="prodName" jdbcType="VARCHAR" />
