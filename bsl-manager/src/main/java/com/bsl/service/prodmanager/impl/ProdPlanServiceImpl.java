@@ -247,7 +247,7 @@ public class ProdPlanServiceImpl implements ProdPlanService {
 			flag = true;
 			errorMsg = "非创建中/进行中/暂停的生产指令不允许修改制造产品名称！";
 		}
-		if(!bslBsPlanInfoOld.getMakeName().equals(bslMakePlanInfo.getMakeType())){
+		if(!bslBsPlanInfoOld.getMakeType().equals(bslMakePlanInfo.getMakeType())){
 			flag = true;
 			errorMsg = "非创建中/进行中/暂停的生产指令不允许修改制造产品规格！";
 		}
