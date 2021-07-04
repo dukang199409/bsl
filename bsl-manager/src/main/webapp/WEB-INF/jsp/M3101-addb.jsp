@@ -31,7 +31,7 @@
 				</td>
 	            <td width="120" align="right">产品规格:</td>
 	             <td width="210" align="right">
-	            	<input name="prodNorm" class="easyui-textbox" type="text" data-options="required:true,validType:'length[0,40]'" style="width:200px;"></input>
+	            	<input name="prodNorm" id="prodNormM3101AddB" class="easyui-textbox" type="text" data-options="required:true,validType:'length[0,40]'" style="width:200px;"></input>
 	            </td>
 	        </tr>
 	       <tr>  
@@ -161,6 +161,7 @@
 			if (data.status == 200) {
 				$("#prodMaterialM3101AddB").combobox('setValue',data.data.prodMaterial);
 				$("#prodMakeJzM3101B").combobox('setValue',data.data.planJz);
+				$("#prodNormM3101AddB").textbox('setValue',data.data.makeProdNorm);
 			} else {
 				$.messager.alert('提示', data.msg);
 				return false;

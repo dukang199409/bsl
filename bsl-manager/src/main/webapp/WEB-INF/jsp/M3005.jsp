@@ -260,16 +260,11 @@
         	var result = {};
         	if(ids.length != 0){
         		data = $("#prodInfoList").datagrid("getSelections")[0];
-        		result.prodLength = data.prodLength;
-	        	result.prodLevel = data.prodLevel;
-	        	result.prodSourceCompany = data.prodSourceCompany;
-	        	result.prodBc = data.prodBc;
-	        	result.remark = data.remark;
-	        	result.prodNum = data.prodNum;
+        		data.prodParentNo = '';
         	}
         	$("#prodAddWindowB").window({
         		onLoad :function(){
-        			$("#prodAddFormB").form("load",result);
+        			$("#prodAddFormB").form("load",data);
         		}
         	}).window("open");
         }

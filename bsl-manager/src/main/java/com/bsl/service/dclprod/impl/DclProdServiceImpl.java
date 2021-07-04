@@ -44,8 +44,6 @@ public class DclProdServiceImpl implements DclProdService {
 	private ProdPlanService prodPlanService;
 	@Autowired
 	private BslStockChangeDetailMapper bslStockChangeDetailMapper;
-	@Autowired
-	private HalfProdOutPutService halfProdOutPutService;
 	
 	@Value("REDIS_NEXT_DCLPROD_ID")
 	private String REDIS_NEXT_DCLPROD_ID;
@@ -255,7 +253,7 @@ public class DclProdServiceImpl implements DclProdService {
 		if(parentProd == null){
 			throw new BSLException(ErrorCodeInfo.错误类型_查询无记录, "没有查询到指定的父级纵剪带信息");
 		}
-		if(!parentProd.getProdOutPlan().equals(makePlanInfo.getPlanId())){
+		if(!makePlanInfo.getPlanId().equals(parentProd.getProdOutPlan())){
 			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "待处理品父级纵剪带必须是因该指令出库的纵剪带");
 		}
 		
