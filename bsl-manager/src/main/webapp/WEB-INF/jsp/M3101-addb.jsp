@@ -34,29 +34,24 @@
 	            	<input name="prodNorm" class="easyui-textbox" type="text" data-options="required:true,validType:'length[0,40]'" style="width:200px;"></input>
 	            </td>
 	        </tr>
-	       <tr>     
-	            <td width="120" align="right">父级盘号:</td>
-	             <td width="210" align="right">
-	            	<select name="prodParentNo" id="prodParentNoM3101AddB" class="easyui-combobox" panelHeight="auto" data-options="editable:true,onChange:onProdParentNoChangeM3101AddB" style="width:200px;">
-			            	<option value="">请选择</option>
-			           <c:forEach items="${prodParentNoLists}" var="a">
-			          	   	<option value="${a.prodId}">${a.prodId}</option>
-			          </c:forEach>
-					</select>
-				</td>
-				<td width="120" align="right">该盘总重量:</td>
+	       <tr>  
+	       		<td width="120" align="right">父级盘号:</td>
 	            <td width="210" align="right">
-	            	<input name="prodRelWeightParent" id="prodRelWeightParentM3101AddB"  readonly="readonly"   class="easyui-numberbox" type="text" data-options="required:false,min:0,precision:3,validType:'length[0,10]'"  style="width:200px;"></input>
+	            	<input name="prodParentNo" id="prodParentNoM3101AddB" class="easyui-textbox" type="text" data-options="required:true,validType:'length[0,20]',events:{blur:onProdParentNoBlurM3101AddB}"  style="width:200px;"></input>
 	            </td>
-	        </tr>
-	         <tr>     
-	           <td width="120" align="right">该盘已入包数:</td>
+	             <td width="120" align="right">该盘总重量:</td>
 	            <td width="210" align="right">
-	            	<input name="prodRuNum" id="prodRuNumM3101AddB"  readonly="readonly"  class="easyui-textbox" type="text" data-options="required:false,validType:'length[0,32]'" style="width:200px;"></input>
+	            	<input name="prodRelWeightParent" id="prodRelWeightParentM3101AddB" class="easyui-numberbox" type="text" data-options="required:false,min:0,precision:3,validType:'length[0,10]'"  style="width:200px;"></input>
 	            </td>
-	            <td width="120" align="right">该盘已入重量:</td>
+	       </tr>
+	       <tr>  
+	            <td width="120" align="right">该盘已入库待处理品包数:</td>
+	        	<td width="210" align="right">
+	            	<input name="prodRuNum" id="prodRuNumM3101AddB" class="easyui-numberbox" type="text" data-options="required:false,min:1,precision:0,validType:'length[0,10]'" style="width:200px;"></input>
+	            </td>
+	            <td width="120" align="right">该盘已入库待处理品重量:</td>
 	            <td width="210" align="right">
-	            	<input name="prodRuWeight" id="prodRuWeightM3101AddB"  readonly="readonly"   class="easyui-numberbox" type="text" data-options="required:false,min:0,precision:3,validType:'length[0,10]'"  style="width:200px;"></input>
+	            	<input name="prodRuWeight" id="prodRuWeightM3101AddB" class="easyui-numberbox" type="text" data-options="required:false,min:0,precision:3,validType:'length[0,10]'"  style="width:200px;"></input>
 	            </td>
 	        </tr>
 	        <tr>
@@ -73,13 +68,13 @@
 	        	</td>
 	        </tr>
 	        <tr>
-	        	<td width="120" align="right">入库待处理品数量:</td>
-	        	<td width="210" align="right">
-	            	<input name="sumNum" id="sumNumM3101" class="easyui-numberbox" type="text" data-options="required:true,min:1,precision:0,validType:'length[0,10]'" value="1" style="width:200px;"></input>
-	            </td>
-	            <td width="120" align="right">单包件数:</td>
+	            <td width="120" align="right">单包支数:</td>
 	        	<td width="210" align="right">
 	            	<input name="prodNum" id="prodNumM3101" class="easyui-numberbox" type="text" data-options="required:true,min:1,precision:0,validType:'length[0,10]'" value="1" style="width:200px;"></input>
+	            </td>
+	        	<td width="120" align="right">入库待处理品包数:</td>
+	        	<td width="210" align="right">
+	            	<input name="sumNum" id="sumNumM3101" class="easyui-numberbox" type="text" data-options="required:true,min:1,precision:0,validType:'length[0,10]'" value="1" style="width:200px;"></input>
 	            </td>
 	        </tr>
 	        <tr>	
@@ -102,16 +97,16 @@
 					</select>
 	            </td> 
 	        </tr>
-	        <tr>	
+	        <tr>
 	        	<td width="120"  align="right">生产机组:</td>
-		            <td width="210"  align="right">
-		            	<select name="prodMakeJz" id="prodMakeJzM3101B"  panelHeight="auto" class="easyui-combobox" readonly="readonly" data-options="editable:true,required:true" style="width:200px;">
-				          <option value="">请选择...</option>
-				          <c:forEach items="${prodUnitsSCList}" var="a">
-				          	   	<option value="${a.enumKey}">${a.enumValue}</option>
-				          	  </c:forEach>
-						</select>
-		            </td>
+	            <td width="210"  align="right">
+	            	<select name="prodMakeJz" id="prodMakeJzM3101B"  panelHeight="auto" class="easyui-combobox" readonly="readonly" data-options="editable:true,required:true" style="width:200px;">
+			          <option value="">请选择...</option>
+			          <c:forEach items="${prodUnitsSCList}" var="a">
+			          	   	<option value="${a.enumKey}">${a.enumValue}</option>
+			          	  </c:forEach>
+					</select>
+	            </td>	
 	        	<td width="120" align="right">入库仓库/区:</td>
 	            <td width="210" align="right">
 	            	<select name="prodRuc" class="easyui-combobox" panelHeight="auto" data-options="required:true,editable:true" style="width:200px;">
@@ -166,22 +161,6 @@
 			if (data.status == 200) {
 				$("#prodMaterialM3101AddB").combobox('setValue',data.data.prodMaterial);
 				$("#prodMakeJzM3101B").combobox('setValue',data.data.planJz);
-				//查询盘号信息
-				$.post("/prodManager/getParentIds", params, function(data2) {
-					if (data2.status == 200) {
-						$("#prodParentNoM3101AddB").combobox('setValue', '');
-						var dataSource = [];
-						for(var i=0;i<data2.data.length;i++){
-							var value = data2.data[i].prodId;
-							var text = value;
-							dataSource.push({"value":value,"text":text});
-						}
-						$("#prodParentNoM3101AddB").combobox("loadData",dataSource);
-					}else {
-						$.messager.alert('提示', data2.msg);
-						return false;
-					}
-				});
 			} else {
 				$.messager.alert('提示', data.msg);
 				return false;
@@ -191,11 +170,14 @@
 		
 	}
 	
-	//选择盘号回显已入库包数
-	function onProdParentNoChangeM3101AddB(){
-		var pardParentNo = $("#prodParentNoM3101AddB").textbox('getValue');
-		var params = {"prodId":pardParentNo};
-		$.post("/prodManager/getProdRuNums",params, function(data){
+	//选择盘号回显已入库待处理品包数
+	function onProdParentNoBlurM3101AddB(){
+		var prodParentNo = $("#prodParentNoM3101AddB").textbox('getValue');
+		if(prodParentNo == ''){
+			return;
+		}
+		var params = {"prodId":prodParentNo};
+		$.post("/prodManager/getProdDclRuNums",params, function(data){
 			if(data.status == 200){
 				$("#prodRelWeightParentM3101AddB").textbox('setValue',data.data.prodRelWeight+'');
 				$("#prodRuNumM3101AddB").textbox('setValue',data.data.prodRuNum+'');

@@ -27,5 +27,7 @@ public interface SemiFinishedProdService {
 	BSLResult delete(String prodId,String user);
 	//根据生产出库单查询出库的半成品信息
 	BSLResult queryMakeInfoList(QueryExample queryCriteria);
+	//根据编号查询完成的产品信息，用于补录入库
+	BSLResult queryLeftInfoById(String prodId);
 	
 }

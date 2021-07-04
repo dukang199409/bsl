@@ -2,9 +2,9 @@ package com.bsl.reportbean;
 
 import java.util.Date;
 
-public class BslHalfProdMakeInfo {
+public class BslProdMakeUseInfo {
 
-    private String prodOutPlan;
+    private String prodPlanNo;
 	
     private String prodId;
 
@@ -12,19 +12,15 @@ public class BslHalfProdMakeInfo {
 
     private String prodType;
 
-    private String prodStatus;
-    
     private Float prodRelWeight;
 
     private Float prodPrintWeight;
 
-    private Float prodRuWeight;
-    
-    private Float prodFlWeight;
-    
-    private String prodFllv;
+    private String prodUseNo;
 
-    private Date prodOutDate;
+    private Float prodUseWeight;
+    
+    private String prodUseZb;
 
     private String prodNorm;
 
@@ -32,20 +28,16 @@ public class BslHalfProdMakeInfo {
 
     private String prodLuno;
 
-    private String prodInputuser;
-
-    private String prodCheckuser;
-
     private Date crtDate;
 
     private String remark;
 
-	public String getProdOutPlan() {
-		return prodOutPlan;
+	public String getProdPlanNo() {
+		return prodPlanNo;
 	}
 
-	public void setProdOutPlan(String prodOutPlan) {
-		this.prodOutPlan = prodOutPlan;
+	public void setProdPlanNo(String prodPlanNo) {
+		this.prodPlanNo = prodPlanNo;
 	}
 
 	public String getProdId() {
@@ -56,14 +48,6 @@ public class BslHalfProdMakeInfo {
 		this.prodId = prodId;
 	}
 
-	public String getProdType() {
-		return prodType;
-	}
-
-	public void setProdType(String prodType) {
-		this.prodType = prodType;
-	}
-
 	public String getProdName() {
 		return prodName;
 	}
@@ -72,12 +56,12 @@ public class BslHalfProdMakeInfo {
 		this.prodName = prodName;
 	}
 
-	public String getProdStatus() {
-		return prodStatus;
+	public String getProdType() {
+		return prodType;
 	}
 
-	public void setProdStatus(String prodStatus) {
-		this.prodStatus = prodStatus;
+	public void setProdType(String prodType) {
+		this.prodType = prodType;
 	}
 
 	public Float getProdRelWeight() {
@@ -96,28 +80,28 @@ public class BslHalfProdMakeInfo {
 		this.prodPrintWeight = prodPrintWeight;
 	}
 
-	public Float getProdRuWeight() {
-		return prodRuWeight;
+	public String getProdUseNo() {
+		return prodUseNo;
 	}
 
-	public void setProdRuWeight(Float prodRuWeight) {
-		this.prodRuWeight = prodRuWeight;
+	public void setProdUseNo(String prodUseNo) {
+		this.prodUseNo = prodUseNo;
 	}
 
-	public Float getProdFlWeight() {
-		return prodFlWeight;
+	public Float getProdUseWeight() {
+		return prodUseWeight;
 	}
 
-	public void setProdFlWeight(Float prodFlWeight) {
-		this.prodFlWeight = prodFlWeight;
+	public void setProdUseWeight(Float prodUseWeight) {
+		this.prodUseWeight = prodUseWeight;
 	}
 
-	public String getProdFllv() {
-		return prodFllv;
+	public String getProdUseZb() {
+		return prodUseZb;
 	}
 
-	public void setProdFllv(String prodFllv) {
-		this.prodFllv = prodFllv;
+	public void setProdUseZb(String prodUseZb) {
+		this.prodUseZb = prodUseZb;
 	}
 
 	public String getProdNorm() {
@@ -136,36 +120,12 @@ public class BslHalfProdMakeInfo {
 		this.prodMaterial = prodMaterial;
 	}
 
-	public Date getProdOutDate() {
-		return prodOutDate;
-	}
-
-	public void setProdOutDate(Date prodOutDate) {
-		this.prodOutDate = prodOutDate;
-	}
-
 	public String getProdLuno() {
 		return prodLuno;
 	}
 
 	public void setProdLuno(String prodLuno) {
 		this.prodLuno = prodLuno;
-	}
-
-	public String getProdInputuser() {
-		return prodInputuser;
-	}
-
-	public void setProdInputuser(String prodInputuser) {
-		this.prodInputuser = prodInputuser;
-	}
-
-	public String getProdCheckuser() {
-		return prodCheckuser;
-	}
-
-	public void setProdCheckuser(String prodCheckuser) {
-		this.prodCheckuser = prodCheckuser;
 	}
 
 	public Date getCrtDate() {
@@ -183,6 +143,5 @@ public class BslHalfProdMakeInfo {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-    
     
 }

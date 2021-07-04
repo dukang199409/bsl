@@ -124,6 +124,9 @@ public class DictItemOperation {
 	public static final String 处理类型_退货处理 = "2";
 	public static final String 处理类型_磅差处理 = "1";
 	
+	public static final String 产品机组_480机组 = "4";
+	public static final String 产品机组_800机组 = "3";
+	
 	public static final SimpleDateFormat 日期转换实例 = new SimpleDateFormat("yyyy-MM-dd");
 	public static final SimpleDateFormat 日期转换实例yyyyMMdd = new SimpleDateFormat("yyyyMMdd");
 	public static final SimpleDateFormat 日期转换实例时分秒 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -143,6 +146,14 @@ public class DictItemOperation {
             sb.append(sTemp.toUpperCase());
         }
         return sb.toString();
+    }
+    
+    /**
+     * 保留三位小数
+     * @return
+     */
+    public static final float round3(float weight){
+    	return ((float)Math.round(weight*1000))/1000;
     }
     
     //日志记录实例

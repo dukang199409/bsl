@@ -46,25 +46,23 @@
 	            </td>
 	        </tr>
 	        <tr>     
-	            <td width="120" align="right">父级盘号:</td>
+	            <td width="120" align="right">在库盘号1:</td>
 	             <td width="210" align="right">
-	            	<select name="prodParentNo" id="prodParentNoM3005Add" class="easyui-combobox" panelHeight="auto" data-options="editable:true,onChange:onProdParentNoChangeM3005Add" style="width:200px;">
-			            	<option value="">请选择</option>
-					</select>
+	            	<input name="prodParentNo1" id="prodParentNo1M3005Add" class="easyui-textbox" type="text" readonly="readonly" data-options="required:true" style="width:200px;"></input>
 				</td>
-				<td width="120" align="right">该盘总重量:</td>
+				<td width="120" align="right">盘号1剩余重量:</td>
 	            <td width="210" align="right">
-	            	<input name="prodRelWeightParent" id="prodRelWeightParentM3005Add"  readonly="readonly"   class="easyui-numberbox" type="text" data-options="required:false,min:0,precision:3,validType:'length[0,10]'"  style="width:200px;"></input>
+	            	<input name="prodRelWeightParent1" id="prodRelWeightParent1M3005Add"  readonly="readonly"  class="easyui-numberbox" type="text" data-options="required:false,min:0,precision:3,validType:'length[0,10]'"  style="width:200px;"></input>
 	            </td>
 	        </tr>
-	        <tr>     
-	           <td width="120" align="right">该盘已入包数:</td>
+	       <tr>     
+	            <td width="120" align="right">在库盘号2:</td>
+	             <td width="210" align="right">
+	            	<input name="prodParentNo2" id="prodParentNo2M3005Add" class="easyui-textbox" type="text" readonly="readonly" data-options="required:false" style="width:200px;"></input>
+				</td>
+				<td width="120" align="right">盘号2剩余重量:</td>
 	            <td width="210" align="right">
-	            	<input name="prodRuNum" id="prodRuNumM3005Add"  readonly="readonly"  class="easyui-textbox" type="text" data-options="required:false,validType:'length[0,32]'" style="width:200px;"></input>
-	            </td>
-	            <td width="120" align="right">该盘已入重量:</td>
-	            <td width="210" align="right">
-	            	<input name="prodRuWeight" id="prodRuWeightM3005Add"  readonly="readonly"   class="easyui-numberbox" type="text" data-options="required:false,min:0,precision:3,validType:'length[0,10]'"  style="width:200px;"></input>
+	            	<input name="prodRelWeightParent2" id="prodRelWeightParent2M3005Add"  readonly="readonly"  class="easyui-numberbox" type="text" data-options="required:false,min:0,precision:3,validType:'length[0,10]'"  style="width:200px;"></input>
 	            </td>
 	        </tr>
 	        <tr>
@@ -81,7 +79,7 @@
 	        	</td>
 	        </tr>
 	        <tr>
-	        	<td width="120" align="right">单包件数:</td>
+	        	<td width="120" align="right">单包支数:</td>
 	            <td width="210" align="right">
 	            	<input name="prodNum" class="easyui-numberbox" type="text" data-options="required:true,min:0,precision:0,validType:'length[0,10]'" style="width:200px;"></input>
 	            </td>
@@ -152,7 +150,7 @@
 		});
 	}
 	
-	//选择盘号回显已入库包数
+	//选择盘号回显已入库包数（不用）
 	function onProdParentNoChangeM3005Add(){
 		var pardParentNo = $("#prodParentNoM3005Add").textbox('getValue');
 		var params = {"prodId":pardParentNo};
@@ -179,6 +177,7 @@
 			$.messager.alert('提示','表单还未填写完成!');
 			return;
 		}
+		
 		//ajax的post方式提交表单
 		//$("#itemAddForm").serialize()将表单序列号为key-value形式的字符串
 		$.messager.confirm('确认','是否确认入库？',function(r){
@@ -208,6 +207,8 @@
 					}
 					$('#M3005Add').linkbutton('enable');
 				});
+			}else{
+				$("#prodAddWindow").window('close');
 			}
 		});
 	}
@@ -222,48 +223,113 @@
 		var params = {
 			'planJz':jz
 		};
-		if(jz == "3"){
-			$("#prodRucM3005Add").combobox('setValue','2');
-		}else if(jz == "4"){
-			$("#prodRucM3005Add").combobox('setValue','3');
-		}
-		$.post("/prodManager/getPlanExeInfo", params, function(data) {
-			if (data.status == 200) {
-				$("#prodPlanNoM3005Add").textbox('setValue',data.data.planId);
-				$("#prodNameM3005Add").textbox('setValue',data.data.makeName);
-				$("#prodNormM3005Add").textbox('setValue',data.data.makeProdNorm);
-				$("#prodMaterialM3005Add").combobox('setValue',data.data.prodMaterial);
-				//给父级盘号赋值
-				params = {
-					'planId':data.data.planId
-				};
-				$.post("/prodManager/getParentPh", params, function(data2) {
-					if (data2.status == 200) {
-						$("#prodParentNoM3005Add").combobox('setValue', '');
-						var dataSource = [];
-						console.log(data2.data);
-						for(var i=0;i<data2.data.length;i++){
-							var value = data2.data[i];
-							var text = value;
-							dataSource.push({"value":value,"text":text});
+		//判断该机组已出库的纵剪带是不是已达最大值
+		$.post("/prodManager/isMaxOut", params, function(dataIsMax) {
+			if (dataIsMax.status == 200) {
+				if(dataIsMax.data == '1'){
+					$.messager.confirm('确认','该机组正在出库的纵剪带数量已达阈值，请判断是否需要销库操作。是否继续入库？',function(r){
+						if (r){
+							if(jz == "3"){
+								$("#prodRucM3005Add").combobox('setValue','2');
+							}else if(jz == "4"){
+								$("#prodRucM3005Add").combobox('setValue','3');
+							}
+							$.post("/prodManager/getPlanExeInfo", params, function(data) {
+								if (data.status == 200) {
+									$("#prodPlanNoM3005Add").textbox('setValue',data.data.planId);
+									$("#prodNameM3005Add").textbox('setValue',data.data.makeName);
+									$("#prodNormM3005Add").textbox('setValue',data.data.makeProdNorm);
+									$("#prodMaterialM3005Add").combobox('setValue',data.data.prodMaterial);
+									//给父级盘号1、2赋值
+									params = {
+										'planId':data.data.planId
+									};
+									$.post("/prodManager/getParentZjxInfo", params, function(data2) {
+										if (data2.status == 200) {
+											if(data2.data.prodRelWeightParent1 == 0){
+												$.messager.alert('提示', "纵剪带出库记录查询异常，请关闭该界面刷新重试");
+												return false;
+											}
+											$("#prodParentNo1M3005Add").textbox('setValue',data2.data.prodParentNo1);
+											$("#prodParentNo2M3005Add").textbox('setValue',data2.data.prodParentNo2);
+											$("#prodRelWeightParent1M3005Add").numberbox('setValue',data2.data.prodRelWeightParent1);
+											$("#prodRelWeightParent2M3005Add").numberbox('setValue',data2.data.prodRelWeightParent2);
+										} else {
+											$.messager.alert('提示', data.msg);
+											return false;
+										}
+										
+									});
+									
+								} else {
+									$.messager.alert('提示', data.msg);
+									$('#prodPlanNoM3005Add').textbox('setValue','');
+									$('#prodNameM3005Add').textbox('setValue','');
+									$('#prodNormM3005Add').textbox('setValue','');
+									$('#prodMaterialM3005Add').combobox('setValue','');
+									$("#prodParentNo1M3005Add").textbox('setValue','');
+									$("#prodParentNo2M3005Add").textbox('setValue','');
+									$("#prodRelWeightParent1M3005Add").numberbox('setValue','');
+									$("#prodRelWeightParent2M3005Add").numberbox('setValue','');
+									return false;
+								}
+							});
+						}else{
+							$("#prodAddWindow").window('close');
 						}
-						$("#prodParentNoM3005Add").combobox("loadData",dataSource);
-					} else {
-						$.messager.alert('提示', data.msg);
-						return false;
+					});
+				}else{
+					if(jz == "3"){
+						$("#prodRucM3005Add").combobox('setValue','2');
+					}else if(jz == "4"){
+						$("#prodRucM3005Add").combobox('setValue','3');
 					}
-					
-				});
-				
-			} else {
-				$.messager.alert('提示', data.msg);
-				$('#prodPlanNoM3005Add').textbox('setValue','');
-				$('#prodNameM3005Add').textbox('setValue','');
-				$('#prodNormM3005Add').textbox('setValue','');
-				$('#prodMaterialM3005Add').combobox('setValue','');
+					$.post("/prodManager/getPlanExeInfo", params, function(data) {
+						if (data.status == 200) {
+							$("#prodPlanNoM3005Add").textbox('setValue',data.data.planId);
+							$("#prodNameM3005Add").textbox('setValue',data.data.makeName);
+							$("#prodNormM3005Add").textbox('setValue',data.data.makeProdNorm);
+							$("#prodMaterialM3005Add").combobox('setValue',data.data.prodMaterial);
+							//给父级盘号1、2赋值
+							params = {
+								'planId':data.data.planId
+							};
+							$.post("/prodManager/getParentZjxInfo", params, function(data2) {
+								if (data2.status == 200) {
+									if(data2.data.prodRelWeightParent1 == 0){
+										$.messager.alert('提示', "纵剪带出库记录查询异常，请关闭该界面刷新重试");
+										return false;
+									}
+									$("#prodParentNo1M3005Add").textbox('setValue',data2.data.prodParentNo1);
+									$("#prodParentNo2M3005Add").textbox('setValue',data2.data.prodParentNo2);
+									$("#prodRelWeightParent1M3005Add").numberbox('setValue',data2.data.prodRelWeightParent1);
+									$("#prodRelWeightParent2M3005Add").numberbox('setValue',data2.data.prodRelWeightParent2);
+								} else {
+									$.messager.alert('提示', data.msg);
+									return false;
+								}
+								
+							});
+							
+						} else {
+							$.messager.alert('提示', data.msg);
+							$('#prodPlanNoM3005Add').textbox('setValue','');
+							$('#prodNameM3005Add').textbox('setValue','');
+							$('#prodNormM3005Add').textbox('setValue','');
+							$('#prodMaterialM3005Add').combobox('setValue','');
+							$("#prodParentNo1M3005Add").textbox('setValue','');
+							$("#prodParentNo2M3005Add").textbox('setValue','');
+							$("#prodRelWeightParent1M3005Add").numberbox('setValue','');
+							$("#prodRelWeightParent2M3005Add").numberbox('setValue','');
+							return false;
+						}
+					});
+				}
+			}else{
+				$.messager.alert('提示', dataIsMax.msg);
 				return false;
 			}
-		});
+		}); 	
 		
 	}
 	

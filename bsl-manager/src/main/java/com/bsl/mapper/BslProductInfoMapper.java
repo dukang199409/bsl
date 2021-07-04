@@ -8,6 +8,7 @@ import com.bsl.pojo.BslProductInfo;
 import com.bsl.pojo.BslProductInfoExample;
 import com.bsl.reportbean.BslHalfProdMakeInfo;
 import com.bsl.reportbean.BslOutProductDetailInfo;
+import com.bsl.reportbean.BslProdMakeUseInfo;
 import com.bsl.reportbean.BslProductInfoCollect;
 import com.bsl.reportbean.BslProductQualityInfo;
 import com.bsl.reportbean.BslSaleCarInfo;
@@ -53,5 +54,13 @@ public interface BslProductInfoMapper {
     int insertHistoryProductInfo(String dateString);
     int deleteHistoryProductInfo(String dateString);
     
+    //查询某指令当前第一个出库的纵剪带信息
+    List<BslProductInfo> getTheFirstOutProd(String prodOutPlan);
+    
+    //查询某指令当前前两个出库的纵剪带信息
+    List<BslProductInfo> getTopTwoOutProd(String prodOutPlan);
+    
+    //查询某指令制造的产品用料组成信息
+    List<BslProdMakeUseInfo> getProdMakeUseInfo(QueryCriteria queryCriteria);
     
 }

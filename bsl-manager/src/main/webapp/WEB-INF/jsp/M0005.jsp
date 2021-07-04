@@ -44,15 +44,15 @@
 		</div>
 	</div>
 	 <table class="easyui-datagrid" id="paramList" title="系统参数信息管理"  style="height:620px"
-	       data-options="singleSelect:false,fitColumns:false,collapsible:true,pagination:true,url:'/param/listByCriteria',method:'post',onBeforeLoad:onBeforeLoadM0005,pageSize:30,toolbar:toolbarM0005">
+	       data-options="singleSelect:true,fitColumns:false,collapsible:true,pagination:true,url:'/param/listByCriteria',method:'post',onBeforeLoad:onBeforeLoadM0005,pageSize:30,toolbar:toolbarM0005">
 	    <thead>
 	        <tr>
 	        	<th data-options="field:'ck',checkbox:true"></th>
 	        	<th data-options="field:'paramId',width:100">参数编码</th>
-	            <th data-options="field:'paramName',width:180">参数名称</th>
+	            <th data-options="field:'paramName',width:250">参数名称</th>
 	            <th data-options="field:'paramValue',width:120">参数值</th>
 	            <th data-options="field:'updDate',width:120,formatter:BSL.formatDateTime">创建日期</th>
-	            <th data-options="field:'remark',width:160">备注</th>
+	            <th data-options="field:'remark',width:700">备注</th>
 	        </tr>
 	    </thead>
 	</table>

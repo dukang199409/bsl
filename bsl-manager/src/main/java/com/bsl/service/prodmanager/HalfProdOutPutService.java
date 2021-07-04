@@ -25,5 +25,11 @@ public interface HalfProdOutPutService {
 	List<BslProductInfo> getHalfProdExe(String exePlanId);
 	//判断半成品状态
 	int updateHalfProdStatus(String prodId,Float inWeightThis);
+	//判断机组出库纵剪带数量是否达到最大值
+	BSLResult getIsMaxOutNum(String planJz);
+	//查询某指令出库的前两个纵剪带信息
+	BSLResult getParentZjxInfo(String planId);
+	//判断入库重量是否足够让新产品入库
+	boolean checkHalfProdWeight(String prodId,Float inWeightThis);
 	
 }

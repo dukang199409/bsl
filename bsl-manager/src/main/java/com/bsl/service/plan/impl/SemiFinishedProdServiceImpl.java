@@ -25,6 +25,7 @@ import com.bsl.reportbean.BslHalfProdMakeInfo;
 import com.bsl.select.DictItemOperation;
 import com.bsl.select.ErrorCodeInfo;
 import com.bsl.select.QueryExample;
+import com.bsl.service.enums.ParamService;
 import com.bsl.service.plan.MakePlanService;
 import com.bsl.service.plan.RawOutputService;
 import com.bsl.service.plan.SemiFinishedProdService;
@@ -47,6 +48,8 @@ public class SemiFinishedProdServiceImpl implements SemiFinishedProdService {
 	private MakePlanService makePlanService;
 	@Autowired
 	private RawOutputService rawOutputService;
+	@Autowired
+	private ParamService paramService;
 	
 	@Autowired
 	private JedisClient jedisClient;
@@ -96,9 +99,6 @@ public class SemiFinishedProdServiceImpl implements SemiFinishedProdService {
 			queryCriteria.setProdId(null);
 		}else{
 			queryCriteria.setProdId("%"+queryCriteria.getProdId()+"%");
-		}
-		if(StringUtils.isBlank(queryCriteria.getProdStatus())){
-			queryCriteria.setProdStatus(null);
 		}
 		//分页处理
 		if(!StringUtils.isBlank(queryCriteria.getPage()) && !StringUtils.isBlank(queryCriteria.getRows())) {
@@ -150,8 +150,11 @@ public class SemiFinishedProdServiceImpl implements SemiFinishedProdService {
 			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "产品父级卷板必须是该指令下正在出库制造的卷板");
 		}
 		//校验该卷板重量是否超出
-		Boolean isOutW = isOutWeight(rawExe,bslProductInfo.getProdRelWeight());
-		if(isOutW){
+		//计算已经制造的重量
+		Float alreadyMakeW = makeWeight(rawExe.getProdId());
+		//获取本次制造重量
+		Float inWeight = bslProductInfo.getProdRelWeight();
+		if(alreadyMakeW + inWeight > rawExe.getProdRelWeight()){
 			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "该卷板下纵剪带重量总和已超出卷板重量，无法入库，请核对！");
 		}
 		
@@ -220,18 +223,61 @@ public class SemiFinishedProdServiceImpl implements SemiFinishedProdService {
 			}
 		}
 		makePlanService.updateProdRuNumAndSums(makePlanInfoExe.getPlanId());
+		
+		//判断是否需要更新卷板状态
+		//获取卷板默认完成比率
+		float wcParam = 1; 
+		String upParamStr = paramService.getValueByParamKey("002");
+		if(!StringUtils.isBlank(upParamStr)){
+			wcParam = Float.valueOf(upParamStr)/100;
+		}
+		if(alreadyMakeW + inWeight >= rawExe.getProdRelWeight()*wcParam){
+			//达到卷板完成比率 自动更新成已完成
+			//开始完成
+			BslProductInfo bslProductInfoUpdate = new BslProductInfo();
+			bslProductInfoUpdate.setProdId(rawExe.getProdId());
+			bslProductInfoUpdate.setProdStatus(DictItemOperation.产品状态_已完成);
+			bslProductInfoUpdate.setUpdDate(new Date());
+			int resultUpdate = bslProductInfoMapper.updateByPrimaryKeySelective(bslProductInfoUpdate);
+			if(resultUpdate<0){
+				throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
+			}else if(resultUpdate==0){
+				throw new BSLException(ErrorCodeInfo.错误类型_查询无记录,"未用退回失败");
+			}
+			
+			/**
+			 * 新增完成记录
+			 */
+			//完成成功之后记录插入流水
+			BslStockChangeDetail rawFinishSerno = new BslStockChangeDetail();
+			rawFinishSerno.setTransSerno(createStockChangeId());//流水
+			rawFinishSerno.setProdId(rawExe.getProdId());//产品编号
+			rawFinishSerno.setPlanSerno(bslProductInfo.getProdPlanNo());//当时的纵剪带指令单号
+			rawFinishSerno.setTransCode(DictItemOperation.库存变动交易码_完成);//交易码
+			rawFinishSerno.setProdType(DictItemOperation.产品类型_卷板);//产品类型
+			rawFinishSerno.setRubbishWeight(rawExe.getProdRelWeight());//重量
+			rawFinishSerno.setInputuser(bslProductInfo.getProdInputuser());//录入人
+			rawFinishSerno.setCrtDate(new Date());
+			int resultStock = bslStockChangeDetailMapper.insert(rawFinishSerno);
+			if(resultStock<0){
+				throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
+			}else if(resultStock==0){
+				throw new BSLException(ErrorCodeInfo.错误类型_查询无记录,"新增库存变动表失败");
+			}
+		}
+		
 		return BSLResult.ok(returnProdId);
 	}
 	
 	/**
-	 * 检验纵剪带父级卷板重量信息
+	 * 检验纵剪带父级卷板累计制造重量信息
 	 */
-	private boolean isOutWeight(BslProductInfo bslProductInfo,Float weight) {
+	private float makeWeight(String prodId) {
 		//获取该卷板下入库的纵剪带信息
 		BslProductInfoExample bslProductInfoExample = new BslProductInfoExample();
 		Criteria criteria = bslProductInfoExample.createCriteria();
 		criteria.andProdTypeEqualTo(DictItemOperation.产品类型_半成品);
-		criteria.andProdParentNoEqualTo(bslProductInfo.getProdId());
+		criteria.andProdParentNoEqualTo(prodId);
 		List<BslProductInfo> prods = bslProductInfoMapper.selectByExample(bslProductInfoExample);
 		Float inWeight = 0f;
 		if(prods != null && prods.size() > 0){
@@ -239,12 +285,7 @@ public class SemiFinishedProdServiceImpl implements SemiFinishedProdService {
 				inWeight += prod.getProdRelWeight();
 			}
 		}
-		Float rawWeight = bslProductInfo.getProdRelWeight();
-		if( inWeight + weight > rawWeight){
-			return true;
-		}else{
-			return false;
-		}
+		return inWeight;
 	}
 	
 	/**
@@ -607,6 +648,29 @@ public class SemiFinishedProdServiceImpl implements SemiFinishedProdService {
 		}
 		makePlanService.updateProdRuNumAndSums(oldBslProductInfo.getProdPlanNo());
 		return BSLResult.ok(prodId);
+	}
+
+	/**
+	 * 根据编号查询完成的产品信息，用于补录入库
+	 */
+	@Override
+	public BSLResult queryLeftInfoById(String prodId) {
+		//获取原产品信息进行校验
+		BslProductInfo bslProductInfo = bslProductInfoMapper.selectByPrimaryKey(prodId);
+		if(bslProductInfo == null){
+			throw new BSLException(ErrorCodeInfo.错误类型_查询无记录, "根据产品编号查询记录为空");
+		}
+		if(!DictItemOperation.产品状态_已完成.equals(bslProductInfo.getProdStatus())){
+			throw new BSLException(ErrorCodeInfo.错误类型_查询无记录, "父级产品状态必须是已完成！");
+		}
+		QueryExample example = new QueryExample();
+		example.setProdId(prodId);
+		example.setProdOutPlan(bslProductInfo.getProdOutPlan());
+		List<BslHalfProdMakeInfo> halfProdMakeInfo = bslProductInfoMapper.halfProdMakeInfo(example);
+		if(halfProdMakeInfo == null || halfProdMakeInfo.size() <= 0){
+			throw new BSLException(ErrorCodeInfo.错误类型_查询无记录, "该指令下未查询到该父级产品的使用信息！");
+		}
+		return BSLResult.ok(halfProdMakeInfo.get(0).getProdFlWeight());
 	}
 
 }

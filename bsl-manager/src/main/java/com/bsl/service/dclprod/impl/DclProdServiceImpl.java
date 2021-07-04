@@ -146,7 +146,7 @@ public class DclProdServiceImpl implements DclProdService {
 	}
 
 	/**
-	 * 待处理品入库
+	 * 待处理品入库(生产时入库，不用)
 	 */
 	@Override
 	public BSLResult addDclProdinfo(BslProductInfo bslDclProductInfo,int sumNum) {
@@ -177,14 +177,6 @@ public class DclProdServiceImpl implements DclProdService {
 			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "待处理品父级纵剪带必须是因该指令出库的纵剪带");
 		}
 		
-		//校验总重量
-		//记录本次入库重量
-		Float inWeight = bslDclProductInfo.getProdRelWeight();
-		int checkInt = halfProdOutPutService.updateHalfProdStatus(bslDclProductInfo.getProdParentNo(),inWeight);
-		if(checkInt == 1){
-			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "该纵剪带已生产重量加上本次需入库重量累计超出纵剪带本身重量，无法入库！");
-		}
-		
 		//判断入库待处理待处理品数数,平分重量
 		Float relWeight = bslDclProductInfo.getProdRelWeight()/sumNum;
 		relWeight = ((float)Math.round(relWeight*1000))/1000;
@@ -236,17 +228,11 @@ public class DclProdServiceImpl implements DclProdService {
 				returnProdId = prodId;
 			}
 		}
-		//入库完成之后判断是否需要更新纵剪带状态
-		if(checkInt == 2){
-			parentProd.setProdStatus(DictItemOperation.产品状态_已完成);
-			parentProd.setUpdDate(new Date());
-			bslProductInfoMapper.updateByPrimaryKeySelective(parentProd);
-		}
 		return BSLResult.ok(returnProdId);
 	}
 	
 	/**
-	 * 待处理品补录入库
+	 * 待处理品入库
 	 */
 	@Override
 	public BSLResult addDclProdinfoB(BslProductInfo bslDclProductInfo,int sumNum) {
@@ -272,13 +258,6 @@ public class DclProdServiceImpl implements DclProdService {
 		if(!parentProd.getProdOutPlan().equals(makePlanInfo.getPlanId())){
 			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "待处理品父级纵剪带必须是因该指令出库的纵剪带");
 		}
-		//校验总重量
-		//记录本次入库重量
-		Float inWeight = bslDclProductInfo.getProdRelWeight();
-		int checkInt = halfProdOutPutService.updateHalfProdStatus(bslDclProductInfo.getProdParentNo(),inWeight);
-		if(checkInt == 1){
-			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "该纵剪带已生产重量加上本次需入库重量累计超出纵剪带本身重量，无法入库！");
-		}
 		
 		//判断入库待处理待处理品数数,平分重量
 		Float relWeight = bslDclProductInfo.getProdRelWeight()/sumNum;
@@ -330,12 +309,6 @@ public class DclProdServiceImpl implements DclProdService {
 			if(i==0){
 				returnProdId = prodId;
 			}
-		}
-		//入库完成之后判断是否需要更新纵剪带状态
-		if(checkInt == 2){
-			parentProd.setProdStatus(DictItemOperation.产品状态_已完成);
-			parentProd.setUpdDate(new Date());
-			bslProductInfoMapper.updateByPrimaryKeySelective(parentProd);
 		}
 		return BSLResult.ok(returnProdId);
 	}
@@ -377,29 +350,6 @@ public class DclProdServiceImpl implements DclProdService {
 				throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "待处理品父级纵剪带必须是因该指令出库的纵剪带");
 			}
 			bslDclProductInfo.setProdLuno(parentProd.getProdLuno());
-			
-			//校验总重量
-			//记录本次入库重量
-			Float inWeight = bslDclProductInfo.getProdRelWeight();
-			int checkInt = halfProdOutPutService.updateHalfProdStatus(bslDclProductInfo.getProdParentNo(),inWeight);
-			if(checkInt == 1){
-				throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "该纵剪带已生产重量加上本次需入库重量累计超出纵剪带本身重量，无法修改！");
-			}
-			
-			//修改完成之后判断是否需要更新纵剪带状态
-			if(checkInt == 2){
-				parentProd.setProdStatus(DictItemOperation.产品状态_已完成);
-				parentProd.setUpdDate(new Date());
-				bslProductInfoMapper.updateByPrimaryKeySelective(parentProd);
-			}
-			BslMakePlanInfo makePlanInfoExe = prodPlanService.getProdPlanInfoExe(bslDclProductInfo.getProdMakeJz());
-			if(makePlanInfoExe != null){
-				if(makePlanInfoExe.getPlanId().equals(bslDclProductInfo.getProdPlanNo())){
-					parentProd.setProdStatus(DictItemOperation.产品状态_已出库);
-					parentProd.setUpdDate(new Date());
-					bslProductInfoMapper.updateByPrimaryKeySelective(parentProd);
-				}
-			}
 		}
 		
 		//校验完成开始修改
@@ -480,17 +430,6 @@ public class DclProdServiceImpl implements DclProdService {
 			throw new BSLException(ErrorCodeInfo.错误类型_查询无记录,"新增库存变动表失败");
 		}
 		
-		//如果删除的产品指令号是正在执行的指令，更新产品的父级纵剪带状态
-		//获取正在执行的产品生产指令
-		BslMakePlanInfo makePlanInfoExe = prodPlanService.getProdPlanInfoExe(oldBslProductInfo.getProdMakeJz());
-		if(makePlanInfoExe != null){
-			if(makePlanInfoExe.getPlanId().equals(oldBslProductInfo.getProdPlanNo())){
-				BslProductInfo parentProd = bslProductInfoMapper.selectByPrimaryKey(oldBslProductInfo.getProdParentNo());
-				parentProd.setProdStatus(DictItemOperation.产品状态_已出库);
-				parentProd.setUpdDate(new Date());
-				bslProductInfoMapper.updateByPrimaryKeySelective(parentProd);
-			}
-		}
 		return BSLResult.ok(prodId);
 	}
 

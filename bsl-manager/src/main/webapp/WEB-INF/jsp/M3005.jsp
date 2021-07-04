@@ -255,8 +255,21 @@
         text:'补录入库',
         iconCls:'icon-add',
         handler:function(){
+        	var ids = getM3005SelectionsIds();
+        	var data = {};
+        	var result = {};
+        	if(ids.length != 0){
+        		data = $("#prodInfoList").datagrid("getSelections")[0];
+        		result.prodLength = data.prodLength;
+	        	result.prodLevel = data.prodLevel;
+	        	result.prodSourceCompany = data.prodSourceCompany;
+	        	result.prodBc = data.prodBc;
+	        	result.remark = data.remark;
+	        	result.prodNum = data.prodNum;
+        	}
         	$("#prodAddWindowB").window({
         		onLoad :function(){
+        			$("#prodAddFormB").form("load",result);
         		}
         	}).window("open");
         }

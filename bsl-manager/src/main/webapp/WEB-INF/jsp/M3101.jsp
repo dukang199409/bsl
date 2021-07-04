@@ -218,25 +218,18 @@
     }
     
     var toolbarM3101 = [{
-        text:'新增入库',
+        text:'入库',
         iconCls:'icon-add',
         handler:function(){
         	var ids = getM3101SelectionsIds();
-        	var params = {};
-			var result = {};
-			if(ids.length != 0){
-        		var data = $("#dclProdInfoList").datagrid("getSelections")[0];
-        		result.prodName = data.prodName;
-        		result.prodLength = data.prodLength;
-	        	result.prodLevel = data.prodLevel;
-	        	result.prodBc = data.prodBc;
-	        	result.prodSourceCompany = data.prodSourceCompany;
-	        	result.remark = data.remark;
-	        	result.prodNum = data.prodNum;
+        	var data = {};
+        	if(ids.length != 0){
+        		data = $("#dclProdInfoList").datagrid("getSelections")[0];
+        		data.prodParentNo = '';
         	}
-			$("#dclProdAddWindow").window({
+        	$("#dclProdAddWindowB").window({
         		onLoad :function(){
-        			$("#dclProdAddForm").form("load",result);
+        			$("#dclProdAddBForm").form("load",data);
         		}
         	}).window("open");
         }
@@ -307,15 +300,6 @@
             		});
         	    }
         	});
-        }
-    },{
-        text:'补录入库',
-        iconCls:'icon-add',
-        handler:function(){
-        	$("#dclProdAddWindowB").window({
-        		onLoad :function(){
-        		}
-        	}).window("open");
         }
     },{
         text:'处理',

@@ -15,10 +15,12 @@ import com.bsl.mapper.BslMakePlanInfoDetailMapper;
 import com.bsl.mapper.BslMakePlanInfoMapper;
 import com.bsl.mapper.BslProductInfoMapper;
 import com.bsl.mapper.BslStockChangeDetailMapper;
+import com.bsl.mapper.BslZjdUseInfoMapper;
 import com.bsl.pojo.BslMakePlanInfo;
 import com.bsl.pojo.BslProductInfo;
 import com.bsl.pojo.BslProductInfoExample;
 import com.bsl.pojo.BslStockChangeDetail;
+import com.bsl.reportbean.BslTopTwoZjdInfo;
 import com.bsl.pojo.BslProductInfoExample.Criteria;
 import com.bsl.select.DictItemOperation;
 import com.bsl.select.ErrorCodeInfo;
@@ -50,6 +52,8 @@ public class HalfProdOutPutServiceImpl implements HalfProdOutPutService {
 	ProdPlanService prodPlanService;
 	@Autowired
 	ParamService paramService;
+	@Autowired	 
+	BslZjdUseInfoMapper bslZjdUseInfoMapper;
 	
 	@Autowired
 	private JedisClient jedisClient;
@@ -108,7 +112,7 @@ public class HalfProdOutPutServiceImpl implements HalfProdOutPutService {
 		PageHelper.startPage(Integer.parseInt(queryCriteria.getPage()), Integer.parseInt(queryCriteria.getRows()));
 		//调用sql查询
 		if(StringUtils.isBlank(queryCriteria.getSort()) || StringUtils.isBlank(queryCriteria.getOrder())){
-			bslProductInfoExample.setOrderByClause("`prod_id` asc,`prod_plan_no` desc");
+			bslProductInfoExample.setOrderByClause("`prod_status` desc,`prod_out_date` asc,`prod_id` asc");
 		}else{
 			String sortSql = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, queryCriteria.getSort());
 			if(!StringUtils.isBlank(sortSql)){
@@ -158,8 +162,8 @@ public class HalfProdOutPutServiceImpl implements HalfProdOutPutService {
 			if(prodPlanInfoExe == null){
 				throw new BSLException(ErrorCodeInfo.错误类型_查询无记录, "没有正在执行的生产指令！");
 			}
-			String exePlanId = prodPlanInfoExe.getPlanId();
 			
+			String exePlanId = prodPlanInfoExe.getPlanId();
 			//先校验原状态是不是已入库
 			if(!DictItemOperation.产品状态_已入库.equals(statusOld)){
 				throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "不是在库的产品不能出库！");
@@ -207,6 +211,22 @@ public class HalfProdOutPutServiceImpl implements HalfProdOutPutService {
 						throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "该指令已出库用料重量加上该半成品重量超出限定的10%，不允许出库！");
 					}
 				}
+			}
+			
+			//校验因为该指令正在出库的纵剪带数量，超出数量不允许出库
+			//获取该机组最大出库数量
+			int maxOutNum = getMaxOutNum(planJz);
+			if(maxOutNum == 0){
+				throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "获取该机组最大出库纵剪带数量失败！");
+			}
+			//判断当前累计出库纵剪带数量，若达最大值，需要先销库
+			BslProductInfoExample exampleSelect = new BslProductInfoExample();
+			Criteria criteria = exampleSelect.createCriteria();
+			criteria.andProdOutPlanEqualTo(exePlanId);
+			criteria.andProdStatusEqualTo(DictItemOperation.产品状态_已出库);
+			List<BslProductInfo> bslProductInfoOuts = bslProductInfoMapper.selectByExample(exampleSelect);
+			if(bslProductInfoOuts!=null && bslProductInfoOuts.size()>=maxOutNum){
+				throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "该机组同时出库纵剪带数量已达最大值，请先将之前出库的纵剪带销库！");
 			}
 			
 			//校验完成开始出库
@@ -304,6 +324,13 @@ public class HalfProdOutPutServiceImpl implements HalfProdOutPutService {
 			//库存状态为已出库
 			if(!DictItemOperation.产品状态_已出库.equals(statusOld)){
 				throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "必须是已出库的半成品才能完成！");
+			}
+			
+			//判断要完成的是不是最先出库的纵剪带
+			//获取最先出库的纵剪带编号
+			String prodIdFirst = getTheFirstOutProd(bslProductInfoOld.getProdOutPlan());
+			if(!prodId.equals(prodIdFirst)){
+				throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "必须按照纵剪带先后出库顺序销库！");
 			}
 			
 			//完成
@@ -418,6 +445,141 @@ public class HalfProdOutPutServiceImpl implements HalfProdOutPutService {
 			return 2;
 		}else{
 			return 3;
+		}
+	}
+	
+	//根据机组获取最大出库纵剪带数量
+	private int getMaxOutNum(String planJz){
+		String paramJz;
+		if (DictItemOperation.产品机组_480机组.equals(planJz)) {
+			paramJz = "004";
+		}else if (DictItemOperation.产品机组_800机组.equals(planJz)) {
+			paramJz = "003";
+		}else{
+			paramJz = "";
+		}
+		String maxOutNumStr = paramService.getValueByParamKey(paramJz);
+		if(StringUtils.isBlank(maxOutNumStr)){
+			return 0;
+		}
+		return Integer.valueOf(maxOutNumStr);
+	}
+	
+	//根据该指令出库中的纵剪带，最先出库的一个纵剪带编号
+	private String getTheFirstOutProd(String planId){
+		List<BslProductInfo> bslProductInfos = bslProductInfoMapper.getTheFirstOutProd(planId);
+		if(bslProductInfos != null && bslProductInfos.size()>0){
+			return bslProductInfos.get(0).getProdId();
+		}
+		return null;
+	}
+
+	//判断机组出库纵剪带数量是否达到最大值
+	@Override
+	public BSLResult getIsMaxOutNum(String planJz) {
+		//获取该机组纵剪带出库的最大限定值
+		int maxOutNum = getMaxOutNum(planJz);
+		//获取该机组正在出库的纵剪带数量
+		//获取正在执行的产品生产指令
+		BslMakePlanInfo prodPlanInfoExe = prodPlanService.getProdPlanInfoExe(planJz);
+		if(prodPlanInfoExe == null){
+			throw new BSLException(ErrorCodeInfo.错误类型_查询无记录, "没有正在执行的生产指令！");
+		}
+		//获取该指令正在出库的纵剪带数量
+		BslProductInfoExample exampleSelect = new BslProductInfoExample();
+		Criteria criteria = exampleSelect.createCriteria();
+		criteria.andProdOutPlanEqualTo(prodPlanInfoExe.getPlanId());
+		criteria.andProdStatusEqualTo(DictItemOperation.产品状态_已出库);
+		List<BslProductInfo> bslProductInfoOuts = bslProductInfoMapper.selectByExample(exampleSelect);
+		if(bslProductInfoOuts!=null && bslProductInfoOuts.size()>=maxOutNum){
+			return BSLResult.ok("1");
+		}
+		
+		return BSLResult.ok("0");
+	}
+
+	/**
+	 * 查询某指令出库的前两个纵剪带盘号及可用重量
+	 */
+	@Override
+	public BSLResult getParentZjxInfo(String planId) {
+		//先查询纵剪带默认废料率
+		float flv = 0f;
+		String flvStr = paramService.getValueByParamKey("005");
+		if(!StringUtils.isBlank(flvStr)){
+			flv =  Float.valueOf(flvStr)/100;
+		}
+		
+		String prodParentNo1 = "";
+		String prodParentNo2 = "";
+		float prodRelWeightParent1 = 0f;
+		float prodRelWeightParent2 = 0f;
+		List<BslProductInfo> bslProductInfos = bslProductInfoMapper.getTopTwoOutProd(planId);
+		if(bslProductInfos != null){
+			if(bslProductInfos.size() >= 1){
+				String prodId = bslProductInfos.get(0).getProdId();
+				float prodRelWeight = bslProductInfos.get(0).getProdRelWeight();
+				//获取第一个出库的纵剪带剩余可用重量
+				float useWeight = bslZjdUseInfoMapper.getMakeWeightByZjdId(prodId).getProdRuWeight();
+				prodParentNo1 = prodId;
+				float canUseWeight1 = prodRelWeight*(1-flv);
+				canUseWeight1 = DictItemOperation.round3(canUseWeight1);
+				if(canUseWeight1 > useWeight){
+					prodRelWeightParent1 = prodRelWeight*(1-flv) - useWeight;
+					prodRelWeightParent1 = DictItemOperation.round3(prodRelWeightParent1);
+				}else{
+					//否则该纵剪带已经完成，置成完成
+					BslProductInfo bslProductInfo = new BslProductInfo();
+					bslProductInfo.setProdId(bslProductInfos.get(0).getProdId());
+					bslProductInfo.setProdStatus(DictItemOperation.产品状态_已完成);
+					bslProductInfo.setUpdDate(new Date());
+					bslProductInfoMapper.updateByPrimaryKeySelective(bslProductInfo);
+				}
+			}
+			if(bslProductInfos.size() >= 2){
+				String prodId = bslProductInfos.get(1).getProdId();
+				float prodRelWeight = bslProductInfos.get(1).getProdRelWeight();
+				//获取第一个出库的纵剪带剩余可用重量
+				float useWeight = bslZjdUseInfoMapper.getMakeWeightByZjdId(prodId).getProdRuWeight();
+				prodParentNo2 = prodId;
+				float canUseWeight2 = prodRelWeight*(1-flv);
+				canUseWeight2 = DictItemOperation.round3(canUseWeight2);
+				if(canUseWeight2 > useWeight){
+					prodRelWeightParent2 = prodRelWeight*(1-flv) - useWeight;
+					prodRelWeightParent2 =  DictItemOperation.round3(prodRelWeightParent2);
+				}else{
+					//否则该纵剪带已经完成，置成完成
+					BslProductInfo bslProductInfo = new BslProductInfo();
+					bslProductInfo.setProdId(bslProductInfos.get(1).getProdId());
+					bslProductInfo.setProdStatus(DictItemOperation.产品状态_已完成);
+					bslProductInfo.setUpdDate(new Date());
+					bslProductInfoMapper.updateByPrimaryKeySelective(bslProductInfo);
+				}
+			}
+		}
+		BslTopTwoZjdInfo bslTopTwoZjdInfo = new BslTopTwoZjdInfo();
+		bslTopTwoZjdInfo.setProdParentNo1(prodParentNo1);
+		bslTopTwoZjdInfo.setProdParentNo2(prodParentNo2);
+		bslTopTwoZjdInfo.setProdRelWeightParent1(prodRelWeightParent1);
+		bslTopTwoZjdInfo.setProdRelWeightParent2(prodRelWeightParent2);
+		return BSLResult.ok(bslTopTwoZjdInfo);
+	}
+
+	/**
+	 * 判断入库重量是否足够让新产品入库
+	 */
+	@Override
+	public boolean checkHalfProdWeight(String prodId, Float inWeightThis) {
+		BslProductInfo bslProductInfo = bslProductInfoMapper.selectByPrimaryKey(prodId);
+		if(bslProductInfo == null){
+			return false;
+		}
+		float parentWeight = bslProductInfo.getProdRelWeight();
+		float useWeight = bslZjdUseInfoMapper.getMakeWeightByZjdId(prodId).getProdRuWeight();
+		if(parentWeight < (useWeight + inWeightThis)){
+			return false;
+		}else{
+			return true;
 		}
 	}
 	

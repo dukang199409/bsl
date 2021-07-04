@@ -761,7 +761,7 @@
     </if>
   </select>
   <select id="querySaleOutByProds" resultMap="ProdResultMap" parameterType="com.bsl.select.QueryExample">
-  	select prod_plan_no,prod_luno,prod_name,prod_norm,prod_material,prod_length,sum(prod_num) as prod_num_count,sum(prod_rel_weight) as prod_weight_total,prod_level
+  	select prod_plan_no,prod_luno,prod_name,prod_norm,prod_material,prod_length,sum(prod_num) as prod_num_count,sum(prod_print_weight) as prod_weight_total,prod_level
 	from bsl_product_info
 	where prod_out_plan = #{planId,jdbcType=VARCHAR}
 	<if test="planDetailId != null" >
@@ -1068,64 +1068,57 @@
   <resultMap id="ProdMakeInfoMap" type="com.bsl.reportbean.BslHalfProdMakeInfo" >
     <result column="prod_out_plan" property="prodOutPlan" jdbcType="VARCHAR" />
     <result column="prod_id" property="prodId" jdbcType="VARCHAR" />
-    <result column="prod_plan_no" property="prodPlanNo" jdbcType="VARCHAR" />
     <result column="prod_name" property="prodName" jdbcType="VARCHAR" />
+    <result column="prod_type" property="prodType" jdbcType="VARCHAR" />
     <result column="prod_status" property="prodStatus" jdbcType="CHAR" />
     <result column="prod_rel_weight" property="prodRelWeight" jdbcType="REAL" />
     <result column="prod_print_weight" property="prodPrintWeight" jdbcType="REAL" />
-    <result column="prod_luno" property="prodLuno" jdbcType="VARCHAR" />
+    <result column="prod_ru_weight" property="prodRuWeight" jdbcType="REAL" />
+    <result column="prod_fl_weight" property="prodFlWeight" jdbcType="REAL" />
+    <result column="prod_fllv" property="prodFllv" jdbcType="VARCHAR" />
+    <result column="prod_out_date" property="prodOutDate" jdbcType="TIMESTAMP" />
     <result column="prod_norm" property="prodNorm" jdbcType="VARCHAR" />
     <result column="prod_material" property="prodMaterial" jdbcType="CHAR" />
-    <result column="prod_ru_num" property="prodRuNum" jdbcType="INTEGER" />
-    <result column="prod_ru_weight" property="prodRuWeight" jdbcType="REAL" />
-    <result column="prod_user_type" property="prodUserType" jdbcType="CHAR" />
-    <result column="prod_out_date" property="prodOutDate" jdbcType="TIMESTAMP" />
+    <result column="prod_luno" property="prodLuno" jdbcType="VARCHAR" />
     <result column="prod_inputuser" property="prodInputuser" jdbcType="VARCHAR" />
     <result column="prod_checkuser" property="prodCheckuser" jdbcType="VARCHAR" />
     <result column="crt_date" property="crtDate" jdbcType="TIMESTAMP" />
-    <result column="upd_date" property="updDate" jdbcType="TIMESTAMP" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
   </resultMap>
   <select id="halfProdMakeInfo" resultMap="ProdMakeInfoMap" parameterType="com.bsl.select.QueryExample">
-  		select * from
-  		(select 
-  			t.prod_out_plan,
-  			t.prod_id,
-  			t.prod_plan_no,
-  			t.prod_name,
-  			t.prod_status,
-  			t.prod_rel_weight,
-  			t.prod_print_weight,
-  			t.prod_luno,
-  			t.prod_norm,
-  			t.prod_material,
-  			t.prod_user_type,
-  			t.prod_out_date,
-  			t.prod_inputuser,
-  			t.prod_checkuser,
-  			t.crt_date,
-  			t.upd_date,
-  			t.remark,
-  			(select count(*) from bsl_product_info p 
-  				where p.prod_parent_no = t.prod_id
-  				and p.prod_type in ('2','4')
-  				and p.prod_dcl_flag = '0') prod_ru_num,
-  			(select ifnull(sum(prod_rel_weight),0) from bsl_product_info p 
-  				where p.prod_parent_no = t.prod_id
-  				and p.prod_type in ('2','4')
-  				and p.prod_dcl_flag = '0') prod_ru_weight
-  		from bsl_product_info t
-  		where
-  			t.prod_type = '1'  and
-  			t.prod_out_plan = #{prodOutPlan,jdbcType=VARCHAR}
-  		 	<if test="prodId != null" >
-		        and t.prod_id like #{prodId,jdbcType=VARCHAR} 
-		    </if>
-		    <if test="prodStatus != null" >
-		        and t.prod_status like #{prodStatus,jdbcType=VARCHAR} 
-		    </if>
-		 ) t1
-		 order by t1.prod_ru_weight asc,t1.prod_id asc
+	  	select * from(
+	  		select 
+	  			t1.*,
+	  			t1.prod_rel_weight - t1.prod_ru_weight prod_fl_weight,
+	  			concat(left(round(((t1.prod_rel_weight - t1.prod_ru_weight)/t1.prod_rel_weight)*100,2),5),'%') prod_fllv
+	  		from
+	  		(select 
+	  			t.prod_out_plan,
+	  			t.prod_id,
+	  			t.prod_name,
+	  			t.prod_type,
+	  			t.prod_status,
+	  			t.prod_rel_weight,
+	  			t.prod_print_weight,
+	  			t.prod_luno,
+	  			t.prod_norm,
+	  			t.prod_material,
+	  			t.prod_out_date,
+	  			t.prod_inputuser,
+	  			t.prod_checkuser,
+	  			t.crt_date,
+	  			t.remark,
+	  			(select ifnull(sum(prod_use_weight),0) from bsl_zjd_use_info p 
+	  				where p.prod_zjd_id = t.prod_id) prod_ru_weight
+	  		from bsl_product_info t
+	  		where t.prod_status = '3' 
+	  			and t.prod_out_plan = #{prodOutPlan,jdbcType=VARCHAR}
+	  		 	<if test="prodId != null" >
+			        and t.prod_id like #{prodId,jdbcType=VARCHAR} 
+			    </if>
+			 ) t1
+		 )t2
+		 order by t2.prod_fllv desc,t2.prod_out_date desc
   </select>
   
    <update id="insertHistoryProductInfo" parameterType="java.lang.String" >
@@ -1142,5 +1135,76 @@
    		and #{dateString,jdbcType=VARCHAR} >= DATE_FORMAT(upd_date,'%Y%m%d')
    		and  prod_status in ('3','4','6')
    </update>
+   
+   <select id="getTheFirstOutProd" resultMap="BaseResultMap" parameterType="java.lang.String">
+  		select * from bsl_product_info
+  		where prod_out_date = 
+  		(select 
+  			min(prod_out_date) from bsl_product_info t
+  		where
+  			t.prod_type = '1'  and
+  			t.prod_status = '2'  and
+  			t.prod_out_plan = #{prodOutPlan,jdbcType=VARCHAR}
+		 )
+		order by prod_id
+  </select>
+  
+  <select id="getTopTwoOutProd" resultMap="BaseResultMap" parameterType="java.lang.String">
+  		select * from bsl_product_info t 
+  		where t.prod_type = '1'  
+  			and t.prod_status = '2' 
+  			and t.prod_out_plan = #{prodOutPlan,jdbcType=VARCHAR}
+		order by t.prod_out_date,t.prod_id limit 2
+  </select>
+  
+   <resultMap id="ProdMakeUseInfoMap" type="com.bsl.reportbean.BslProdMakeUseInfo" >
+    <result column="prod_plan_no" property="prodPlanNo" jdbcType="VARCHAR" />
+    <result column="prod_id" property="prodId" jdbcType="VARCHAR" />
+    <result column="prod_name" property="prodName" jdbcType="VARCHAR" />
+    <result column="prod_type" property="prodType" jdbcType="VARCHAR" />
+    <result column="prod_rel_weight" property="prodRelWeight" jdbcType="REAL" />
+    <result column="prod_print_weight" property="prodPrintWeight" jdbcType="REAL" />
+    <result column="prod_use_no" property="prodUseNo" jdbcType="VARCHAR" />
+    <result column="prod_use_weight" property="prodUseWeight" jdbcType="REAL" />
+    <result column="prod_use_zb" property="prodUseZb" jdbcType="VARCHAR" />
+    <result column="prod_norm" property="prodNorm" jdbcType="VARCHAR" />
+    <result column="prod_material" property="prodMaterial" jdbcType="CHAR" />
+    <result column="prod_luno" property="prodLuno" jdbcType="VARCHAR" />
+    <result column="crt_date" property="crtDate" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="getProdMakeUseInfo" resultMap="ProdMakeUseInfoMap" parameterType="com.bsl.select.QueryCriteria">
+	  	select 
+			t.prod_plan_no,
+			t.prod_id,
+			t.prod_name,
+			t.prod_type,
+			t.prod_rel_weight,
+			t.prod_print_weight,
+			t.prod_luno,
+			t.prod_norm,
+			t.prod_material,
+			t.prod_out_date,
+			t.prod_inputuser,
+			t.prod_checkuser,
+			t.crt_date,
+			t.remark,
+			z.prod_zjd_id prod_use_no,
+			z.prod_use_weight,
+			z.prod_use_bl,
+			concat(round(z.prod_use_bl*100,2),'%') prod_use_zb
+		from bsl_product_info t
+		left join bsl_zjd_use_info z
+		on t.prod_id = z.prod_id
+		where t.prod_type = '2' 
+ 			and t.prod_plan_no = #{prodPlanNo,jdbcType=VARCHAR}
+ 		 	<if test="prodId != null" >
+		        and t.prod_id like #{prodId,jdbcType=VARCHAR} 
+		    </if>
+		    <if test="prodParentNo != null" >
+		        and z.prod_zjd_id like #{prodParentNo,jdbcType=VARCHAR} 
+		    </if>
+		 order by t.prod_id desc
+  </select>
   
 </mapper>

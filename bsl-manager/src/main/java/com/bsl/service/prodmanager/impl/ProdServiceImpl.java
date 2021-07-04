@@ -17,14 +17,18 @@ import com.bsl.dao.JedisClient;
 import com.bsl.mapper.BslMakePlanInfoMapper;
 import com.bsl.mapper.BslProductInfoMapper;
 import com.bsl.mapper.BslStockChangeDetailMapper;
+import com.bsl.mapper.BslZjdUseInfoMapper;
 import com.bsl.pojo.BslMakePlanInfo;
 import com.bsl.pojo.BslMakePlanInfoDetail;
 import com.bsl.pojo.BslProductInfo;
 import com.bsl.pojo.BslProductInfoExample;
 import com.bsl.pojo.BslProductInfoExample.Criteria;
 import com.bsl.pojo.BslStockChangeDetail;
+import com.bsl.pojo.BslZjdUseInfo;
+import com.bsl.reportbean.BslProdMakeUseInfo;
 import com.bsl.reportbean.BslProductInfoCollect;
 import com.bsl.reportbean.BslRuInFo;
+import com.bsl.reportbean.BslTopTwoZjdInfo;
 import com.bsl.select.DictItemOperation;
 import com.bsl.select.ErrorCodeInfo;
 import com.bsl.select.QueryCriteria;
@@ -50,6 +54,8 @@ public class ProdServiceImpl implements ProdService {
 	BslMakePlanInfoMapper bslMakePlanInfoMapper;
 	@Autowired	 
 	BslStockChangeDetailMapper bslStockChangeDetailMapper;
+	@Autowired	 
+	BslZjdUseInfoMapper bslZjdUseInfoMapper;
 	@Autowired
 	private ProdPlanService prodPlanService;
 	@Autowired
@@ -197,7 +203,7 @@ public class ProdServiceImpl implements ProdService {
 	 * 入库
 	 */
 	@Override
-	public BSLResult addCfmProdInfo(BslProductInfo bslProductInfo,int sumNum) {
+	public BSLResult addCfmProdInfo(BslProductInfo bslProductInfo,int sumNum,BslTopTwoZjdInfo bslTopTwoZjdInfo) {
 		//二次校验
 		//获取正在执行的产品生产指令
 		BslMakePlanInfo makePlanInfoExe = prodPlanService.getProdPlanInfoExe(bslProductInfo.getProdMakeJz());
@@ -238,47 +244,191 @@ public class ProdServiceImpl implements ProdService {
 		}
 		
 		//校验父级盘号
-		BslProductInfo parentProd = bslProductInfoMapper.selectByPrimaryKey(bslProductInfo.getProdParentNo());
-		if(parentProd == null){
-			throw new BSLException(ErrorCodeInfo.错误类型_查询无记录, "没有查询到指定的父级纵剪带信息");
+		//根据指令号重新获取最先出库的两个纵剪带及其剩余重量
+		BslTopTwoZjdInfo bslTopTwoAct = (BslTopTwoZjdInfo) halfProdOutPutService.getParentZjxInfo(bslProductInfo.getProdPlanNo()).getData();
+		if(bslTopTwoAct == null){
+			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "获取该指令最先出库的纵剪带信息失败");
 		}
-		if(!parentProd.getProdOutPlan().equals(makePlanInfoExe.getPlanId())){
-			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "产品父级纵剪带必须是因该指令出库的纵剪带");
+		if(!bslTopTwoAct.equals(bslTopTwoZjdInfo)){
+			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "获取该指令最先出库的纵剪带信息发生变更，请关闭该界面重试");
 		}
+		
+		//获取两盘纵剪带及其可用重量
+		//获取第一盘信息
+		String zjd1 = bslTopTwoZjdInfo.getProdParentNo1();
+		float zjdWeight1 = bslTopTwoZjdInfo.getProdRelWeightParent1();
+		BslProductInfo parentProd1 = bslProductInfoMapper.selectByPrimaryKey(zjd1);
+
+		//获取第二盘信息
+		String zjd2 = bslTopTwoZjdInfo.getProdParentNo2();
+		float zjdWeight2 = 0f;
+		BslProductInfo parentProd2 = null;
+		if(!StringUtils.isBlank(zjd2)){
+			zjdWeight2 = bslTopTwoZjdInfo.getProdRelWeightParent2();
+			parentProd2 = bslProductInfoMapper.selectByPrimaryKey(zjd2);
+		}
+		
 		//校验总重量
-		//记录本次入库重量
-		Float inWeight = bslProductInfo.getProdRelWeight();
-		int checkInt = halfProdOutPutService.updateHalfProdStatus(bslProductInfo.getProdParentNo(),inWeight);
-		if(checkInt == 1){
-			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "该纵剪带已生产重量加上本次需入库重量累计超出纵剪带本身重量，无法入库！");
+		//本次入库重量要小于等于两个纵剪带重量之和
+		float inWeight = bslProductInfo.getProdRelWeight();
+		float zjdWeightAll = DictItemOperation.round3(zjdWeight1 + zjdWeight2);
+		if(inWeight > zjdWeightAll){
+			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "本次入库重量大于前两盘出库纵剪带可用重量之和，无法入库！");
 		}
 		
 		//判断入库产品数,平分重量
 		Float relWeight = bslProductInfo.getProdRelWeight()/sumNum;
-		relWeight = ((float)Math.round(relWeight*1000))/1000;
+		//每个产品入库的重量
+		relWeight = DictItemOperation.round3(relWeight);
 		bslProductInfo.setProdRelWeight(relWeight);
+		
+		//判断第一个纵剪带能制造几包产品
+		double numUseTwoDouble = Math.floor(Double.valueOf(zjdWeight1/relWeight));
+		int numUseTwo = new Double(numUseTwoDouble).intValue();
 		
 		//记录入库流水
 		BslStockChangeDetail bslStockChangeDetail = new BslStockChangeDetail();
+		//记录纵剪带制造信息
+		BslZjdUseInfo bslZjdUseInfo = new BslZjdUseInfo();
 		String returnProdId = "";
 		String prodId;
 		
-		for (int i = 0; i < sumNum; i++) {
-			//校验完成，开始入库
+		if(numUseTwo >= sumNum){
+			//只需用第一盘
+			for (int i = 1; i <= sumNum; i++) {
+				//校验完成，开始入库
+				prodId = createProdId();
+				bslProductInfo.setProdId(prodId);//生成编号
+				bslProductInfo.setProdType(DictItemOperation.产品类型_成品);
+				bslProductInfo.setProdLuno(parentProd1.getProdLuno());//炉号为父级炉号
+				bslProductInfo.setProdParentNo(parentProd1.getProdId());
+				bslProductInfo.setProdPrintWeight(bslProductInfo.getProdRelWeight());//打印重量为实际重量
+				bslProductInfo.setCrtDate(new Date());//创建日期当天
+				bslProductInfo.setProdDclFlag(DictItemOperation.产品外协厂标志_本厂);
+				bslProductInfo.setProdStatus(DictItemOperation.产品状态_已入库);
+				bslProductInfo.setProdCompany(parentProd1.getProdCompany());//厂家同原来一致
+				bslProductInfo.setProdCustomer(parentProd1.getProdCustomer());
+				int result = bslProductInfoMapper.insert(bslProductInfo);
+				if(result<0){
+					throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
+				}else if(result==0){
+					throw new BSLException(ErrorCodeInfo.错误类型_查询无记录,"入库失败");
+				}
+				
+				//插入成功之后记录插入流水
+				bslStockChangeDetail = new BslStockChangeDetail();
+				bslStockChangeDetail.setTransSerno(createStockChangeId());//流水
+				bslStockChangeDetail.setProdId(bslProductInfo.getProdId());//产品编号
+				bslStockChangeDetail.setPlanSerno(bslProductInfo.getProdPlanNo());//对应的生产指令号
+				bslStockChangeDetail.setTransCode(DictItemOperation.库存变动交易码_入库);//交易码
+				bslStockChangeDetail.setProdType(DictItemOperation.产品类型_成品);//产品类型
+				bslStockChangeDetail.setRubbishWeight(bslProductInfo.getProdRelWeight());//重量
+				bslStockChangeDetail.setInputuser(bslProductInfo.getProdCheckuser());//录入人
+				bslStockChangeDetail.setCrtDate(new Date());
+				int resultStock = bslStockChangeDetailMapper.insert(bslStockChangeDetail);
+				if(resultStock<0){
+					throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
+				}else if(resultStock==0){
+					throw new BSLException(ErrorCodeInfo.错误类型_查询无记录,"新增库存变动表失败");
+				}
+				
+				//记录纵剪带制造信息
+				bslZjdUseInfo.setProdId(prodId);
+				bslZjdUseInfo.setProdZjdId(parentProd1.getProdId());
+				bslZjdUseInfo.setProdUseWeight(bslProductInfo.getProdRelWeight());
+				bslZjdUseInfo.setProdPlanId(bslProductInfo.getProdPlanNo());
+				bslZjdUseInfo.setProdUseBl(1f);
+				bslZjdUseInfoMapper.insert(bslZjdUseInfo);
+				
+				//记录返回起始编号
+				if(i==1){
+					returnProdId = prodId;
+				}
+			}
+		}else{
+			//第一盘第二盘都要用到
+			//开始入库第一盘制造的
+			for (int i = 1; i <= numUseTwo; i++) {
+				//校验完成，开始入库
+				prodId = createProdId();
+				bslProductInfo.setProdId(prodId);//生成编号
+				bslProductInfo.setProdType(DictItemOperation.产品类型_成品);
+				bslProductInfo.setProdLuno(parentProd1.getProdLuno());//炉号为父级炉号
+				bslProductInfo.setProdParentNo(parentProd1.getProdId());
+				bslProductInfo.setProdPrintWeight(bslProductInfo.getProdRelWeight());//打印重量为实际重量
+				bslProductInfo.setCrtDate(new Date());//创建日期当天
+				bslProductInfo.setProdDclFlag(DictItemOperation.产品外协厂标志_本厂);
+				bslProductInfo.setProdStatus(DictItemOperation.产品状态_已入库);
+				bslProductInfo.setProdCompany(parentProd1.getProdCompany());//厂家同原来一致
+				bslProductInfo.setProdCustomer(parentProd1.getProdCustomer());
+				int result = bslProductInfoMapper.insert(bslProductInfo);
+				if(result<0){
+					throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
+				}else if(result==0){
+					throw new BSLException(ErrorCodeInfo.错误类型_查询无记录,"入库失败");
+				}
+				
+				//插入成功之后记录插入流水
+				bslStockChangeDetail = new BslStockChangeDetail();
+				bslStockChangeDetail.setTransSerno(createStockChangeId());//流水
+				bslStockChangeDetail.setProdId(bslProductInfo.getProdId());//产品编号
+				bslStockChangeDetail.setPlanSerno(bslProductInfo.getProdPlanNo());//对应的生产指令号
+				bslStockChangeDetail.setTransCode(DictItemOperation.库存变动交易码_入库);//交易码
+				bslStockChangeDetail.setProdType(DictItemOperation.产品类型_成品);//产品类型
+				bslStockChangeDetail.setRubbishWeight(bslProductInfo.getProdRelWeight());//重量
+				bslStockChangeDetail.setInputuser(bslProductInfo.getProdCheckuser());//录入人
+				bslStockChangeDetail.setCrtDate(new Date());
+				int resultStock = bslStockChangeDetailMapper.insert(bslStockChangeDetail);
+				if(resultStock<0){
+					throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
+				}else if(resultStock==0){
+					throw new BSLException(ErrorCodeInfo.错误类型_查询无记录,"新增库存变动表失败");
+				}
+				
+				//记录纵剪带制造信息
+				bslZjdUseInfo.setProdId(prodId);
+				bslZjdUseInfo.setProdZjdId(parentProd1.getProdId());
+				bslZjdUseInfo.setProdUseWeight(bslProductInfo.getProdRelWeight());
+				bslZjdUseInfo.setProdPlanId(bslProductInfo.getProdPlanNo());
+				bslZjdUseInfo.setProdUseBl(1f);
+				bslZjdUseInfoMapper.insert(bslZjdUseInfo);
+				
+				//记录返回起始编号
+				if(i==1){
+					returnProdId = prodId;
+				}
+			}
+			
+			//开始入库第一盘和第二盘一起制造的（只有一个）
+			//判断第一盘可以使用的重量(其剩余重量 = 原本可用重量 - 制造包数*每包重量)
+			float useWeight1 = zjdWeight1 - bslProductInfo.getProdRelWeight()*numUseTwo;
+			useWeight1 = DictItemOperation.round3(useWeight1);
+			//判断第二盘使用的重量(等于产品重量减去第一盘剩余重量)
+			float useWeight2 = bslProductInfo.getProdRelWeight() - useWeight1;
+			useWeight2 = DictItemOperation.round3(useWeight2);
+			//哪个重量用的多，父级盘号就是谁
+			BslProductInfo bslProdUse = null;
+			if(useWeight1 >= useWeight2){
+				bslProdUse = parentProd1;
+			}else{
+				bslProdUse = parentProd2;
+			}
+			
 			prodId = createProdId();
 			bslProductInfo.setProdId(prodId);//生成编号
 			bslProductInfo.setProdType(DictItemOperation.产品类型_成品);
-			bslProductInfo.setProdLuno(parentProd.getProdLuno());//炉号为父级炉号
+			bslProductInfo.setProdLuno(bslProdUse.getProdLuno());//炉号为父级炉号
+			bslProductInfo.setProdParentNo(bslProdUse.getProdId());
 			bslProductInfo.setProdPrintWeight(bslProductInfo.getProdRelWeight());//打印重量为实际重量
 			bslProductInfo.setCrtDate(new Date());//创建日期当天
 			bslProductInfo.setProdDclFlag(DictItemOperation.产品外协厂标志_本厂);
 			bslProductInfo.setProdStatus(DictItemOperation.产品状态_已入库);
-			bslProductInfo.setProdCompany(parentProd.getProdCompany());//厂家同原来一致
-			bslProductInfo.setProdCustomer(parentProd.getProdCustomer());
-			int result = bslProductInfoMapper.insert(bslProductInfo);
-			if(result<0){
+			bslProductInfo.setProdCompany(bslProdUse.getProdCompany());//厂家同原来一致
+			bslProductInfo.setProdCustomer(bslProdUse.getProdCustomer());
+			int resultHH = bslProductInfoMapper.insert(bslProductInfo);
+			if(resultHH<0){
 				throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
-			}else if(result==0){
+			}else if(resultHH==0){
 				throw new BSLException(ErrorCodeInfo.错误类型_查询无记录,"入库失败");
 			}
 			
@@ -292,24 +442,103 @@ public class ProdServiceImpl implements ProdService {
 			bslStockChangeDetail.setRubbishWeight(bslProductInfo.getProdRelWeight());//重量
 			bslStockChangeDetail.setInputuser(bslProductInfo.getProdCheckuser());//录入人
 			bslStockChangeDetail.setCrtDate(new Date());
-			int resultStock = bslStockChangeDetailMapper.insert(bslStockChangeDetail);
-			if(resultStock<0){
+			int resultStockHH = bslStockChangeDetailMapper.insert(bslStockChangeDetail);
+			if(resultStockHH<0){
 				throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
-			}else if(resultStock==0){
+			}else if(resultStockHH==0){
 				throw new BSLException(ErrorCodeInfo.错误类型_查询无记录,"新增库存变动表失败");
 			}
 			
-			//记录返回起始编号
-			if(i==0){
+			//记录纵剪带制造信息
+			bslZjdUseInfo.setProdId(prodId);
+			bslZjdUseInfo.setProdZjdId(parentProd1.getProdId());
+			bslZjdUseInfo.setProdUseWeight(useWeight1);
+			bslZjdUseInfo.setProdPlanId(bslProductInfo.getProdPlanNo());
+			float bv1 = ((float)Math.round(useWeight1/bslProductInfo.getProdRelWeight()*100))/100;
+			bslZjdUseInfo.setProdUseBl(bv1);
+			bslZjdUseInfoMapper.insert(bslZjdUseInfo);
+			
+			bslZjdUseInfo.setProdId(prodId);
+			bslZjdUseInfo.setProdZjdId(parentProd2.getProdId());
+			bslZjdUseInfo.setProdUseWeight(useWeight2);
+			bslZjdUseInfo.setProdPlanId(bslProductInfo.getProdPlanNo());
+			float bv2 = ((float)Math.round(useWeight2/bslProductInfo.getProdRelWeight()*100))/100;
+			bslZjdUseInfo.setProdUseBl(bv2);
+			bslZjdUseInfoMapper.insert(bslZjdUseInfo);
+			
+			//记录返回起始编号(没有第一盘独立造的产品)
+			if(numUseTwo < 1){
 				returnProdId = prodId;
 			}
+			
+			//开始入库第二盘制造的
+			for (int i = numUseTwo+2; i <= sumNum; i++) {
+				//校验完成，开始入库
+				prodId = createProdId();
+				bslProductInfo.setProdId(prodId);//生成编号
+				bslProductInfo.setProdType(DictItemOperation.产品类型_成品);
+				bslProductInfo.setProdLuno(parentProd2.getProdLuno());//炉号为父级炉号
+				bslProductInfo.setProdParentNo(parentProd2.getProdId());
+				bslProductInfo.setProdPrintWeight(bslProductInfo.getProdRelWeight());//打印重量为实际重量
+				bslProductInfo.setCrtDate(new Date());//创建日期当天
+				bslProductInfo.setProdDclFlag(DictItemOperation.产品外协厂标志_本厂);
+				bslProductInfo.setProdStatus(DictItemOperation.产品状态_已入库);
+				bslProductInfo.setProdCompany(parentProd2.getProdCompany());//厂家同原来一致
+				bslProductInfo.setProdCustomer(parentProd2.getProdCustomer());
+				int result = bslProductInfoMapper.insert(bslProductInfo);
+				if(result<0){
+					throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
+				}else if(result==0){
+					throw new BSLException(ErrorCodeInfo.错误类型_查询无记录,"入库失败");
+				}
+				
+				//插入成功之后记录插入流水
+				bslStockChangeDetail = new BslStockChangeDetail();
+				bslStockChangeDetail.setTransSerno(createStockChangeId());//流水
+				bslStockChangeDetail.setProdId(bslProductInfo.getProdId());//产品编号
+				bslStockChangeDetail.setPlanSerno(bslProductInfo.getProdPlanNo());//对应的生产指令号
+				bslStockChangeDetail.setTransCode(DictItemOperation.库存变动交易码_入库);//交易码
+				bslStockChangeDetail.setProdType(DictItemOperation.产品类型_成品);//产品类型
+				bslStockChangeDetail.setRubbishWeight(bslProductInfo.getProdRelWeight());//重量
+				bslStockChangeDetail.setInputuser(bslProductInfo.getProdCheckuser());//录入人
+				bslStockChangeDetail.setCrtDate(new Date());
+				int resultStock = bslStockChangeDetailMapper.insert(bslStockChangeDetail);
+				if(resultStock<0){
+					throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
+				}else if(resultStock==0){
+					throw new BSLException(ErrorCodeInfo.错误类型_查询无记录,"新增库存变动表失败");
+				}
+				
+				//记录纵剪带制造信息
+				bslZjdUseInfo.setProdId(prodId);
+				bslZjdUseInfo.setProdZjdId(parentProd2.getProdId());
+				bslZjdUseInfo.setProdUseWeight(bslProductInfo.getProdRelWeight());
+				bslZjdUseInfo.setProdPlanId(bslProductInfo.getProdPlanNo());
+				bslZjdUseInfo.setProdUseBl(1f);
+				bslZjdUseInfoMapper.insert(bslZjdUseInfo);
+				
+			}
+			
 		}
+		
 		//入库完成之后判断是否需要更新纵剪带状态
-		if(checkInt == 2){
-			parentProd.setProdStatus(DictItemOperation.产品状态_已完成);
-			parentProd.setUpdDate(new Date());
-			bslProductInfoMapper.updateByPrimaryKeySelective(parentProd);
+		//累计入库重量大于纵剪带1的重量，把纵剪带1置成完成
+		if(inWeight >= zjdWeight1){
+			BslProductInfo bslProductInfoTmp = new BslProductInfo();
+			bslProductInfoTmp.setProdId(parentProd1.getProdId());
+			bslProductInfoTmp.setProdStatus(DictItemOperation.产品状态_已完成);
+			bslProductInfoTmp.setUpdDate(new Date());
+			bslProductInfoMapper.updateByPrimaryKeySelective(bslProductInfoTmp);
 		}
+		//累计入库重量大于等于纵剪带1+纵剪带2的重量，把纵剪带2置成完成
+		if(inWeight >= zjdWeightAll){
+			BslProductInfo bslProductInfoTmp = new BslProductInfo();
+			bslProductInfoTmp.setProdId(parentProd2.getProdId());
+			bslProductInfoTmp.setProdStatus(DictItemOperation.产品状态_已完成);
+			bslProductInfoTmp.setUpdDate(new Date());
+			bslProductInfoMapper.updateByPrimaryKeySelective(bslProductInfoTmp);
+		}
+		
 		prodPlanService.updateProdRuNumAndSums(makePlanInfoExe.getPlanId());
 		return BSLResult.ok(returnProdId);
 	}
@@ -360,14 +589,14 @@ public class ProdServiceImpl implements ProdService {
 			throw new BSLException(ErrorCodeInfo.错误类型_查询无记录, "没有查询到指定的父级纵剪带信息");
 		}
 		if(!parentProd.getProdOutPlan().equals(makePlanInfo.getPlanId())){
-			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "产品父级纵剪带必须是因该指令出库的纵剪带");
+			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "父级纵剪带必须是因该指令出库的纵剪带");
 		}
 		//校验总重量
 		//记录本次入库重量
 		Float inWeight = bslProductInfo.getProdRelWeight();
-		int checkInt = halfProdOutPutService.updateHalfProdStatus(bslProductInfo.getProdParentNo(),inWeight);
-		if(checkInt == 1){
-			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "该纵剪带已生产重量加上本次需入库重量累计超出纵剪带本身重量，无法入库！");
+		boolean ifCheckPass = halfProdOutPutService.checkHalfProdWeight(bslProductInfo.getProdParentNo(),inWeight);
+		if(!ifCheckPass){
+			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "该父级纵剪带已生产重量加上本次需入库重量累计超出父级纵剪带本身重量，无法入库！");
 		}
 		
 		//判断入库盘数,平分重量
@@ -377,6 +606,8 @@ public class ProdServiceImpl implements ProdService {
 		
 		//记录入库流水
 		BslStockChangeDetail bslStockChangeDetail = new BslStockChangeDetail();
+		//记录纵剪带制造信息
+		BslZjdUseInfo bslZjdUseInfo = new BslZjdUseInfo();
 		String returnProdId = "";
 		String prodId;
 		
@@ -417,17 +648,21 @@ public class ProdServiceImpl implements ProdService {
 				throw new BSLException(ErrorCodeInfo.错误类型_查询无记录,"新增库存变动表失败");
 			}
 			
+			//入库完成之后增加
+			//记录纵剪带制造信息
+			bslZjdUseInfo.setProdId(prodId);
+			bslZjdUseInfo.setProdZjdId(parentProd.getProdId());
+			bslZjdUseInfo.setProdUseWeight(bslProductInfo.getProdRelWeight());
+			bslZjdUseInfo.setProdPlanId(bslProductInfo.getProdPlanNo());
+			bslZjdUseInfo.setProdUseBl(1f);
+			bslZjdUseInfoMapper.insert(bslZjdUseInfo);
+			
 			//记录返回起始编号
 			if(i==0){
 				returnProdId = prodId;
 			}
 		}
-		//入库完成之后判断是否需要更新纵剪带状态
-		if(checkInt == 2){
-			parentProd.setProdStatus(DictItemOperation.产品状态_已完成);
-			parentProd.setUpdDate(new Date());
-			bslProductInfoMapper.updateByPrimaryKeySelective(parentProd);
-		}
+		
 		prodPlanService.updateProdRuNumAndSums(makePlanInfo.getPlanId());
 		return BSLResult.ok(returnProdId);
 	}
@@ -489,38 +724,7 @@ public class ProdServiceImpl implements ProdService {
 		}
 		//校验父级盘号
 		if(!oldBslProductInfo.getProdParentNo().equals(bslProductInfo.getProdParentNo())){
-			BslProductInfo parentProd = bslProductInfoMapper.selectByPrimaryKey(bslProductInfo.getProdParentNo());
-			if(parentProd == null){
-				throw new BSLException(ErrorCodeInfo.错误类型_查询无记录, "没有查询到指定的父级纵剪带信息");
-			}
-			if(!parentProd.getProdOutPlan().equals(oldBslProductInfo.getProdPlanNo())){
-				throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "产品父级纵剪带必须是因该指令出库的纵剪带");
-			}
-			bslProductInfo.setProdLuno(parentProd.getProdLuno());
-
-			//校验总重量
-			//记录本次入库重量
-			Float inWeight = bslProductInfo.getProdRelWeight();
-			int checkInt = halfProdOutPutService.updateHalfProdStatus(bslProductInfo.getProdParentNo(),inWeight);
-			if(checkInt == 1){
-				throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "该纵剪带已生产重量加上本次需入库重量累计超出纵剪带本身重量，无法修改！");
-			}
-			
-			//修改完成之后判断是否需要更新纵剪带状态
-			if(checkInt == 2){
-				parentProd.setProdStatus(DictItemOperation.产品状态_已完成);
-				parentProd.setUpdDate(new Date());
-				bslProductInfoMapper.updateByPrimaryKeySelective(parentProd);
-			}
-			BslMakePlanInfo makePlanInfoExe = prodPlanService.getProdPlanInfoExe(bslProductInfo.getProdMakeJz());
-			if(makePlanInfoExe != null){
-				if(makePlanInfoExe.getPlanId().equals(bslProductInfo.getProdPlanNo())){
-					parentProd.setProdStatus(DictItemOperation.产品状态_已出库);
-					parentProd.setUpdDate(new Date());
-					bslProductInfoMapper.updateByPrimaryKeySelective(parentProd);
-				}
-			}
-			
+			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "产品父级盘号不允许修改！");
 		}
 		
 		//校验完成开始修改
@@ -1195,6 +1399,62 @@ public class ProdServiceImpl implements ProdService {
 		}
 		
 		return BSLResult.ok(prodId+"-1");
+	}
+
+	/**
+	 * 查询某指令制造的产品用料组成信息
+	 */
+	@Override
+	public BSLResult getProdMakeUseInfo(QueryCriteria queryCriteria) {
+		if(!StringUtils.isBlank(queryCriteria.getProdId())){
+			queryCriteria.setProdId(StringUtil.likeStr(queryCriteria.getProdId()));
+		}else{
+			queryCriteria.setProdId(null);
+		}
+		if(!StringUtils.isBlank(queryCriteria.getProdParentNo())){
+			queryCriteria.setProdParentNo(StringUtil.likeStr(queryCriteria.getProdParentNo()));
+		}else{
+			queryCriteria.setProdParentNo(null);
+		}
+		//分页处理
+		PageHelper.startPage(Integer.parseInt(queryCriteria.getPage()), Integer.parseInt(queryCriteria.getRows()));
+		List<BslProdMakeUseInfo> lists = bslProductInfoMapper.getProdMakeUseInfo(queryCriteria);
+		PageInfo<BslProdMakeUseInfo> pageInfo = new PageInfo<BslProdMakeUseInfo>(lists);
+		return BSLResult.ok(lists,"prodServiceImpl","getProdMakeUseInfo",pageInfo.getTotal(),lists);
+		
+	}
+
+	/**
+	 * 根据盘号获取已入库待处理品包数
+	 */
+	@Override
+	public BSLResult getProdDclRuNums(String prodId) {
+		//校验父级盘号
+		BslProductInfo parentProd = bslProductInfoMapper.selectByPrimaryKey(prodId);
+		if(parentProd == null){
+			throw new BSLException(ErrorCodeInfo.错误类型_查询无记录, "没有查询到指定的父级纵剪带信息");
+		}
+		BslProductInfoExample bslProductInfoExample = new BslProductInfoExample();
+		Criteria criteria = bslProductInfoExample.createCriteria();
+		criteria.andProdTypeEqualTo(DictItemOperation.产品类型_待处理品);
+		criteria.andProdParentNoEqualTo(prodId);
+		criteria.andProdDclFlagEqualTo(DictItemOperation.产品外协厂标志_本厂);
+		List<BslProductInfo> prods = bslProductInfoMapper.selectByExample(bslProductInfoExample);
+		BslRuInFo bslRuInFo = new BslRuInFo();
+		bslRuInFo.setProdId(prodId);
+		bslRuInFo.setProdRelWeight(parentProd.getProdRelWeight());
+		if(prods == null){
+			bslRuInFo.setProdRuNum(0);
+			bslRuInFo.setProdRuWeight(0f);
+		}else{
+			Float prodRuWeight = 0f;
+			for (BslProductInfo bslProductInfo : prods) {
+				prodRuWeight += bslProductInfo.getProdRelWeight();
+			}
+			bslRuInFo.setProdRuNum(prods.size());
+			bslRuInFo.setProdRuWeight(prodRuWeight);
+		}
+		return BSLResult.ok(bslRuInFo);
 	}
 
 }

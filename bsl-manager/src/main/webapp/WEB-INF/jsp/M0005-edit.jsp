@@ -26,7 +26,7 @@
 	            </td> 
 	            <td width="120" align="right">备注:</td>
 	            <td width="210" align="right">
-	            	<input name="remark" class="easyui-numberbox" type="text" style="width:200px;"></input>
+	            	<input name="remark" class="easyui-textbox" type="text" style="width:200px;"></input>
 	            </td>                
 	        </tr>
 	    </table>

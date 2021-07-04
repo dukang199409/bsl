@@ -71,6 +71,7 @@
 	        	<th data-options="field:'prodId',width:170,sortable:true">盘号</th>
 	        	<th data-options="field:'prodPlanNo',width:150,sortable:true">纵剪带指令号</th>
 	            <th data-options="field:'prodStatus',width:100,formatter:BSL.formatHalfProdStatus,sortable:true">状态</th>
+	            <th data-options="field:'prodOutDate',width:150,formatter:BSL.formatFullDateTime,sortable:true">出库日期</th>
 	        	<th data-options="field:'prodLuno',width:120,sortable:true">炉(批)号</th>
 	        	<th data-options="field:'prodOriId',width:100,sortable:true">来源盘号</th>
 	        	<th data-options="field:'prodName',width:100,sortable:true">物料名称</th>
@@ -84,7 +85,6 @@
 	            <th data-options="field:'prodInputuser',width:70,sortable:true">入库人</th>
 	            <th data-options="field:'prodCheckuser',width:70,sortable:true">修改人</th>
 	            <th data-options="field:'crtDate',width:150,formatter:BSL.formatFullDateTime,sortable:true">入库日期</th>
-	            <th data-options="field:'updDate',width:150,formatter:BSL.formatFullDateTime,sortable:true">修改日期</th>
 	            <th data-options="field:'remark',width:100,sortable:true">备注</th>
 	        </tr>
 	    </thead>

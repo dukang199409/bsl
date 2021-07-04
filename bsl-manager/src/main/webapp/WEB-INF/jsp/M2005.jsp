@@ -257,10 +257,25 @@
 				text : '新增入库',
 				iconCls : 'icon-add',
 				handler : function() {
-					$("#semiAddWindow").window({
-		        		onLoad :function(){
-		        		}
-		        	}).window("open");
+					var ids = getM2005SelectionsIds();
+					if(ids.length > 0){
+			        	var data = $("#semiList").datagrid("getSelections")[0];
+			        	$("#semiAddWindow").window({
+			        		onLoad :function(){
+			        			var data1 = {};
+			        			data1.prodBc = data.prodBc;
+			        			data1.prodRuc = data.prodRuc;
+			        			data1.prodLevel = data.prodLevel;
+			        			$("#semiCheckAddForm").form("load",data1);
+			        		}
+			        	}).window("open");
+			        	
+		        	}else{
+						$("#semiAddWindow").window({
+			        		onLoad :function(){
+			        		}
+			        	}).window("open");
+		        	}
 				}
 			},{
 		        text:'编辑',

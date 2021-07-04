@@ -378,6 +378,11 @@
         		$.messager.alert('提示','只有执行中的指令才能完成!');
         		return ;
         	}
+        	if((data.alreadyNum != null && data.alreadyNum > 0)
+        			&& (data.outNum == 0 || data.outNum == null)){
+        		$.messager.alert('提示','投料数量大于0但是生产数量为0，不能完成!');
+        		return ;
+        	}
         	$.messager.confirm('确认','完成该指令将会把所用到的所有半成品状态置为已分剪。若有未用完的半成品请先重新入库！若有已出库未拆封的半成品请先做退回交易！是够继续完成？',function(r){
         		if (r){
 	        		$.messager.confirm('确认','请确认该指令造出的产品是否均已入库？',function(r2){

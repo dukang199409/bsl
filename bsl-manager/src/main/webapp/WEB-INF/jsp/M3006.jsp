@@ -2,28 +2,17 @@
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div>
-	<div class="easyui-panel" title="纵剪带制造信息查询" style="padding:10px 10px 10px 10px">
+	<div class="easyui-panel" title="生产用料废品率信息查询" style="padding:10px 10px 10px 10px">
 		<form id="semiMakeM3006Form" class="itemForm" method="post">
 		   <table>
 		        <tr>
-		        	<td width="120" align="right">产品生产处理指令号:</td>
+		        	<td width="120" align="right">出库指令号:</td>
 		            <td width="210" align="right">
 		            	<input name="prodOutPlan" id="prodOutPlanM3006"  class="easyui-textbox" type="text" data-options="required:true,validType:'length[0,20]'" style="width:200px;"></input>
 		            </td>
-		            <td width="120" align="right">出库盘号:</td>
+		            <td width="120" align="right">用料产品编码:</td>
 		            <td width="210" align="right">
 		            	<input name="prodId" id="prodIdM3006"  class="easyui-textbox" type="text" data-options="required:false,validType:'length[0,20]'" style="width:200px;"></input>
-		            </td>
-		        </tr>
-		       <tr>
-		       		<td width="120" align="right">产品状态:</td>
-		            <td width="210" align="right">
-		            	<select name="prodStatus" id="prodStatusM3006"  class="easyui-combobox" panelHeight="auto" data-options="editable:true" style="width:200px;">
-				          <option value="">请选择...</option>
-				          <c:forEach items="${prodHalfStatusList}" var="a">
-			          	   	<option value="${a.enumKey}">${a.enumValue}</option>
-			          	 </c:forEach>
-						</select>
 		            </td>
 		        </tr>
 		        <tr hidden="true">
@@ -70,27 +59,28 @@
 	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearM3006Form()">重置</a>
 		</div>
 	</div>
-	 <table class="easyui-datagrid" id="semiMakeM3006List" title="纵剪带制造信息管理"  style="height:600px"
+	 <table class="easyui-datagrid" id="semiMakeM3006List" title="生产用料废品率信息"  style="height:600px"
 	       data-options="singleSelect:true,rownumbers:true,collapsible:true,pagination:true,url:'/semi/queryMakeInfo',method:'post',onBeforeLoad:onBeforeLoadM3006,pageSize:30,toolbar:toolbarM3006">
 	    <thead>
 	        <tr>
 	        	<th data-options="field:'ck',checkbox:true"></th>
 	        	<th data-options="field:'prodOutPlan',width:100">出库指令号</th>
 	            <th data-options="field:'prodId',width:165">盘号</th>
-	        	<th data-options="field:'prodPlanNo',width:150">纵剪带生产指令号</th>
 	        	<th data-options="field:'prodName',width:100">物料名称</th>
+	        	<th data-options="field:'prodType',width:100,formatter:BSL.formatProdType,sortable:true">产品类别</th>
 	            <th data-options="field:'prodStatus',width:100,formatter:BSL.formatHalfProdStatus">状态</th>
-	            <th data-options="field:'prodRelWeight',width:125">复磅重量/吨</th>
-	            <th data-options="field:'prodPrintWeight',width:125">入库重量/吨</th>
-	            <th data-options="field:'prodRuNum',width:150">制造产品包数</th>
-	            <th data-options="field:'prodRuWeight',width:150">制造产品重量/吨</th>
-	        	<th data-options="field:'prodLuno',width:120">炉(批)号</th>
+	            <th data-options="field:'prodRelWeight',width:100">复磅重量/吨</th>
+	            <th data-options="field:'prodPrintWeight',width:100">入库重量/吨</th>
+	            <th data-options="field:'prodRuWeight',width:120">制造产品重量/吨</th>
+	            <th data-options="field:'prodFlWeight',width:120">剩余废料重量/吨</th>
+	            <th data-options="field:'prodFllv',width:100">废料率</th>
+	            <th data-options="field:'prodOutDate',width:150,formatter:BSL.formatFullDateTime">出库日期</th>
+	        	<th data-options="field:'prodLuno',width:100">炉(批)号</th>
 	        	<th data-options="field:'prodNorm',width:100">规格</th>
 	        	<th data-options="field:'prodMaterial',width:80,formatter:BSL.formatProdMaterial">钢种</th>
 	            <th data-options="field:'prodInputuser',width:70">录入人</th>
 	            <th data-options="field:'prodCheckuser',width:70">修改人</th>
 	            <th data-options="field:'crtDate',width:150,formatter:BSL.formatFullDateTime">入库日期</th>
-	            <th data-options="field:'updDate',width:150,formatter:BSL.formatFullDateTime">修改日期</th>
 	            <th data-options="field:'remark',width:226">备注</th>
 	        </tr>
 	    </thead>
@@ -102,7 +92,6 @@
 		var queryParams = $('#semiMakeM3006List').datagrid('options').queryParams;
 		queryParams.prodOutPlan = $('#prodOutPlanM3006').val();
 		queryParams.prodId = $('#prodIdM3006').val();
-		queryParams.prodStatus = $('#prodStatusM3006').combobox("getValue");
 	}
 	
 	//查询按钮
@@ -175,14 +164,13 @@
 					mapParam.set("titles",titles);
 					mapParam.set("className",className);
 					mapParam.set("methodName",methodName);
-					mapParam.set("excelName","纵剪带制造信息");
+					mapParam.set("excelName","生产用料废品率信息");
 					mapParam.set("loginUserId",$("#user_id").html());
 					mapParam.set("rows","10000");
 					mapParam.set("page","1");
 					//查询条件 把所有查询条件带上
 					mapParam.set("prodOutPlan",$('#prodOutPlanM3006').val());
 					mapParam.set("prodId",$('#prodIdM3006').val());
-					mapParam.set("prodStatus",$('#prodStatusM3006').combobox("getValue"));
 					
 					BSL.toExcel(mapParam);
 		        }

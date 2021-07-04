@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bsl.common.utils.BSLResult;
 import com.bsl.pojo.BslMakePlanInfo;
 import com.bsl.pojo.BslProductInfo;
+import com.bsl.reportbean.BslTopTwoZjdInfo;
 import com.bsl.select.DictItemOperation;
 import com.bsl.select.ErrorCodeInfo;
-import com.bsl.select.ProdLeftInfo;
 import com.bsl.select.QueryCriteria;
 import com.bsl.service.prodmanager.HalfProdOutPutService;
 import com.bsl.service.prodmanager.ProdPlanService;
@@ -76,7 +76,26 @@ public class ProdController {
 	@RequestMapping("/getProdRuNums")
 	@ResponseBody
 	public BSLResult getProdRuNums(String prodId) {
-		return prodService.getProdRuNums(prodId);
+		try {
+			return prodService.getProdRuNums(prodId);
+		} catch (Exception e) {
+			DictItemOperation.log.info("===========异常:"+e.getMessage());
+			return BSLResult.build(ErrorCodeInfo.错误类型_交易异常,e.getMessage());
+		}
+	}
+	
+	/**
+	 * 根据盘号获取该盘已经入库的待处理品包数
+	 */
+	@RequestMapping("/getProdDclRuNums")
+	@ResponseBody
+	public BSLResult getProdDclRuNums(String prodId) {
+		try {
+			return prodService.getProdDclRuNums(prodId);
+		} catch (Exception e) {
+			DictItemOperation.log.info("===========异常:"+e.getMessage());
+			return BSLResult.build(ErrorCodeInfo.错误类型_交易异常,e.getMessage());
+		}
 	}
 	
 	/**
@@ -132,7 +151,7 @@ public class ProdController {
 	 */
 	@RequestMapping("/addProd")
 	@ResponseBody
-	public BSLResult addProdinfo(BslProductInfo bslProductInfo,String sumNum){
+	public BSLResult addProdinfo(BslProductInfo bslProductInfo,String sumNum,BslTopTwoZjdInfo bslTopTwoZjdInfo){
 		int sumNumInt = Integer.parseInt(sumNum);
 		if(StringUtils.isBlank(bslProductInfo.getProdPlanNo())){
 			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "产品生产指令不能为空");
@@ -146,8 +165,8 @@ public class ProdController {
 		if(StringUtils.isBlank(bslProductInfo.getProdMaterial())){
 			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "产品钢种不能为空");
 		}
-		if(StringUtils.isBlank(bslProductInfo.getProdParentNo())){
-			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "产品父级盘号不能为空");
+		if(StringUtils.isBlank(bslTopTwoZjdInfo.getProdParentNo1())){
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "产品父级盘号1不能为空");
 		}
 //		if(StringUtils.isBlank(bslProductInfo.getProdLuno())){
 //			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "产品炉号不能为空");
@@ -168,7 +187,7 @@ public class ProdController {
 			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "生产班次不能为空");
 		}
 		try {
-			return prodService.addCfmProdInfo(bslProductInfo,sumNumInt);
+			return prodService.addCfmProdInfo(bslProductInfo,sumNumInt,bslTopTwoZjdInfo);
 		} catch (Exception e) {
 			DictItemOperation.log.info("===========异常:"+e.getMessage());
 			return BSLResult.build(ErrorCodeInfo.错误类型_交易异常,e.getMessage());
@@ -373,6 +392,20 @@ public class ProdController {
 		}
 	}
 	
+	@RequestMapping("/isMaxOut")
+	@ResponseBody
+	public BSLResult isMaxOut(String planJz) {
+		//判断该机组出库的纵剪带是否已达限定值
+		try {
+			BSLResult bslResult =  halfProdOutPutService.getIsMaxOutNum(planJz);
+			return bslResult;
+		} catch (Exception e) {
+			DictItemOperation.log.info("===========异常:"+e.getMessage());
+			return BSLResult.build(ErrorCodeInfo.错误类型_交易异常,e.getMessage());
+		}
+	
+	}
+	
 	@RequestMapping("/getParentPh")
 	@ResponseBody
 	public BSLResult getParentPh(String planId) {
@@ -383,6 +416,32 @@ public class ProdController {
 			 liStrings.add(bslProductInfo.getProdId());
 		 }
 		 return BSLResult.ok(liStrings);
+	}
+	
+	@RequestMapping("/getParentZjxInfo")
+	@ResponseBody
+	public BSLResult getParentZjxInfo(String planId) {
+		//查询该指令出库的前两个出库纵剪带信息
+		try {
+			BSLResult bslResult = halfProdOutPutService.getParentZjxInfo(planId);
+			return bslResult;
+		} catch (Exception e) {
+			DictItemOperation.log.info("===========异常:"+e.getMessage());
+			return BSLResult.build(ErrorCodeInfo.错误类型_交易异常,e.getMessage());
+		}
+	}
+	
+	@RequestMapping("/queryUseInfo")
+	@ResponseBody
+	public BSLResult queryUseInfo(QueryCriteria queryCriteria) {
+		//查询某指令制造的产品用料组成信息
+		try {
+			BSLResult bslResult = prodService.getProdMakeUseInfo(queryCriteria);
+			return bslResult;
+		} catch (Exception e) {
+			DictItemOperation.log.info("===========异常:"+e.getMessage());
+			return BSLResult.build(ErrorCodeInfo.错误类型_交易异常,e.getMessage());
+		}
 	}
 	
 	@RequestMapping("/{page}")

@@ -7,6 +7,7 @@ import com.bsl.common.utils.BSLResult;
 import com.bsl.pojo.BslProductInfo;
 import com.bsl.pojo.BslProductInfoExample;
 import com.bsl.reportbean.BslProductInfoCollect;
+import com.bsl.reportbean.BslTopTwoZjdInfo;
 import com.bsl.select.QueryCriteria;
 import com.bsl.select.QueryExample;
 
@@ -21,7 +22,7 @@ public interface ProdService {
 	//根据条件查询所有产品信息
 	BSLResult getProdService(QueryCriteria queryCriteria);
 	//产品确认入库
-	BSLResult addCfmProdInfo(BslProductInfo bslProductInfo,int sumNum);
+	BSLResult addCfmProdInfo(BslProductInfo bslProductInfo,int sumNum,BslTopTwoZjdInfo bslTopTwoZjdInfo);
 	//产品补录入库
 	BSLResult addCfmProdInfoBuLu(BslProductInfo bslProductInfo,int sumNum);
 	//已入库产品信息修改
@@ -60,4 +61,10 @@ public interface ProdService {
 	
 	//已入库产品信息拆分
 	BSLResult updateProdInfoCut(QueryCriteria queryCriteria);
+	
+	//根据指令号获取产品组成信息
+	BSLResult getProdMakeUseInfo(QueryCriteria queryCriteria);
+	
+	//根据盘号获取已入库待处理品包数
+	BSLResult getProdDclRuNums(String prodId);
 }

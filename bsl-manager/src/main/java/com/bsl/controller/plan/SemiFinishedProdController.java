@@ -68,7 +68,7 @@ public class SemiFinishedProdController {
 	public BSLResult queryMakeInfo(QueryExample queryCriteria) {
 		BSLResult result = null;
 		if(StringUtils.isBlank(queryCriteria.getProdOutPlan())) {
-			return null;
+			result =  BSLResult.build(400, "出库指令号不能为空!");
 		}
 		if(StringUtils.isBlank(queryCriteria.getPage())) {
 			result =  BSLResult.build(400, "页码不能为空");
@@ -78,6 +78,20 @@ public class SemiFinishedProdController {
 			result = semiFinishedProdService.queryMakeInfoList(queryCriteria);
 		}
 		return result;
+	}
+	
+	/**
+	 * 根据产品编号查询完成的半成品信息 用于补录
+	 */
+	@RequestMapping("/queryLeftInfo")
+	@ResponseBody
+	public BSLResult queryLeftInfo(String prodId) {
+		try {
+			return semiFinishedProdService.queryLeftInfoById(prodId);
+		} catch (Exception e) {
+			DictItemOperation.log.info("===========异常:"+e.getMessage());
+			return BSLResult.build(ErrorCodeInfo.错误类型_交易异常,e.getMessage());
+		}
 	}
 	
 	/**

@@ -213,6 +213,10 @@ public class MakePlanServiceImpl implements MakePlanService {
 			flag = true;
 			errorMsg = "非创建中/进行中/暂停的纵剪带生产指令不允许修改制造产品名称！";
 		}
+		if(!bslBsPlanInfoOld.getMakeType().equals(bslMakePlanInfo.getMakeType())){
+			flag = true;
+			errorMsg = "非创建中/进行中/暂停的纵剪带生产指令不允许修改制造产品用途！";
+		}
 		if(!bslBsPlanInfoOld.getPlanJz().equals(bslMakePlanInfo.getPlanJz())){
 			flag = true;
 			errorMsg = "非创建中/进行中/暂停的纵剪带生产指令不允许修改纵剪带制造机组！";
@@ -487,7 +491,7 @@ public class MakePlanServiceImpl implements MakePlanService {
 	}
 	
 	/**
-	 * 根据盘号获取该盘已经入库的包数和重量
+	 * 根据盘号获取该指令已经入库的包数和重量
 	 */
 	@Override
 	public BSLResult updateProdRuNumAndSums(String planId) {
