@@ -227,7 +227,7 @@ public class SemiFinishedProdServiceImpl implements SemiFinishedProdService {
 		//判断是否需要更新卷板状态
 		//获取卷板默认完成比率
 		float wcParam = 1; 
-		String upParamStr = paramService.getValueByParamKey("002");
+		String upParamStr = paramService.getValueByParamKey(DictItemOperation.参数_卷板默认完成时比率);
 		if(!StringUtils.isBlank(upParamStr)){
 			wcParam = Float.valueOf(upParamStr)/100;
 		}

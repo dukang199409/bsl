@@ -86,42 +86,39 @@ public class HalfProdOutPutServiceImpl implements HalfProdOutPutService {
 		if(prodPlanInfoExe == null){
 			throw new BSLException(ErrorCodeInfo.错误类型_查询无记录, "没有查询到正在执行的生产指令，无法出库！");
 		}
-		//创建查询的实例，并赋值
-		BslProductInfoExample bslProductInfoExample = new BslProductInfoExample();
-		Criteria criteria = bslProductInfoExample.createCriteria();
-		criteria.andProdTypeEqualTo(DictItemOperation.产品类型_半成品);
-		criteria.andProdUserTypeNotEqualTo(DictItemOperation.纵剪带用途_外销);
-		criteria.andProdMaterialEqualTo(prodPlanInfoExe.getProdMaterial());//钢种是正在执行的指令指定钢种
-		criteria.andProdNormEqualTo(prodPlanInfoExe.getProdNorm());//规格是正在执行的指令指定规格
-		//criteria.andProdLunoEqualTo(prodPlanInfoExe.getPlanLuno());//炉号是正在执行的指令指定炉号
-		if(!StringUtils.isBlank(queryCriteria.getProdStatus())){
-			criteria.andProdStatusEqualTo(queryCriteria.getProdStatus());
+		queryCriteria.setProdMaterial(prodPlanInfoExe.getProdMaterial());
+		queryCriteria.setProdNorm(prodPlanInfoExe.getProdNorm());
+		queryCriteria.setProdOutPlan(prodPlanInfoExe.getPlanId());
+		if (!StringUtils.isBlank(queryCriteria.getProdId())) {
+			queryCriteria.setProdId("%"+ queryCriteria.getProdId()+"%");
 		}else{
-			List<String> values = new ArrayList<>();
-			values.add(DictItemOperation.产品状态_已入库);
-			values.add(DictItemOperation.产品状态_已出库);
-			criteria.andProdStatusIn(values);
+			queryCriteria.setProdId(null);
 		}
-		if(!StringUtils.isBlank(queryCriteria.getProdPlanNo())){
-			criteria.andProdPlanNoLike("%"+ queryCriteria.getProdPlanNo()+"%");
+		if (!StringUtils.isBlank(queryCriteria.getProdPlanNo())) {
+			queryCriteria.setProdPlanNo("%"+ queryCriteria.getProdPlanNo()+"%");
+		}else{
+			queryCriteria.setProdPlanNo(null);
 		}
-		if(!StringUtils.isBlank(queryCriteria.getProdId())){
-			criteria.andProdIdLike("%"+ queryCriteria.getProdId()+"%");
+		if (!StringUtils.isBlank(queryCriteria.getProdStatus())) {
+			queryCriteria.setProdStatus(queryCriteria.getProdStatus());
+		}else{
+			queryCriteria.setProdStatus(null);
 		}
 		//分页处理
 		PageHelper.startPage(Integer.parseInt(queryCriteria.getPage()), Integer.parseInt(queryCriteria.getRows()));
 		//调用sql查询
 		if(StringUtils.isBlank(queryCriteria.getSort()) || StringUtils.isBlank(queryCriteria.getOrder())){
-			bslProductInfoExample.setOrderByClause("`prod_status` desc,`prod_out_date` asc,`prod_id` asc");
+			queryCriteria.setOrderByClause("`prod_id` asc,`prod_plan_no` desc");
 		}else{
 			String sortSql = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, queryCriteria.getSort());
 			if(!StringUtils.isBlank(sortSql)){
-				bslProductInfoExample.setOrderByClause("`"+sortSql+"` "+ queryCriteria.getOrder());
+				queryCriteria.setOrderByClause("`"+sortSql+"` "+ queryCriteria.getOrder());
 			}
 		}
-		List<BslProductInfo> bslProductInfos = bslProductInfoMapper.selectByExample(bslProductInfoExample);
+		List<BslProductInfo> bslProductInfos = bslProductInfoMapper.getProdCanOutProds(queryCriteria);
 		PageInfo<BslProductInfo> pageInfo = new PageInfo<BslProductInfo>(bslProductInfos);
 		return BSLResult.ok(pageInfo.getTotal(),bslProductInfos);
+		
 	}
 
 	/**
@@ -435,7 +432,7 @@ public class HalfProdOutPutServiceImpl implements HalfProdOutPutService {
 		//开始判断
 		//获取产品入库重量上浮参数
 		double upParam = 1.5;
-		String upParamStr = paramService.getValueByParamKey("001");
+		String upParamStr = paramService.getValueByParamKey(DictItemOperation.参数_纵剪带制造重量上浮参数);
 		if(!StringUtils.isBlank(upParamStr)){
 			upParam = Double.valueOf(upParamStr);
 		}
@@ -452,9 +449,9 @@ public class HalfProdOutPutServiceImpl implements HalfProdOutPutService {
 	private int getMaxOutNum(String planJz){
 		String paramJz;
 		if (DictItemOperation.产品机组_480机组.equals(planJz)) {
-			paramJz = "004";
+			paramJz = DictItemOperation.参数_480机组同时出库纵剪带数量最大值;
 		}else if (DictItemOperation.产品机组_800机组.equals(planJz)) {
-			paramJz = "003";
+			paramJz = DictItemOperation.参数_800机组同时出库纵剪带数量最大值;
 		}else{
 			paramJz = "";
 		}
@@ -503,9 +500,20 @@ public class HalfProdOutPutServiceImpl implements HalfProdOutPutService {
 	 */
 	@Override
 	public BSLResult getParentZjxInfo(String planId) {
+		//获取该指令的生产机组
+		BslMakePlanInfo bslMakePlanInfo = bslMakePlanInfoMapper.selectByPrimaryKey(planId);
+		if(bslMakePlanInfo == null){
+			throw new BSLException(ErrorCodeInfo.错误类型_查询无记录, "没有查询到指令信息，生产指令号："+planId);
+		}
+		String params = "";
+		if(DictItemOperation.产品机组_480机组.equals(bslMakePlanInfo.getPlanJz())){
+			params = DictItemOperation.参数_480纵剪带默认废料率;
+		}else if(DictItemOperation.产品机组_800机组.equals(bslMakePlanInfo.getPlanJz())){
+			params = DictItemOperation.参数_800纵剪带默认废料率;
+		}
 		//先查询纵剪带默认废料率
 		float flv = 0f;
-		String flvStr = paramService.getValueByParamKey("005");
+		String flvStr = paramService.getValueByParamKey(params);
 		if(!StringUtils.isBlank(flvStr)){
 			flv =  Float.valueOf(flvStr)/100;
 		}

@@ -127,6 +127,13 @@ public class DictItemOperation {
 	public static final String 产品机组_480机组 = "4";
 	public static final String 产品机组_800机组 = "3";
 	
+	public static final String 参数_纵剪带制造重量上浮参数 = "001";
+	public static final String 参数_卷板默认完成时比率 = "002";
+	public static final String 参数_480机组同时出库纵剪带数量最大值 = "003";
+	public static final String 参数_800机组同时出库纵剪带数量最大值 = "004";
+	public static final String 参数_480纵剪带默认废料率 = "005";
+	public static final String 参数_800纵剪带默认废料率 = "006";
+	
 	public static final SimpleDateFormat 日期转换实例 = new SimpleDateFormat("yyyy-MM-dd");
 	public static final SimpleDateFormat 日期转换实例yyyyMMdd = new SimpleDateFormat("yyyyMMdd");
 	public static final SimpleDateFormat 日期转换实例时分秒 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

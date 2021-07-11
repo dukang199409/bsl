@@ -63,4 +63,7 @@ public interface BslProductInfoMapper {
     //查询某指令制造的产品用料组成信息
     List<BslProdMakeUseInfo> getProdMakeUseInfo(QueryCriteria queryCriteria);
     
+    //获取可以出库的半成品信息
+    List<BslProductInfo> getProdCanOutProds(QueryCriteria queryExample);
+    
 }
