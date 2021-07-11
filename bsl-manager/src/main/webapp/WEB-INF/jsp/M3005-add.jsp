@@ -227,7 +227,7 @@
 		$.post("/prodManager/isMaxOut", params, function(dataIsMax) {
 			if (dataIsMax.status == 200) {
 				if(dataIsMax.data == '1'){
-					$.messager.confirm('确认','该机组正在出库的纵剪带数量已达阈值，请判断是否需要销库操作。是否继续入库？',function(r){
+					$.messager.confirm('确认','该机组正在出库的纵剪带数量已达阈值，请判断继续入库，还是先进行销库操作。是否继续入库？',function(r){
 						if (r){
 							if(jz == "3"){
 								$("#prodRucM3005Add").combobox('setValue','2');
