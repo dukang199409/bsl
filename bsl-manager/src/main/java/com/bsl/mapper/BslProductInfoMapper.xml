@@ -1230,7 +1230,7 @@
 		    <if test="prodOrirawid != null" >
 		        and t.prod_orirawid like #{prodOrirawid,jdbcType=VARCHAR} 
 		    </if>
-		    order by prod_status desc,prod_out_date desc
+		    order by prod_status desc,prod_out_date
   </select>
   
 </mapper>
