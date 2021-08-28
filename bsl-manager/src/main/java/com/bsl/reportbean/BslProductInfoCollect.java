@@ -2,7 +2,6 @@ package com.bsl.reportbean;
 
 public class BslProductInfoCollect {
 	private String prodPlanNo;
-	private String prodLuno;
 	private String prodName;
 	private String prodNorm;
 	private String prodMaterial;
@@ -12,9 +11,6 @@ public class BslProductInfoCollect {
 	private String prodLevel;
 	public String getProdPlanNo() {
 		return prodPlanNo;
-	}
-	public String getProdLuno() {
-		return prodLuno;
 	}
 	public String getProdName() {
 		return prodName;
@@ -40,9 +36,6 @@ public class BslProductInfoCollect {
 	public void setProdPlanNo(String prodPlanNo) {
 		this.prodPlanNo = prodPlanNo;
 	}
-	public void setProdLuno(String prodLuno) {
-		this.prodLuno = prodLuno;
-	}
 	public void setProdName(String prodName) {
 		this.prodName = prodName;
 	}
@@ -66,7 +59,7 @@ public class BslProductInfoCollect {
 	}
 	@Override
 	public String toString() {
-		return "BslProductInfoCollect [prodPlanNo=" + prodPlanNo + ", prodLuno=" + prodLuno + ", prodName=" + prodName
+		return "BslProductInfoCollect [prodPlanNo=" + prodPlanNo + ", prodName=" + prodName
 				+ ", prodNorm=" + prodNorm + ", prodMaterial=" + prodMaterial + ", prodLength=" + prodLength
 				+ ", prodNumCount=" + prodNumCount + ", prodWeightTotal=" + prodWeightTotal + ", prodLevel=" + prodLevel
 				+ "]";

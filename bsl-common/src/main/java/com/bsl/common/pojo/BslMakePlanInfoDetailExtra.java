@@ -1,7 +1,5 @@
 package com.bsl.common.pojo;
 
-import java.util.Date;
-
 public class BslMakePlanInfoDetailExtra {
 	// 产品名称
 	private String makeName;
@@ -288,6 +286,18 @@ public class BslMakePlanInfoDetailExtra {
 		super();
 		this.makeName = makeName;
 		this.prodNorm = prodNorm;
+		this.prodMaterial = prodMaterial;
+		this.prodLevel = prodLevel;
+		this.prodNum = prodNum;
+		this.unit = unit;
+		this.planOutputVolume = planOutputVolume;
+		this.prodWeight = prodWeight;
+		this.planFinistDate = planFinistDate;
+	}
+	public BslMakePlanInfoDetailExtra(String makeName, String prodMaterial, String prodLevel,
+			String prodNum, String unit, String planOutputVolume, String prodWeight, String planFinistDate) {
+		super();
+		this.makeName = makeName;
 		this.prodMaterial = prodMaterial;
 		this.prodLevel = prodLevel;
 		this.prodNum = prodNum;
