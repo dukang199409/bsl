@@ -390,11 +390,11 @@ public class PrintPdfController {
 				List<PDFCell> footList = new ArrayList<>();
 				footList.add(new PDFCell("合计", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 1, true));
 				if(prodNumSum == 0 && prodWeightTotal == 0f) {
-					for (int i = 0; i < 9; i++) {
+					for (int i = 0; i < 8; i++) {
 						footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
 					}
 				} else {
-					for (int i = 0; i < 6; i++) {
+					for (int i = 0; i < 5; i++) {
 						footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
 					}
 					footList.add(new PDFCell(StringUtil.castToString(prodNumSum), CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
@@ -502,11 +502,11 @@ public class PrintPdfController {
 				List<PDFCell> footList = new ArrayList<>();
 				footList.add(new PDFCell("合计", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 1, true));
 				if(prodNumSum == 0 && prodWeightTotal == 0f) {
-					for (int i = 0; i < 9; i++) {
+					for (int i = 0; i < 8; i++) {
 						footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
 					}
 				} else {
-					for (int i = 0; i < 6; i++) {
+					for (int i = 0; i < 5; i++) {
 						footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
 					}
 					footList.add(new PDFCell(StringUtil.castToString(prodNumSum), CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
@@ -608,11 +608,11 @@ public class PrintPdfController {
 				List<PDFCell> footList = new ArrayList<>();
 				footList.add(new PDFCell("合计", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 1, true));
 				if(prodNumSum == 0 && prodWeightTotal == 0f) {
-					for (int i = 0; i < 9; i++) {
+					for (int i = 0; i < 8; i++) {
 						footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
 					}
 				} else {
-					for (int i = 0; i < 6; i++) {
+					for (int i = 0; i < 5; i++) {
 						footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
 					}
 					footList.add(new PDFCell(StringUtil.castToString(prodNumSum), CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
@@ -1126,11 +1126,11 @@ public class PrintPdfController {
 				List<PDFCell> footList = new ArrayList<>();
 				footList.add(new PDFCell("合计", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 1, true));
 				if(prodNumSum == 0 && prodWeightTotal == 0f) {
-					for (int i = 0; i < 9; i++) {
+					for (int i = 0; i < 8; i++) {
 						footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
 					}
 				} else {
-					for (int i = 0; i < 6; i++) {
+					for (int i = 0; i < 5; i++) {
 						footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
 					}
 					footList.add(new PDFCell(StringUtil.castToString(prodNumSum), CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
