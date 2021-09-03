@@ -695,6 +695,7 @@ public class ProdServiceImpl implements ProdService {
 			bslProductInfo.setProdLuno(parentProd.getProdLuno());//炉号为父级炉号
 			bslProductInfo.setProdCompany(parentProd.getProdCompany());//厂家同原来一致
 			bslProductInfo.setProdCustomer(parentProd.getProdCustomer());
+			bslProductInfo.setProdParentNo(parentProdId);//父级盘号
 			
 			int result = bslProductInfoMapper.insert(bslProductInfo);
 			if(result<0){
