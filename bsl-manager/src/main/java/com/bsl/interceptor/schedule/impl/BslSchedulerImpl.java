@@ -88,7 +88,7 @@ public class BslSchedulerImpl implements BslSchedulerService{
          resetId();
          //插入库存日照
          insertProductPhoto();
-         //插入单炉库存重量日照
+         //插入单炉库存重量日照（每天生成最新的数据）
          insertBslLuStockInfo();
          //插入库存变动重量日汇总
          insertBslStockChangeInfo();
@@ -179,6 +179,9 @@ public class BslSchedulerImpl implements BslSchedulerService{
      * 插入单炉库存重量日照
      */
     public void insertBslLuStockInfo(){
+    	 DictItemOperation.log.info("===========清空昨日单炉库存重量日照开始");
+    	 bslLuStockInfoMapper.truncateTable();
+    	 DictItemOperation.log.info("===========清空昨日单炉库存重量日照结束");
     	 DictItemOperation.log.info("===========插入单炉库存重量日照开始");
     	 List<BslLuStockInfo> bslLuStockInfos = bslLuStockInfoMapper.selectOneDayInfo();
     	 if(bslLuStockInfos != null && bslLuStockInfos.size()>0){

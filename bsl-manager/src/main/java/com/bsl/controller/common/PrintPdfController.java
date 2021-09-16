@@ -116,7 +116,7 @@ public class PrintPdfController {
 	 * @return
 	 */
 	private String quality(QueryExample example, HttpServletRequest request, HttpServletResponse response) {
-		//先根据车号获取产品汇总信息以及路号信息
+		//先根据车号获取产品汇总信息以及炉号信息
 		String[] prodOutCarnos = example.getProdOutCarnos();
 		List<String> prodOutCarnosList = new ArrayList<String>();
 		if(prodOutCarnos!= null && prodOutCarnos.length>0){
@@ -181,10 +181,17 @@ public class PrintPdfController {
 					prodName = "卷板";
 				}
 				
+				String bsShipper = "湖南宝顺联冷弯科技有限公司\nHunan Precious Sunlion Roll \nForming Technology Co., Ltd.";
+				if("湖南宝顺联冷弯科技有限公司".equals(bslBsPlanInfo.getBsShipper())){
+					bsShipper = "湖南宝顺联冷弯科技有限公司\nHunan Precious Sunlion Roll \nForming Technology Co., Ltd.";
+				}else if("湖南鸿铮金属科技有限公司".equals(bslBsPlanInfo.getBsShipper())){
+					bsShipper = "湖南鸿铮金属科技有限公司\nHunan HunZheng Metal \nForming Technology Co., Ltd.";
+				}
+				
 				//表头
 				List<PDFCell> headList = new ArrayList<>();
 
-				headList.add(new PDFCell("湖南宝顺联冷弯科技有限公司\nHunan Precious Sunlion Roll \nForming Technology Co., Ltd.", CreatePdfUtil.keyfont1, Element.ALIGN_LEFT, 9, false));
+				headList.add(new PDFCell(bsShipper, CreatePdfUtil.keyfont1, Element.ALIGN_LEFT, 9, false));
 				headList.add(new PDFCell("产品质量证明书\nINSPECTION CERTIFICATE", CreatePdfUtil.headfont, Element.ALIGN_CENTER, 16, false));
 				headList.add(new PDFCell("湖南省常德市桃源县陬市镇东新路\nDongxin Road, Zoushi Town,Taoyuan County, \nChangde City,Hunan Province.", CreatePdfUtil.keyfont1, Element.ALIGN_RIGHT, 9, false));
 				headList.add(new PDFCell("本证明书随货同行，等同销售出库单 THIS CERTIFICATE IS ACCOMPANIED BY THE GOODS AND IS EQUIVALENT TO THE SALE OF THE TREASURY BILL", 
@@ -345,7 +352,7 @@ public class PrintPdfController {
 				headList.add(new PDFCell("销售出库单", CreatePdfUtil.headfont, Element.ALIGN_CENTER, 10, true));
 				headList.add(new PDFCell("制单日期："+DateUtil.getFormatText(new Date(),"yyyy-MM-dd HH:mm:ss"), CreatePdfUtil.keyfont, Element.ALIGN_RIGHT, 10, true));
 				headList.add(new PDFCell("供应商：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
-				headList.add(new PDFCell("湖南宝顺联冷弯科技有限公司", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 8, true));
+				headList.add(new PDFCell(bslBsPlanInfo.getBsShipper(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 8, true));
 				headList.add(new PDFCell("订单客户：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
 				headList.add(new PDFCell(bslBsPlanInfo.getBsCustomer(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
 				headList.add(new PDFCell("出库车次：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
@@ -459,7 +466,7 @@ public class PrintPdfController {
 				headList.add(new PDFCell("销售出库单", CreatePdfUtil.headfont, Element.ALIGN_CENTER, 10, true));
 				headList.add(new PDFCell("制单日期："+DateUtil.getFormatText(new Date(),"yyyy-MM-dd HH:mm:ss"), CreatePdfUtil.keyfont, Element.ALIGN_RIGHT, 10, true));
 				headList.add(new PDFCell("供应商：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
-				headList.add(new PDFCell("湖南宝顺联冷弯科技有限公司", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 8, true));
+				headList.add(new PDFCell(bslBsPlanInfo.getBsShipper(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 8, true));
 				headList.add(new PDFCell("订单客户：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
 				headList.add(new PDFCell(bslBsPlanInfo.getBsCustomer(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 8, true));
 				headList.add(new PDFCell("出库单号：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
@@ -565,7 +572,7 @@ public class PrintPdfController {
 				headList.add(new PDFCell("销售出库单", CreatePdfUtil.headfont, Element.ALIGN_CENTER, 10, true));
 				headList.add(new PDFCell("制单日期："+DateUtil.getFormatText(new Date(),"yyyy-MM-dd HH:mm:ss"), CreatePdfUtil.keyfont, Element.ALIGN_RIGHT, 10, true));
 				headList.add(new PDFCell("供应商：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
-				headList.add(new PDFCell("湖南宝顺联冷弯科技有限公司", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 8, true));
+				headList.add(new PDFCell(bslBsPlanInfo.getBsShipper(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 8, true));
 				headList.add(new PDFCell("订单客户：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
 				headList.add(new PDFCell(bslBsPlanInfo.getBsCustomer(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 8, true));
 				headList.add(new PDFCell("出库单号：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
@@ -676,7 +683,7 @@ public class PrintPdfController {
 				headList.add(new PDFCell("销售出库单详单", CreatePdfUtil.headfont, Element.ALIGN_CENTER, 14, true));
 				headList.add(new PDFCell("制单日期："+DateUtil.getFormatText(new Date(),"yyyy-MM-dd HH:mm:ss"), CreatePdfUtil.keyfont, Element.ALIGN_RIGHT, 14, true));
 				headList.add(new PDFCell("供应商：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 3, true));
-				headList.add(new PDFCell("湖南宝顺联冷弯科技有限公司", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 11, true));
+				headList.add(new PDFCell(bslBsPlanInfo.getBsShipper(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 11, true));
 				headList.add(new PDFCell("订单客户：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 3, true));
 				headList.add(new PDFCell(bslBsPlanInfo.getBsCustomer(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 11, true));
 				headList.add(new PDFCell("出库单号：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 3, true));
@@ -1081,7 +1088,7 @@ public class PrintPdfController {
 				headList.add(new PDFCell("销售出库单", CreatePdfUtil.headfont, Element.ALIGN_CENTER, 10, true));
 				headList.add(new PDFCell("制单日期："+DateUtil.getFormatText(new Date(),"yyyy-MM-dd HH:mm:ss"), CreatePdfUtil.keyfont, Element.ALIGN_RIGHT, 10, true));
 				headList.add(new PDFCell("供应商：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
-				headList.add(new PDFCell("湖南宝顺联冷弯科技有限公司", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 8, true));
+				headList.add(new PDFCell(bslBsPlanInfo.getBsShipper(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 8, true));
 				headList.add(new PDFCell("订单客户：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
 				headList.add(new PDFCell(bslBsPlanInfo.getBsCustomer(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
 				headList.add(new PDFCell("出库车次：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));

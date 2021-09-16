@@ -30,4 +30,6 @@ public interface BslLuStockInfoMapper {
     int updateByPrimaryKeySelective(BslLuStockInfo record);
 
     int updateByPrimaryKey(BslLuStockInfo record);
+    
+    int truncateTable();
 }

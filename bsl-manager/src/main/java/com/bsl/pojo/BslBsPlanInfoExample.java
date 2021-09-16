@@ -272,6 +272,76 @@ public class BslBsPlanInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andBsShipperIsNull() {
+            addCriterion("bs_shipper is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBsShipperIsNotNull() {
+            addCriterion("bs_shipper is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBsShipperEqualTo(String value) {
+            addCriterion("bs_shipper =", value, "bsShipper");
+            return (Criteria) this;
+        }
+
+        public Criteria andBsShipperNotEqualTo(String value) {
+            addCriterion("bs_shipper <>", value, "bsShipper");
+            return (Criteria) this;
+        }
+
+        public Criteria andBsShipperGreaterThan(String value) {
+            addCriterion("bs_shipper >", value, "bsShipper");
+            return (Criteria) this;
+        }
+
+        public Criteria andBsShipperGreaterThanOrEqualTo(String value) {
+            addCriterion("bs_shipper >=", value, "bsShipper");
+            return (Criteria) this;
+        }
+
+        public Criteria andBsShipperLessThan(String value) {
+            addCriterion("bs_shipper <", value, "bsShipper");
+            return (Criteria) this;
+        }
+
+        public Criteria andBsShipperLessThanOrEqualTo(String value) {
+            addCriterion("bs_shipper <=", value, "bsShipper");
+            return (Criteria) this;
+        }
+
+        public Criteria andBsShipperLike(String value) {
+            addCriterion("bs_shipper like", value, "bsShipper");
+            return (Criteria) this;
+        }
+
+        public Criteria andBsShipperNotLike(String value) {
+            addCriterion("bs_shipper not like", value, "bsShipper");
+            return (Criteria) this;
+        }
+
+        public Criteria andBsShipperIn(List<String> values) {
+            addCriterion("bs_shipper in", values, "bsShipper");
+            return (Criteria) this;
+        }
+
+        public Criteria andBsShipperNotIn(List<String> values) {
+            addCriterion("bs_shipper not in", values, "bsShipper");
+            return (Criteria) this;
+        }
+
+        public Criteria andBsShipperBetween(String value1, String value2) {
+            addCriterion("bs_shipper between", value1, value2, "bsShipper");
+            return (Criteria) this;
+        }
+
+        public Criteria andBsShipperNotBetween(String value1, String value2) {
+            addCriterion("bs_shipper not between", value1, value2, "bsShipper");
+            return (Criteria) this;
+        }
+
         public Criteria andBsCompanyIsNull() {
             addCriterion("bs_company is null");
             return (Criteria) this;

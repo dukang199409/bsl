@@ -78,7 +78,10 @@ public class SalePlanController {
 			}
 		}
 		if(StringUtils.isBlank(bslBsPlanInfo.getBsFlag())) {
-			return BSLResult.build(400, "销售出库通知单产品类别不能为空");
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "销售出库通知单产品类别不能为空");
+		}
+		if(StringUtils.isBlank(bslBsPlanInfo.getBsShipper())) {
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "销售出库通知单发货商不能为空");
 		}
 		try {
 			return salePlanService.addSalePlanInfo(bslBsPlanInfo);
@@ -152,6 +155,9 @@ public class SalePlanController {
 		}
 		if(StringUtils.isBlank(bslBsPlanInfo.getBsFlag())) {
 			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "销售出库通知单产品类别不能为空");
+		}
+		if(StringUtils.isBlank(bslBsPlanInfo.getBsShipper())) {
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "销售出库通知单发货商不能为空");
 		}
 		try {
 			return salePlanService.updateSalePlanInfo(bslBsPlanInfo);

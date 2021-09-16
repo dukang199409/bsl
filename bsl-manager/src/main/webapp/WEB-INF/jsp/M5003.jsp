@@ -91,6 +91,7 @@
 	        	<th data-options="field:'bsId',width:130,sortable:true">销售出库通知单号</th>
 	            <th data-options="field:'bsFlag',width:120,formatter:BSL.formatBsFlag,sortable:true">通知单类别</th>
 	            <th data-options="field:'bsStatus',width:100,formatter:BSL.formatBsStatus,sortable:true">通知单状态</th>
+	            <th data-options="field:'bsShipper',width:170,sortable:true">发货商</th>
 	            <th data-options="field:'bsCompany',width:100,sortable:true">供应商</th>
 	            <th data-options="field:'bsCustomer',width:170,sortable:true">客户</th>
 	            <th data-options="field:'bsOrderNo',width:100,sortable:true">订单号</th>

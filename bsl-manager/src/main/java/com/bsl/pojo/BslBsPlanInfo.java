@@ -7,6 +7,8 @@ public class BslBsPlanInfo {
 
     private String bsType;
 
+    private String bsShipper;
+
     private String bsCompany;
 
     private String bsCustomer;
@@ -71,6 +73,14 @@ public class BslBsPlanInfo {
 
     public void setBsType(String bsType) {
         this.bsType = bsType == null ? null : bsType.trim();
+    }
+
+    public String getBsShipper() {
+        return bsShipper;
+    }
+
+    public void setBsShipper(String bsShipper) {
+        this.bsShipper = bsShipper == null ? null : bsShipper.trim();
     }
 
     public String getBsCompany() {

@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.bsl.pojo.BslBsPlanInfo" >
     <id column="bs_id" property="bsId" jdbcType="VARCHAR" />
     <result column="bs_type" property="bsType" jdbcType="CHAR" />
+    <result column="bs_shipper" property="bsShipper" jdbcType="CHAR" />
     <result column="bs_company" property="bsCompany" jdbcType="VARCHAR" />
     <result column="bs_customer" property="bsCustomer" jdbcType="VARCHAR" />
     <result column="bs_hasguarantee" property="bsHasguarantee" jdbcType="CHAR" />
@@ -89,10 +90,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    bs_id, bs_type, bs_company, bs_customer, bs_hasguarantee, bs_amt, bs_weight, bs_flag, 
-    bs_order_no, bs_transport, bs_carno, bs_gettype, bs_status, bs_relweight, bs_price, 
-    bs_fbweight, bs_retweight, bs_chaweight, bs_norm, bs_arrdate, bs_jsnum, bs_jsweight, 
-    bs_inputuser, bs_checkuser, crt_date, upd_date, remark
+    bs_id, bs_type, bs_shipper, bs_company, bs_customer, bs_hasguarantee, bs_amt, bs_weight, 
+    bs_flag, bs_order_no, bs_transport, bs_carno, bs_gettype, bs_status, bs_relweight, 
+    bs_price, bs_fbweight, bs_retweight, bs_chaweight, bs_norm, bs_arrdate, bs_jsnum, 
+    bs_jsweight, bs_inputuser, bs_checkuser, crt_date, upd_date, remark
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bsl.pojo.BslBsPlanInfoExample" >
     select
@@ -125,24 +126,26 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.bsl.pojo.BslBsPlanInfo" >
-    insert into bsl_bs_plan_info (bs_id, bs_type, bs_company, 
-      bs_customer, bs_hasguarantee, bs_amt, 
-      bs_weight, bs_flag, bs_order_no, 
-      bs_transport, bs_carno, bs_gettype, 
-      bs_status, bs_relweight, bs_price, 
-      bs_fbweight, bs_retweight, bs_chaweight, 
-      bs_norm, bs_arrdate, bs_jsnum, 
-      bs_jsweight, bs_inputuser, bs_checkuser, 
-      crt_date, upd_date, remark)
-    values (#{bsId,jdbcType=VARCHAR}, #{bsType,jdbcType=CHAR}, #{bsCompany,jdbcType=VARCHAR}, 
-      #{bsCustomer,jdbcType=VARCHAR}, #{bsHasguarantee,jdbcType=CHAR}, #{bsAmt,jdbcType=INTEGER}, 
-      #{bsWeight,jdbcType=REAL}, #{bsFlag,jdbcType=CHAR}, #{bsOrderNo,jdbcType=VARCHAR}, 
-      #{bsTransport,jdbcType=VARCHAR}, #{bsCarno,jdbcType=VARCHAR}, #{bsGettype,jdbcType=CHAR}, 
-      #{bsStatus,jdbcType=CHAR}, #{bsRelweight,jdbcType=REAL}, #{bsPrice,jdbcType=REAL}, 
-      #{bsFbweight,jdbcType=REAL}, #{bsRetweight,jdbcType=REAL}, #{bsChaweight,jdbcType=REAL}, 
-      #{bsNorm,jdbcType=VARCHAR}, #{bsArrdate,jdbcType=DATE}, #{bsJsnum,jdbcType=INTEGER}, 
-      #{bsJsweight,jdbcType=REAL}, #{bsInputuser,jdbcType=VARCHAR}, #{bsCheckuser,jdbcType=VARCHAR}, 
-      #{crtDate,jdbcType=DATE}, #{updDate,jdbcType=DATE}, #{remark,jdbcType=VARCHAR})
+    insert into bsl_bs_plan_info (bs_id, bs_type, bs_shipper, 
+      bs_company, bs_customer, bs_hasguarantee, 
+      bs_amt, bs_weight, bs_flag, 
+      bs_order_no, bs_transport, bs_carno, 
+      bs_gettype, bs_status, bs_relweight, 
+      bs_price, bs_fbweight, bs_retweight, 
+      bs_chaweight, bs_norm, bs_arrdate, 
+      bs_jsnum, bs_jsweight, bs_inputuser, 
+      bs_checkuser, crt_date, upd_date, 
+      remark)
+    values (#{bsId,jdbcType=VARCHAR}, #{bsType,jdbcType=CHAR}, #{bsShipper,jdbcType=CHAR}, 
+      #{bsCompany,jdbcType=VARCHAR}, #{bsCustomer,jdbcType=VARCHAR}, #{bsHasguarantee,jdbcType=CHAR}, 
+      #{bsAmt,jdbcType=INTEGER}, #{bsWeight,jdbcType=REAL}, #{bsFlag,jdbcType=CHAR}, 
+      #{bsOrderNo,jdbcType=VARCHAR}, #{bsTransport,jdbcType=VARCHAR}, #{bsCarno,jdbcType=VARCHAR}, 
+      #{bsGettype,jdbcType=CHAR}, #{bsStatus,jdbcType=CHAR}, #{bsRelweight,jdbcType=REAL}, 
+      #{bsPrice,jdbcType=REAL}, #{bsFbweight,jdbcType=REAL}, #{bsRetweight,jdbcType=REAL}, 
+      #{bsChaweight,jdbcType=REAL}, #{bsNorm,jdbcType=VARCHAR}, #{bsArrdate,jdbcType=DATE}, 
+      #{bsJsnum,jdbcType=INTEGER}, #{bsJsweight,jdbcType=REAL}, #{bsInputuser,jdbcType=VARCHAR}, 
+      #{bsCheckuser,jdbcType=VARCHAR}, #{crtDate,jdbcType=DATE}, #{updDate,jdbcType=DATE}, 
+      #{remark,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.bsl.pojo.BslBsPlanInfo" >
     insert into bsl_bs_plan_info
@@ -152,6 +155,9 @@
       </if>
       <if test="bsType != null" >
         bs_type,
+      </if>
+      <if test="bsShipper != null" >
+        bs_shipper,
       </if>
       <if test="bsCompany != null" >
         bs_company,
@@ -235,6 +241,9 @@
       </if>
       <if test="bsType != null" >
         #{bsType,jdbcType=CHAR},
+      </if>
+      <if test="bsShipper != null" >
+        #{bsShipper,jdbcType=CHAR},
       </if>
       <if test="bsCompany != null" >
         #{bsCompany,jdbcType=VARCHAR},
@@ -328,6 +337,9 @@
       <if test="record.bsType != null" >
         bs_type = #{record.bsType,jdbcType=CHAR},
       </if>
+      <if test="record.bsShipper != null" >
+        bs_shipper = #{record.bsShipper,jdbcType=CHAR},
+      </if>
       <if test="record.bsCompany != null" >
         bs_company = #{record.bsCompany,jdbcType=VARCHAR},
       </if>
@@ -412,6 +424,7 @@
     update bsl_bs_plan_info
     set bs_id = #{record.bsId,jdbcType=VARCHAR},
       bs_type = #{record.bsType,jdbcType=CHAR},
+      bs_shipper = #{record.bsShipper,jdbcType=CHAR},
       bs_company = #{record.bsCompany,jdbcType=VARCHAR},
       bs_customer = #{record.bsCustomer,jdbcType=VARCHAR},
       bs_hasguarantee = #{record.bsHasguarantee,jdbcType=CHAR},
@@ -446,6 +459,9 @@
     <set >
       <if test="bsType != null" >
         bs_type = #{bsType,jdbcType=CHAR},
+      </if>
+      <if test="bsShipper != null" >
+        bs_shipper = #{bsShipper,jdbcType=CHAR},
       </if>
       <if test="bsCompany != null" >
         bs_company = #{bsCompany,jdbcType=VARCHAR},
@@ -528,6 +544,7 @@
   <update id="updateByPrimaryKey" parameterType="com.bsl.pojo.BslBsPlanInfo" >
     update bsl_bs_plan_info
     set bs_type = #{bsType,jdbcType=CHAR},
+      bs_shipper = #{bsShipper,jdbcType=CHAR},
       bs_company = #{bsCompany,jdbcType=VARCHAR},
       bs_customer = #{bsCustomer,jdbcType=VARCHAR},
       bs_hasguarantee = #{bsHasguarantee,jdbcType=CHAR},

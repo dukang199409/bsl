@@ -513,4 +513,8 @@
 		group by prod_luno) i
 	on a.prod_luno = i.prod_luno
   </select>
+   <update id="truncateTable" >
+   		truncate table bsl_lu_stock_info
+   </update>
+  
 </mapper>

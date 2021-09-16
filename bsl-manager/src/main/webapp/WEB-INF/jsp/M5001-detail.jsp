@@ -24,11 +24,15 @@
 					</select>
 	            </td>	           
 	        </tr>
-	        <tr>	          
-	            <td width="120" align="right">供应商:</td>
+	        <tr>
+	        	<td width="120" align="right">发货商:</td>
 	            <td width="210" align="right">
-	            	<input name="bsCompany" class="easyui-textbox" readonly="readonly" type="text" data-options="required:false,validType:'length[0,40]'" style="width:200px;"></input>
-	            </td>
+	            	<select name="bsShipper" class="easyui-combobox" readonly="readonly"  panelHeight="auto" data-options="required:true,editable:true" style="width:200px;">
+			         	  <option value="">请选择...</option>
+				          <option value="湖南宝顺联冷弯科技有限公司">湖南宝顺联冷弯科技有限公司</option>
+				          <option value="湖南鸿铮金属科技有限公司">湖南鸿铮金属科技有限公司</option>
+					</select>
+	            </td>  
 	            <td width="120" align="right">客户:</td>
 	            <td width="210" align="right">
 	            	<input name="bsCustomer" class="easyui-textbox" readonly="readonly" type="text" data-options="required:false,validType:'length[0,40]'" style="width:200px;"></input>
@@ -94,7 +98,11 @@
 	            	<input name="arrDate" class="easyui-datebox" type="text" data-options="required:false" panelHeight="225px" style="width:200px;"></input>
 	            </td>
 	        </tr>
-	        <tr>
+	        <tr> 	          
+	            <td width="120" align="right">供应商:</td>
+	            <td width="210" align="right">
+	            	<input name="bsCompany" class="easyui-textbox" readonly="readonly" type="text" data-options="required:false,validType:'length[0,40]'" style="width:200px;"></input>
+	            </td>
 				<td width="120" align="right">备注:</td>
 	            <td width="210" align="right">
 	            	<input name="remark" class="easyui-textbox" readonly="readonly" type="text" data-options="required:false,validType:'length[0,120]'" style="width:200px;" maxLength="10"></input>
