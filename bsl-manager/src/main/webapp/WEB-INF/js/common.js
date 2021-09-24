@@ -588,7 +588,9 @@ var TT = BSL = {
     //格式化钢种
 	formatProdMaterial : function(val,row){
 		//return BSL.formatEnumCommon("prodMaterial", val, "0");
-        if(val == '2'){
+        if(val == '1'){
+        	return 'HG70';
+        } else if(val == '2'){
         	return 'Q235B';
         } else if(val == '3'){
         	return 'Q345B';
@@ -596,8 +598,18 @@ var TT = BSL = {
         	return 'Q355B';
         } else if(val == '7'){
         	return 'LG355ZL';
+        } else if(val == '8'){
+        	return 'LG600';
+        } else if(val == '9'){
+        	return 'LG700';
+        } else if(val == 'A'){
+        	return 'LG700XL';
+        } else if(val == 'J'){
+        	return 'Q355D';
         } else if(val == 'K'){
         	return 'Q380LW';
+        } else if(val == 'L'){
+        	return 'Qste500TM';
         } else {
         	return val;
         }
