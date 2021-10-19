@@ -23,10 +23,11 @@ import com.bsl.pojo.BslProductPhotoInfo;
 import com.bsl.pojo.BslStockChangePhoto;
 import com.bsl.select.DictItemOperation;
 import com.bsl.select.ErrorCodeInfo;
+import com.sun.tools.javac.comp.Todo;
 import com.bsl.interceptor.schedule.BslSchedulerService;
 
 /**
- * 每天晚上11点55跑批
+ * 每天晚上11点30跑批
  * @author 杜康
  *
  */
@@ -78,26 +79,55 @@ public class BslSchedulerImpl implements BslSchedulerService{
 	@Autowired	 
 	BslStockChangeDetailHMapper bslStockChangeDetailHMapper;
 	
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+    Date date = new Date();
 	
-    @Scheduled(cron="0 40 23 * * ? ")   //每天晚上11点55跑批
+    @Scheduled(cron="0 30 23 * * ? ")   //每天晚上11点30跑批
     @Override
     public void addBslScheduler(){
     	 DictItemOperation.log.info("===========批量开始："+new Date());
+         //生成报表
+         String dateString = sdf.format(date);
+    	 
     	 System.out.println("批量开始 ");
-    	 //重置序列id
+    	 
+    	 //1.重置序列id
          resetId();
-         //插入库存日照
+         
+         //2.插入库存日照
          insertProductPhoto();
-         //插入单炉库存重量日照（每天生成最新的数据）
-         insertBslLuStockInfo();
-         //插入库存变动重量日汇总
-         insertBslStockChangeInfo();
-         //删除一年之前的库存日照
+         
+         //3.删除一年之前的库存日照
          deleteProductPhoto();
+         
+         //4.插入库存变动重量日汇总
+         insertBslStockChangeInfo();
+         
+         //5.将一年前的库存变动数据历史化
+         insertHistoryStockChangeInfo();
+         
+         //6.成型机组生产日报表
+         insertProdMakeInfoReport(dateString);
+         
+         //7.纵剪机组生产日报表
+         insertHalfProdMakeInfoReport(dateString);
+         
+         //8.产成品销售报表
+         insertProdSaleInfoReport(dateString);
+         
+         //9.半成品销售报表
+         insertHalfProdSaleInfoReport(dateString);
+         
+         //10.原材料进库报表
+         insertRawInfoReport(dateString);   
+         
+
+         //插入单炉库存重量日照（每天生成最新的数据）
+         //insertBslLuStockInfo();
+         
          //将一年前的已分剪、已发货、处理完成的数据历史化
          //insertHistoryProductInfo();
-         //将一年前的库存变动数据历史化
-         insertHistoryStockChangeInfo();
+         
     }
     
     /**
@@ -152,26 +182,10 @@ public class BslSchedulerImpl implements BslSchedulerService{
      */
     public void insertProductPhoto(){
     	 DictItemOperation.log.info("===========插入库存日照开始");
-    	 //查询当前(已入库已出库)库存信息
-    	 BslProductInfoExample bslProductInfoExample = new BslProductInfoExample();
-    	 com.bsl.pojo.BslProductInfoExample.Criteria criteriaProductInfo = bslProductInfoExample.createCriteria();
-    	 criteriaProductInfo.andProdStatusEqualTo(DictItemOperation.产品状态_已入库);
-    	 List<BslProductInfo> bslProductInfos = bslProductInfoMapper.selectByExample(bslProductInfoExample);
-    	 if(bslProductInfos!=null && bslProductInfos.size()>0){
-    		 BslProductPhotoInfo bslProductPhotoInfo = new BslProductPhotoInfo();
-    		 for (BslProductInfo bslProductInfo : bslProductInfos) {
-    			 //循环插入
-    			 bslProductPhotoInfo.setTransDate(new Date());
-    			 bslProductPhotoInfo.setProdId(bslProductInfo.getProdId());
-    			 bslProductPhotoInfo.setProdStatus(bslProductInfo.getProdStatus());
-    			 int result = bslProductPhotoInfoMapper.insert(bslProductPhotoInfo);
-    			 if(result<0){
-    			      throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
-    			 }else if(result==0){
-    				  throw new BSLException(ErrorCodeInfo.错误类型_查询无记录,"插入失败，编号"+bslProductInfo.getProdId());
-    			 }
-			}
-    	 }
+    	 int result = bslProductPhotoInfoMapper.insertProductPhoto();
+		 if(result<0){
+		      throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
+		 }
     	 DictItemOperation.log.info("===========插入库存日照完成");
     }
     
@@ -267,6 +281,71 @@ public class BslSchedulerImpl implements BslSchedulerService{
 		 }
 		 
 		 DictItemOperation.log.info("===========历史化一年前的库存变动数据结束");
+    }
+    
+    /**
+     * 成型机组生产日报表
+     */
+    public void  insertProdMakeInfoReport(String dateString){
+    	DictItemOperation.log.info("===========生成成型机组生产日报表开始");
+    	int result = bslProductInfoMapper.insertProdMakeInfoReport(dateString);
+		if(result<0){
+		     throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
+		}
+		//如果是月底，则生成月报
+		if(DictItemOperation.isEndOfMonth(date)){
+			//Todo..
+		}
+		
+    	DictItemOperation.log.info("===========生成成型机组生产日报表结束");
+    }
+    
+    /**
+     * 纵剪机组生产日报表
+     */
+    public void  insertHalfProdMakeInfoReport(String dateString){
+    	DictItemOperation.log.info("===========生成纵剪机组生产日报表开始");
+    	int result = bslProductInfoMapper.insertHalfProdMakeInfoReport(dateString);
+		if(result<0){
+		     throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
+		}
+    	DictItemOperation.log.info("===========生成纵剪机组生产日报表结束");
+    }
+    
+    /**
+     * 产成品销售报表
+     */
+    public void  insertProdSaleInfoReport(String dateString){
+    	DictItemOperation.log.info("===========生成产成品销售报表开始");
+    	int result = bslProductInfoMapper.insertProdSaleInfoReport(dateString);
+		if(result<0){
+		     throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
+		}
+    	DictItemOperation.log.info("===========生成产成品销售报表结束");
+    }
+    
+    /**
+     * 半成品销售报表
+     */
+    public void  insertHalfProdSaleInfoReport(String dateString){
+    	DictItemOperation.log.info("===========生成半成品销售报表开始");
+    	int result = bslProductInfoMapper.insertHalfProdSaleInfoReport(dateString);
+		if(result<0){
+		     throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
+		}
+    	DictItemOperation.log.info("===========生成成半成品销售报表结束");
+    }
+    
+    /**
+     * 原材料进库报表
+     */
+    public void  insertRawInfoReport(String dateString){
+    	DictItemOperation.log.info("===========生成原材料进库报表开始");
+    	int result = bslProductInfoMapper.insertRawInfoReport(dateString);
+		if(result<0){
+		     throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
+		}
+    	DictItemOperation.log.info("===========生成原材料进库报表结束");
     }
     
     

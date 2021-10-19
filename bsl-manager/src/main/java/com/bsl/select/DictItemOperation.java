@@ -1,9 +1,13 @@
 package com.bsl.select;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import org.apache.log4j.Logger;
 
 import com.bsl.controller.common.DataGridToExcelController;
+import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion.Static;
 
 public class DictItemOperation {
 	
@@ -211,6 +215,21 @@ public class DictItemOperation {
         }else {
         	return val;
         }
+    }
+    
+    /**
+     * 判断某天是不是月末
+     * @return
+     */
+    public static boolean isEndOfMonth(Date date){
+    	Calendar calendar = Calendar.getInstance();
+    	calendar.setTime(date);
+    	calendar.set(Calendar.DATE, (calendar.get(Calendar.DATE) + 1));
+    	if (calendar.get(Calendar.DAY_OF_MONTH) == 1) {
+    		return true;
+    	}else{
+    		return false;
+    	} 
     }
 
 }

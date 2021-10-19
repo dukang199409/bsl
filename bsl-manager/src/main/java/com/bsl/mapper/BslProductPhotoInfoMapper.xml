@@ -204,4 +204,10 @@
     delete from bsl_product_photo_info where date_add(now(),interval -1 year) >= trans_date  
   </delete>
   
+  <insert id="insertProductPhoto">
+   		insert into bsl_product_photo_info 
+   		select now(),prod_id,prod_status from bsl_product_info
+   		where prod_status = '1'
+   </insert>
+  
 </mapper>

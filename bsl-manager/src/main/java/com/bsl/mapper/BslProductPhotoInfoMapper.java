@@ -26,4 +26,6 @@ public interface BslProductPhotoInfoMapper {
     int updateByExample(@Param("record") BslProductPhotoInfo record, @Param("example") BslProductPhotoInfoExample example);
     
     int deleteProductPhotoInfoOnyears();
+    
+    int insertProductPhoto();
 }

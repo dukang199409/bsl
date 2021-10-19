@@ -66,4 +66,10 @@ public interface BslProductInfoMapper {
     //获取可以出库的半成品信息
     List<BslProductInfo> getProdCanOutProds(QueryCriteria queryExample);
     
+    int insertProdMakeInfoReport(String dateString);
+    int insertHalfProdMakeInfoReport(String dateString);
+    int insertProdSaleInfoReport(String dateString);
+    int insertHalfProdSaleInfoReport(String dateString);
+    int insertRawInfoReport(String dateString);
+    
 }
