@@ -17,13 +17,9 @@ import com.bsl.mapper.BslProductPhotoInfoMapper;
 import com.bsl.mapper.BslStockChangeDetailHMapper;
 import com.bsl.mapper.BslStockChangePhotoMapper;
 import com.bsl.pojo.BslLuStockInfo;
-import com.bsl.pojo.BslProductInfo;
-import com.bsl.pojo.BslProductInfoExample;
-import com.bsl.pojo.BslProductPhotoInfo;
 import com.bsl.pojo.BslStockChangePhoto;
 import com.bsl.select.DictItemOperation;
 import com.bsl.select.ErrorCodeInfo;
-import com.sun.tools.javac.comp.Todo;
 import com.bsl.interceptor.schedule.BslSchedulerService;
 
 /**
