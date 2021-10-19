@@ -1249,9 +1249,10 @@
 			t2.prod_tl_bs,
 			ifnull(t2.prod_use_weight,0) prod_use_weight,
 			ifnull(t3.prod_dcl_weight,0) prod_dcl_weight,
-			ifnull(t2.prod_use_weight,0) - ifnull(t1.prod_weight,0) - ifnull(t3.prod_dcl_weight,0) waste_weight,
+			case when 0 > (ifnull(t2.prod_use_weight,0) - ifnull(t1.prod_weight,0) - ifnull(t3.prod_dcl_weight,0)) then 0
+			else ifnull(t2.prod_use_weight,0) - ifnull(t1.prod_weight,0) - ifnull(t3.prod_dcl_weight,0) end waste_weight,
 			case when ifnull(t2.prod_use_weight,0) =0 then 0
-			else fromat(ifnull(t1.prod_weight,0)/ifnull(t2.prod_use_weight,0),3)
+			else round(ifnull(t1.prod_weight,0)/ifnull(t2.prod_use_weight,0),3)
 			end prod_ccl,
 			'' remark,
 			now()
@@ -1307,14 +1308,16 @@
 			t1.prod_norm,
 			t1.prod_material,
 			t1.prod_bs,
+			t1.prod_bs prod_zs,
 			ifnull(t1.prod_weight,0) prod_weight,
 			t2.prod_norm prod_norm_zjd,
 			t2.prod_tl_bs,
 			ifnull(t2.prod_use_weight,0) prod_use_weight,
 			ifnull(t3.prod_dcl_weight,0) prod_dcl_weight,
-			ifnull(t2.prod_use_weight,0) - ifnull(t1.prod_weight,0) - ifnull(t3.prod_dcl_weight,0) waste_weight,
+			case when 0 > (ifnull(t2.prod_use_weight,0) - ifnull(t1.prod_weight,0) - ifnull(t3.prod_dcl_weight,0)) then 0
+			else ifnull(t2.prod_use_weight,0) - ifnull(t1.prod_weight,0) - ifnull(t3.prod_dcl_weight,0) end waste_weight,
 			case when ifnull(t2.prod_use_weight,0) =0 then 0
-			else fromat(ifnull(t1.prod_weight,0)/ifnull(t2.prod_use_weight,0),3)
+			else round(ifnull(t1.prod_weight,0)/ifnull(t2.prod_use_weight,0),3)
 			end prod_ccl,
 			'' remark,
 			now()
@@ -1327,7 +1330,7 @@
 			prod_material,
 			count(1) as prod_bs,
 			sum(prod_num) as prod_zs,
-			um(prod_rel_weight) as prod_weight
+			sum(prod_rel_weight) as prod_weight
 		from bsl_product_info
 		where date_format(crt_date,'%Y%m%d') = #{dateString,jdbcType=VARCHAR}
 		and prod_type = '1'
@@ -1378,7 +1381,7 @@
 			ifnull(c.ret_weight,0) ret_weight,
 			ifnull(c.cha_weight,0) cha_weight,
 			ifnull(sd.sale_price,0) sale_price,
-			format(t.prod_rel_weight * ifnull(sd.sale_price,0),2) sumAmt,
+			round(t.prod_rel_weight * ifnull(sd.sale_price,0),3) sumAmt,
 			'' remark,
 			now()
 		from
@@ -1435,7 +1438,7 @@
 			ifnull(c.ret_weight,0) ret_weight,
 			ifnull(c.cha_weight,0) cha_weight,
 			ifnull(sd.sale_price,0) sale_price,
-			format(t.prod_rel_weight * ifnull(sd.sale_price,0),2) sumAmt,
+			round(t.prod_rel_weight * ifnull(sd.sale_price,0),2) sumAmt,
 			'' remark,
 			now()
 		from
@@ -1452,7 +1455,7 @@
 			count(1) prod_num,
 			sum(t.prod_rel_weight) prod_rel_weight
 		from bsl_product_info t
-		where date_format(t.prod_out_date,'%Y%m%d') = #{dateString,jdbcType=VARCHAR},
+		where date_format(t.prod_out_date,'%Y%m%d') = #{dateString,jdbcType=VARCHAR}
 			and t.prod_type = '1'
 			and t.prod_status in ('4','5')
 		group by t.prod_ruc,
@@ -1498,7 +1501,7 @@
 				t.prod_plan_no,
 				count(1) prod_bs
 			from bsl_product_info t
-			where date_format(t.crt_date,'%Y%m%d') = '20210925'
+			where date_format(t.crt_date,'%Y%m%d') = #{dateString,jdbcType=VARCHAR}
 			and t.prod_type = '0'
 			group by t.prod_plan_no,
 				t.prod_norm,

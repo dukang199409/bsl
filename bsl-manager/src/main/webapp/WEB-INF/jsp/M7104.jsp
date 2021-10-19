@@ -61,7 +61,7 @@
 	        	<th data-options="field:'ck',checkbox:true"></th>
 	        	<th data-options="field:'dataDate',width:100">统计日期</th>
 	        	<th data-options="field:'dataType',width:100,formatter:BSL.formatDataType">报表类别</th>
-	        	<th data-options="field:'bsCustomer',width:170">销售客户</th>
+	        	<th data-options="field:'saleCustomer',width:170">销售客户</th>
 	        	<th data-options="field:'saleRuc',width:100,formatter:BSL.formatProdRuc">出库仓库</th>
 	        	<th data-options="field:'saleGettype',width:100,formatter:BSL.formatBsGettype">运送方式</th>
 	        	<th data-options="field:'prodName',width:100">产品名称</th>
