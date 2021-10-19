@@ -159,7 +159,7 @@
 	            <th data-options="field:'prodOutPlan',width:100,sortable:true">出库指令号</th>
 	            <th data-options="field:'prodSaleSerno',width:100,sortable:true">销售计划号</th>
 	        	<th data-options="field:'prodLength',width:80,sortable:true">定尺/米</th>
-	        	<th data-options="field:'prodNum',width:80,sortable:true">数量</th>
+	        	<th data-options="field:'prodNum',width:80,sortable:true">支数</th>
 	        	<th data-options="field:'prodDclFlag',width:130,formatter:BSL.formatProdDclFlag,sortable:true">外协厂标志</th>
 	        	<th data-options="field:'prodCompany',width:100,sortable:true">厂家</th>
 	            <th data-options="field:'prodLevel',width:90,formatter:BSL.formatProdLevel,sortable:true">质量等级</th>

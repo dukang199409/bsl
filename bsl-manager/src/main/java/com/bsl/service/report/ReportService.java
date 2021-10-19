@@ -30,5 +30,20 @@ public interface ReportService {
 	//根据条件查询库存日照报表信息
 	BSLResult getProductPhotoService(QueryCriteria queryCriteria);
 	
+	//根据条件查询成型机组生产报表
+	BSLResult getM7101Report(QueryCriteria queryCriteria);
+	
+	//根据条件查询纵剪机组生产报表
+	BSLResult getM7102Report(QueryCriteria queryCriteria);
+	
+	//根据条件查询产成品销售报表
+	BSLResult getM7103Report(QueryCriteria queryCriteria);
+	
+	//根据条件查询半成品销售报表
+	BSLResult getM7104Report(QueryCriteria queryCriteria);
+	
+	//根据条件查询原材料进库表报
+	BSLResult getM7105Report(QueryCriteria queryCriteria);
+	
 	
 }

@@ -10,9 +10,18 @@ import com.bsl.common.pojo.EasyUIDataGridResult;
 import com.bsl.common.utils.BSLResult;
 import com.bsl.mapper.BslLuStockInfoMapper;
 import com.bsl.mapper.BslProductPhotoInfoMapper;
+import com.bsl.mapper.BslReportProdMakeInfoMapper;
+import com.bsl.mapper.BslReportRawInfoMapper;
+import com.bsl.mapper.BslReportSaleInfoMapper;
 import com.bsl.mapper.BslStockChangePhotoMapper;
 import com.bsl.pojo.BslLuStockInfo;
 import com.bsl.pojo.BslLuStockInfoExample;
+import com.bsl.pojo.BslReportProdMakeInfo;
+import com.bsl.pojo.BslReportProdMakeInfoExample;
+import com.bsl.pojo.BslReportRawInfo;
+import com.bsl.pojo.BslReportRawInfoExample;
+import com.bsl.pojo.BslReportSaleInfo;
+import com.bsl.pojo.BslReportSaleInfoExample;
 import com.bsl.pojo.BslStockChangePhoto;
 import com.bsl.pojo.BslStockChangePhotoExample;
 import com.bsl.reportbean.BslStockChangeSumReport;
@@ -39,6 +48,15 @@ public class ReportServiceImpl implements ReportService {
 	
 	@Autowired	 
 	BslStockChangePhotoMapper bslStockChangePhotoMapper;
+	
+	@Autowired	 
+	BslReportProdMakeInfoMapper bslReportProdMakeInfoMapper;
+	
+	@Autowired	 
+	BslReportRawInfoMapper bslReportRawInfoMapper;
+	
+	@Autowired	 
+	BslReportSaleInfoMapper bslReportSaleInfoMapper;
 	
 	/**
 	 * 初始化查询所有库存日照报表信息
@@ -356,6 +374,225 @@ public class ReportServiceImpl implements ReportService {
 		PageInfo<BslLuStockInfo> pageInfo = new PageInfo<BslLuStockInfo>(bslLuStockInfos);
 		return BSLResult.ok(bslLuStockInfos,"reportServiceImpl","getLuStockInfoService",pageInfo.getTotal(),bslLuStockInfos);
 	
+	}
+
+	//根据条件查询成型机组生产报表
+	@Override
+	public BSLResult getM7101Report(QueryCriteria queryCriteria) {
+		BslReportProdMakeInfoExample bslReportProdMakeInfoExample = new BslReportProdMakeInfoExample();
+		com.bsl.pojo.BslReportProdMakeInfoExample.Criteria criteria = bslReportProdMakeInfoExample.createCriteria();
+		criteria.andProdTypeEqualTo(DictItemOperation.产品类型_成品);
+		if(!StringUtils.isBlank(queryCriteria.getDataType())){
+			criteria.andDataTypeEqualTo(queryCriteria.getDataType());
+		}
+		//开始日期结束日期
+		Date dateStart = new Date();
+		Date dateEnd = new Date();
+		if(!StringUtils.isBlank(queryCriteria.getStartDate())){
+			try {
+				dateStart = DictItemOperation.日期转换实例.parse(queryCriteria.getStartDate());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}else{
+			try {
+				dateStart = DictItemOperation.日期转换实例.parse("2018-01-01");
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		if(!StringUtils.isBlank(queryCriteria.getEndDate())){
+			try {
+				dateEnd = DictItemOperation.日期转换实例.parse(queryCriteria.getEndDate());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}else{
+			dateEnd = new Date();
+		}
+		criteria.andCrtDateBetween(dateStart,dateEnd);
+		//分页处理
+		PageHelper.startPage(Integer.parseInt(queryCriteria.getPage()), Integer.parseInt(queryCriteria.getRows()));
+		bslReportProdMakeInfoExample.setOrderByClause("`crt_date` desc");
+		
+		List<BslReportProdMakeInfo> bslReportProdMakeInfos = bslReportProdMakeInfoMapper.selectByExample(bslReportProdMakeInfoExample);
+		PageInfo<BslReportProdMakeInfo> pageInfo = new PageInfo<BslReportProdMakeInfo>(bslReportProdMakeInfos);
+		return BSLResult.ok(bslReportProdMakeInfos,"reportServiceImpl","getM7101Report",pageInfo.getTotal(),bslReportProdMakeInfos);
+	}
+
+	//根据条件查询纵剪机组生产报表
+	@Override
+	public BSLResult getM7102Report(QueryCriteria queryCriteria) {
+		BslReportProdMakeInfoExample bslReportProdMakeInfoExample = new BslReportProdMakeInfoExample();
+		com.bsl.pojo.BslReportProdMakeInfoExample.Criteria criteria = bslReportProdMakeInfoExample.createCriteria();
+		criteria.andProdTypeEqualTo(DictItemOperation.产品类型_半成品);
+		if(!StringUtils.isBlank(queryCriteria.getDataType())){
+			criteria.andDataTypeEqualTo(queryCriteria.getDataType());
+		}
+		//开始日期结束日期
+		Date dateStart = new Date();
+		Date dateEnd = new Date();
+		if(!StringUtils.isBlank(queryCriteria.getStartDate())){
+			try {
+				dateStart = DictItemOperation.日期转换实例.parse(queryCriteria.getStartDate());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}else{
+			try {
+				dateStart = DictItemOperation.日期转换实例.parse("2018-01-01");
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		if(!StringUtils.isBlank(queryCriteria.getEndDate())){
+			try {
+				dateEnd = DictItemOperation.日期转换实例.parse(queryCriteria.getEndDate());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}else{
+			dateEnd = new Date();
+		}
+		criteria.andCrtDateBetween(dateStart,dateEnd);
+		//分页处理
+		PageHelper.startPage(Integer.parseInt(queryCriteria.getPage()), Integer.parseInt(queryCriteria.getRows()));
+		bslReportProdMakeInfoExample.setOrderByClause("`crt_date` desc");
+		
+		List<BslReportProdMakeInfo> bslReportProdMakeInfos = bslReportProdMakeInfoMapper.selectByExample(bslReportProdMakeInfoExample);
+		PageInfo<BslReportProdMakeInfo> pageInfo = new PageInfo<BslReportProdMakeInfo>(bslReportProdMakeInfos);
+		return BSLResult.ok(bslReportProdMakeInfos,"reportServiceImpl","getM7102Report",pageInfo.getTotal(),bslReportProdMakeInfos);
+	}
+
+	//根据条件查询产成品销售报表
+	@Override
+	public BSLResult getM7103Report(QueryCriteria queryCriteria) {
+		BslReportSaleInfoExample bslReportSaleInfoExample = new BslReportSaleInfoExample();
+		com.bsl.pojo.BslReportSaleInfoExample.Criteria criteria = bslReportSaleInfoExample.createCriteria();
+		criteria.andProdTypeEqualTo(DictItemOperation.产品类型_成品);
+		if(!StringUtils.isBlank(queryCriteria.getDataType())){
+			criteria.andDataTypeEqualTo(queryCriteria.getDataType());
+		}
+		//开始日期结束日期
+		Date dateStart = new Date();
+		Date dateEnd = new Date();
+		if(!StringUtils.isBlank(queryCriteria.getStartDate())){
+			try {
+				dateStart = DictItemOperation.日期转换实例.parse(queryCriteria.getStartDate());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}else{
+			try {
+				dateStart = DictItemOperation.日期转换实例.parse("2018-01-01");
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		if(!StringUtils.isBlank(queryCriteria.getEndDate())){
+			try {
+				dateEnd = DictItemOperation.日期转换实例.parse(queryCriteria.getEndDate());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}else{
+			dateEnd = new Date();
+		}
+		criteria.andCrtDateBetween(dateStart,dateEnd);
+		//分页处理
+		PageHelper.startPage(Integer.parseInt(queryCriteria.getPage()), Integer.parseInt(queryCriteria.getRows()));
+		bslReportSaleInfoExample.setOrderByClause("`crt_date` desc");
+		
+		List<BslReportSaleInfo> bslReportSaleInfos = bslReportSaleInfoMapper.selectByExample(bslReportSaleInfoExample);
+		PageInfo<BslReportSaleInfo> pageInfo = new PageInfo<BslReportSaleInfo>(bslReportSaleInfos);
+		return BSLResult.ok(bslReportSaleInfos,"reportServiceImpl","getM7103Report",pageInfo.getTotal(),bslReportSaleInfos);
+	}
+
+	//根据条件查询半成品销售报表
+	@Override
+	public BSLResult getM7104Report(QueryCriteria queryCriteria) {
+		BslReportSaleInfoExample bslReportSaleInfoExample = new BslReportSaleInfoExample();
+		com.bsl.pojo.BslReportSaleInfoExample.Criteria criteria = bslReportSaleInfoExample.createCriteria();
+		criteria.andProdTypeEqualTo(DictItemOperation.产品类型_半成品);
+		if(!StringUtils.isBlank(queryCriteria.getDataType())){
+			criteria.andDataTypeEqualTo(queryCriteria.getDataType());
+		}
+		//开始日期结束日期
+		Date dateStart = new Date();
+		Date dateEnd = new Date();
+		if(!StringUtils.isBlank(queryCriteria.getStartDate())){
+			try {
+				dateStart = DictItemOperation.日期转换实例.parse(queryCriteria.getStartDate());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}else{
+			try {
+				dateStart = DictItemOperation.日期转换实例.parse("2018-01-01");
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		if(!StringUtils.isBlank(queryCriteria.getEndDate())){
+			try {
+				dateEnd = DictItemOperation.日期转换实例.parse(queryCriteria.getEndDate());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}else{
+			dateEnd = new Date();
+		}
+		criteria.andCrtDateBetween(dateStart,dateEnd);
+		//分页处理
+		PageHelper.startPage(Integer.parseInt(queryCriteria.getPage()), Integer.parseInt(queryCriteria.getRows()));
+		bslReportSaleInfoExample.setOrderByClause("`crt_date` desc");
+		
+		List<BslReportSaleInfo> bslReportSaleInfos = bslReportSaleInfoMapper.selectByExample(bslReportSaleInfoExample);
+		PageInfo<BslReportSaleInfo> pageInfo = new PageInfo<BslReportSaleInfo>(bslReportSaleInfos);
+		return BSLResult.ok(bslReportSaleInfos,"reportServiceImpl","getM7104Report",pageInfo.getTotal(),bslReportSaleInfos);
+	}
+
+	//根据条件查询原材料进库表报
+	@Override
+	public BSLResult getM7105Report(QueryCriteria queryCriteria) {
+		BslReportRawInfoExample bslReportRawInfoExample = new BslReportRawInfoExample();
+		com.bsl.pojo.BslReportRawInfoExample.Criteria criteria = bslReportRawInfoExample.createCriteria();
+		if(!StringUtils.isBlank(queryCriteria.getDataType())){
+			criteria.andDataTypeEqualTo(queryCriteria.getDataType());
+		}
+		//开始日期结束日期
+		Date dateStart = new Date();
+		Date dateEnd = new Date();
+		if(!StringUtils.isBlank(queryCriteria.getStartDate())){
+			try {
+				dateStart = DictItemOperation.日期转换实例.parse(queryCriteria.getStartDate());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}else{
+			try {
+				dateStart = DictItemOperation.日期转换实例.parse("2018-01-01");
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		if(!StringUtils.isBlank(queryCriteria.getEndDate())){
+			try {
+				dateEnd = DictItemOperation.日期转换实例.parse(queryCriteria.getEndDate());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}else{
+			dateEnd = new Date();
+		}
+		criteria.andCrtDateBetween(dateStart,dateEnd);
+		//分页处理
+		PageHelper.startPage(Integer.parseInt(queryCriteria.getPage()), Integer.parseInt(queryCriteria.getRows()));
+		bslReportRawInfoExample.setOrderByClause("`crt_date` desc");
+		
+		List<BslReportRawInfo> bslReportRawInfos = bslReportRawInfoMapper.selectByExample(bslReportRawInfoExample);
+		PageInfo<BslReportRawInfo> pageInfo = new PageInfo<BslReportRawInfo>(bslReportRawInfos);
+		return BSLResult.ok(bslReportRawInfos,"reportServiceImpl","getM7105Report",pageInfo.getTotal(),bslReportRawInfos);
 	}
 
 }

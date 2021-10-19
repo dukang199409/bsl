@@ -20,7 +20,107 @@ public class ReportController {
 	
 	@Autowired
 	private ReportService reportService;
-
+	
+	/**
+	 * 成型机组生产报表
+	 * @param 
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping("/listByCriteriaM7101")
+	@ResponseBody
+	public BSLResult getM7101Report(QueryCriteria queryCriteria){
+		BSLResult result = null;
+		if(StringUtils.isBlank(queryCriteria.getPage())) {
+			result =  BSLResult.build(400, "页码不能为空");
+		}else if(StringUtils.isBlank(queryCriteria.getRows())) {
+			result =  BSLResult.build(400, "每页记录数不能为空");
+		}else{
+			result = reportService.getM7101Report(queryCriteria);
+		}
+		return result;
+	}
+	
+	/**
+	 * 纵剪机组生产报表
+	 * @param 
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping("/listByCriteriaM7102")
+	@ResponseBody
+	public BSLResult getM7102Report(QueryCriteria queryCriteria){
+		BSLResult result = null;
+		if(StringUtils.isBlank(queryCriteria.getPage())) {
+			result =  BSLResult.build(400, "页码不能为空");
+		}else if(StringUtils.isBlank(queryCriteria.getRows())) {
+			result =  BSLResult.build(400, "每页记录数不能为空");
+		}else{
+			result = reportService.getM7102Report(queryCriteria);
+		}
+		return result;
+	}
+	
+	/**
+	 * 产成品销售报表
+	 * @param 
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping("/listByCriteriaM7103")
+	@ResponseBody
+	public BSLResult getM7103Report(QueryCriteria queryCriteria){
+		BSLResult result = null;
+		if(StringUtils.isBlank(queryCriteria.getPage())) {
+			result =  BSLResult.build(400, "页码不能为空");
+		}else if(StringUtils.isBlank(queryCriteria.getRows())) {
+			result =  BSLResult.build(400, "每页记录数不能为空");
+		}else{
+			result = reportService.getM7103Report(queryCriteria);
+		}
+		return result;
+	}
+	
+	/**
+	 * 半成品销售报表
+	 * @param 
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping("/listByCriteriaM7104")
+	@ResponseBody
+	public BSLResult getM7104Report(QueryCriteria queryCriteria){
+		BSLResult result = null;
+		if(StringUtils.isBlank(queryCriteria.getPage())) {
+			result =  BSLResult.build(400, "页码不能为空");
+		}else if(StringUtils.isBlank(queryCriteria.getRows())) {
+			result =  BSLResult.build(400, "每页记录数不能为空");
+		}else{
+			result = reportService.getM7104Report(queryCriteria);
+		}
+		return result;
+	}
+	
+	/**
+	 * 原材料进库表报
+	 * @param 
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping("/listByCriteriaM7105")
+	@ResponseBody
+	public BSLResult getM7105Report(QueryCriteria queryCriteria){
+		BSLResult result = null;
+		if(StringUtils.isBlank(queryCriteria.getPage())) {
+			result =  BSLResult.build(400, "页码不能为空");
+		}else if(StringUtils.isBlank(queryCriteria.getRows())) {
+			result =  BSLResult.build(400, "每页记录数不能为空");
+		}else{
+			result = reportService.getM7105Report(queryCriteria);
+		}
+		return result;
+	}
+	
 	/**
 	 * 查询库存日照信息
 	 * @param page

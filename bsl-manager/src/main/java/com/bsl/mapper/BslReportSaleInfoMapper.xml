@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bsl.mapper.BslReportSaleInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.bsl.pojo.BslReportSaleInfo" >
+    <result column="data_date" property="dataDate" jdbcType="VARCHAR" />
+    <result column="data_type" property="dataType" jdbcType="CHAR" />
+    <result column="prod_type" property="prodType" jdbcType="CHAR" />
+    <result column="sale_customer" property="saleCustomer" jdbcType="VARCHAR" />
+    <result column="sale_ruc" property="saleRuc" jdbcType="CHAR" />
+    <result column="sale_gettype" property="saleGettype" jdbcType="CHAR" />
+    <result column="prod_name" property="prodName" jdbcType="VARCHAR" />
+    <result column="prod_norm" property="prodNorm" jdbcType="VARCHAR" />
+    <result column="prod_material" property="prodMaterial" jdbcType="CHAR" />
+    <result column="prod_length" property="prodLength" jdbcType="REAL" />
+    <result column="prod_bs" property="prodBs" jdbcType="REAL" />
+    <result column="prod_num" property="prodNum" jdbcType="REAL" />
+    <result column="prod_weight" property="prodWeight" jdbcType="REAL" />
+    <result column="cha_weight" property="chaWeight" jdbcType="REAL" />
+    <result column="ret_weight" property="retWeight" jdbcType="REAL" />
+    <result column="sale_price" property="salePrice" jdbcType="REAL" />
+    <result column="sale_amt" property="saleAmt" jdbcType="REAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="crt_date" property="crtDate" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    data_date, data_type, prod_type, sale_customer, sale_ruc, sale_gettype, prod_name, 
+    prod_norm, prod_material, prod_length, prod_bs, prod_num, prod_weight, cha_weight, 
+    ret_weight, sale_price, sale_amt, remark, crt_date
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bsl.pojo.BslReportSaleInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bsl_report_sale_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.bsl.pojo.BslReportSaleInfoExample" >
+    delete from bsl_report_sale_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bsl.pojo.BslReportSaleInfo" >
+    insert into bsl_report_sale_info (data_date, data_type, prod_type, 
+      sale_customer, sale_ruc, sale_gettype, 
+      prod_name, prod_norm, prod_material, 
+      prod_length, prod_bs, prod_num, 
+      prod_weight, cha_weight, ret_weight, 
+      sale_price, sale_amt, remark, 
+      crt_date)
+    values (#{dataDate,jdbcType=VARCHAR}, #{dataType,jdbcType=CHAR}, #{prodType,jdbcType=CHAR}, 
+      #{saleCustomer,jdbcType=VARCHAR}, #{saleRuc,jdbcType=CHAR}, #{saleGettype,jdbcType=CHAR}, 
+      #{prodName,jdbcType=VARCHAR}, #{prodNorm,jdbcType=VARCHAR}, #{prodMaterial,jdbcType=CHAR}, 
+      #{prodLength,jdbcType=REAL}, #{prodBs,jdbcType=REAL}, #{prodNum,jdbcType=REAL}, 
+      #{prodWeight,jdbcType=REAL}, #{chaWeight,jdbcType=REAL}, #{retWeight,jdbcType=REAL}, 
+      #{salePrice,jdbcType=REAL}, #{saleAmt,jdbcType=REAL}, #{remark,jdbcType=VARCHAR}, 
+      #{crtDate,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bsl.pojo.BslReportSaleInfo" >
+    insert into bsl_report_sale_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="dataDate != null" >
+        data_date,
+      </if>
+      <if test="dataType != null" >
+        data_type,
+      </if>
+      <if test="prodType != null" >
+        prod_type,
+      </if>
+      <if test="saleCustomer != null" >
+        sale_customer,
+      </if>
+      <if test="saleRuc != null" >
+        sale_ruc,
+      </if>
+      <if test="saleGettype != null" >
+        sale_gettype,
+      </if>
+      <if test="prodName != null" >
+        prod_name,
+      </if>
+      <if test="prodNorm != null" >
+        prod_norm,
+      </if>
+      <if test="prodMaterial != null" >
+        prod_material,
+      </if>
+      <if test="prodLength != null" >
+        prod_length,
+      </if>
+      <if test="prodBs != null" >
+        prod_bs,
+      </if>
+      <if test="prodNum != null" >
+        prod_num,
+      </if>
+      <if test="prodWeight != null" >
+        prod_weight,
+      </if>
+      <if test="chaWeight != null" >
+        cha_weight,
+      </if>
+      <if test="retWeight != null" >
+        ret_weight,
+      </if>
+      <if test="salePrice != null" >
+        sale_price,
+      </if>
+      <if test="saleAmt != null" >
+        sale_amt,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="crtDate != null" >
+        crt_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="dataDate != null" >
+        #{dataDate,jdbcType=VARCHAR},
+      </if>
+      <if test="dataType != null" >
+        #{dataType,jdbcType=CHAR},
+      </if>
+      <if test="prodType != null" >
+        #{prodType,jdbcType=CHAR},
+      </if>
+      <if test="saleCustomer != null" >
+        #{saleCustomer,jdbcType=VARCHAR},
+      </if>
+      <if test="saleRuc != null" >
+        #{saleRuc,jdbcType=CHAR},
+      </if>
+      <if test="saleGettype != null" >
+        #{saleGettype,jdbcType=CHAR},
+      </if>
+      <if test="prodName != null" >
+        #{prodName,jdbcType=VARCHAR},
+      </if>
+      <if test="prodNorm != null" >
+        #{prodNorm,jdbcType=VARCHAR},
+      </if>
+      <if test="prodMaterial != null" >
+        #{prodMaterial,jdbcType=CHAR},
+      </if>
+      <if test="prodLength != null" >
+        #{prodLength,jdbcType=REAL},
+      </if>
+      <if test="prodBs != null" >
+        #{prodBs,jdbcType=REAL},
+      </if>
+      <if test="prodNum != null" >
+        #{prodNum,jdbcType=REAL},
+      </if>
+      <if test="prodWeight != null" >
+        #{prodWeight,jdbcType=REAL},
+      </if>
+      <if test="chaWeight != null" >
+        #{chaWeight,jdbcType=REAL},
+      </if>
+      <if test="retWeight != null" >
+        #{retWeight,jdbcType=REAL},
+      </if>
+      <if test="salePrice != null" >
+        #{salePrice,jdbcType=REAL},
+      </if>
+      <if test="saleAmt != null" >
+        #{saleAmt,jdbcType=REAL},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="crtDate != null" >
+        #{crtDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bsl.pojo.BslReportSaleInfoExample" resultType="java.lang.Integer" >
+    select count(*) from bsl_report_sale_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bsl_report_sale_info
+    <set >
+      <if test="record.dataDate != null" >
+        data_date = #{record.dataDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dataType != null" >
+        data_type = #{record.dataType,jdbcType=CHAR},
+      </if>
+      <if test="record.prodType != null" >
+        prod_type = #{record.prodType,jdbcType=CHAR},
+      </if>
+      <if test="record.saleCustomer != null" >
+        sale_customer = #{record.saleCustomer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.saleRuc != null" >
+        sale_ruc = #{record.saleRuc,jdbcType=CHAR},
+      </if>
+      <if test="record.saleGettype != null" >
+        sale_gettype = #{record.saleGettype,jdbcType=CHAR},
+      </if>
+      <if test="record.prodName != null" >
+        prod_name = #{record.prodName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.prodNorm != null" >
+        prod_norm = #{record.prodNorm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.prodMaterial != null" >
+        prod_material = #{record.prodMaterial,jdbcType=CHAR},
+      </if>
+      <if test="record.prodLength != null" >
+        prod_length = #{record.prodLength,jdbcType=REAL},
+      </if>
+      <if test="record.prodBs != null" >
+        prod_bs = #{record.prodBs,jdbcType=REAL},
+      </if>
+      <if test="record.prodNum != null" >
+        prod_num = #{record.prodNum,jdbcType=REAL},
+      </if>
+      <if test="record.prodWeight != null" >
+        prod_weight = #{record.prodWeight,jdbcType=REAL},
+      </if>
+      <if test="record.chaWeight != null" >
+        cha_weight = #{record.chaWeight,jdbcType=REAL},
+      </if>
+      <if test="record.retWeight != null" >
+        ret_weight = #{record.retWeight,jdbcType=REAL},
+      </if>
+      <if test="record.salePrice != null" >
+        sale_price = #{record.salePrice,jdbcType=REAL},
+      </if>
+      <if test="record.saleAmt != null" >
+        sale_amt = #{record.saleAmt,jdbcType=REAL},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.crtDate != null" >
+        crt_date = #{record.crtDate,jdbcType=DATE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bsl_report_sale_info
+    set data_date = #{record.dataDate,jdbcType=VARCHAR},
+      data_type = #{record.dataType,jdbcType=CHAR},
+      prod_type = #{record.prodType,jdbcType=CHAR},
+      sale_customer = #{record.saleCustomer,jdbcType=VARCHAR},
+      sale_ruc = #{record.saleRuc,jdbcType=CHAR},
+      sale_gettype = #{record.saleGettype,jdbcType=CHAR},
+      prod_name = #{record.prodName,jdbcType=VARCHAR},
+      prod_norm = #{record.prodNorm,jdbcType=VARCHAR},
+      prod_material = #{record.prodMaterial,jdbcType=CHAR},
+      prod_length = #{record.prodLength,jdbcType=REAL},
+      prod_bs = #{record.prodBs,jdbcType=REAL},
+      prod_num = #{record.prodNum,jdbcType=REAL},
+      prod_weight = #{record.prodWeight,jdbcType=REAL},
+      cha_weight = #{record.chaWeight,jdbcType=REAL},
+      ret_weight = #{record.retWeight,jdbcType=REAL},
+      sale_price = #{record.salePrice,jdbcType=REAL},
+      sale_amt = #{record.saleAmt,jdbcType=REAL},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      crt_date = #{record.crtDate,jdbcType=DATE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

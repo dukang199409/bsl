@@ -679,6 +679,18 @@ var TT = BSL = {
         	return val;
         }
     },
+  //格式化报表类别
+    formatDataType : function(val,row){
+        if (val == '1'){
+            return '日报';
+        } else if(val == '2'){
+        	return '月报';
+        } else if(val == '3'){
+        	return '年报';
+        } else {
+        	return val;
+        }
+    },
     init : function(data){
     	// 初始化图片上传组件
     	this.initPicUpload(data);
