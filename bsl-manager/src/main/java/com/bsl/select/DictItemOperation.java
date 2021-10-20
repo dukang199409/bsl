@@ -3,11 +3,8 @@ package com.bsl.select;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
 import org.apache.log4j.Logger;
-
 import com.bsl.controller.common.DataGridToExcelController;
-import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion.Static;
 
 public class DictItemOperation {
 	
@@ -230,6 +227,18 @@ public class DictItemOperation {
     	}else{
     		return false;
     	} 
+    }
+    
+    /**
+     * 获取某日前几天或后几天
+     * @return
+     */
+    public static Date getYesDay(Date date,int days){
+    	Calendar calendar = Calendar.getInstance();
+    	calendar.setTime(date);
+    	calendar.add(Calendar.DAY_OF_MONTH,days);
+    	return calendar.getTime();
+    	
     }
 
 }
