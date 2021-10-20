@@ -206,7 +206,7 @@
   
   <insert id="insertProductPhoto">
    		insert into bsl_product_photo_info 
-   		select now(),prod_id,prod_status from bsl_product_info
+   		select date_format(DATE_SUB(CURDATE(),INTERVAL 1 DAY),'%Y-%m-%d') trans_date,prod_id,prod_status from bsl_product_info
    		where prod_status = '1'
    </insert>
   

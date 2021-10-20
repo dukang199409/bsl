@@ -199,8 +199,8 @@
       and prod_type = #{prodType,jdbcType=CHAR}
   </update>
   <select id="selectStockChangeSumInfo" resultMap="BaseResultMap">
-  	select date_format(now(),'%Y-%m-%d') trans_date,trans_code,prod_type,sum(rubbish_weight)as change_weight FROM bsl_stock_change_detail
-	where prod_type != '3' and crt_date = date_format(now(),'%Y-%m-%d')
+  	select date_format(DATE_SUB(CURDATE(),INTERVAL 1 DAY),'%Y-%m-%d') trans_date,trans_code,prod_type,sum(rubbish_weight)as change_weight FROM bsl_stock_change_detail
+	where prod_type != '3' and crt_date = date_format(DATE_SUB(CURDATE(),INTERVAL 1 DAY),'%Y-%m-%d')
 	group by prod_type,trans_code
   </select>
   <select id="selectStockChangeSumAllInfo" parameterType="com.bsl.select.QueryCriteria" resultMap="BaseResultMapNew">

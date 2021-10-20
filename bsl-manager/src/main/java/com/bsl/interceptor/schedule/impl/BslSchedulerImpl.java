@@ -23,7 +23,7 @@ import com.bsl.select.ErrorCodeInfo;
 import com.bsl.interceptor.schedule.BslSchedulerService;
 
 /**
- * 每天晚上11点30跑批
+ * 每天凌晨0点1分跑批
  * @author 杜康
  *
  */
@@ -75,15 +75,15 @@ public class BslSchedulerImpl implements BslSchedulerService{
 	@Autowired	 
 	BslStockChangeDetailHMapper bslStockChangeDetailHMapper;
 	
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-    Date date = new Date();
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 	
-    @Scheduled(cron="0 30 23 * * ? ")   //每天晚上11点30跑批
+    @Scheduled(cron="0 5 0 * * ? ")   //每天凌晨0点1分跑批
     @Override
     public void addBslScheduler(){
     	 DictItemOperation.log.info("===========批量开始："+new Date());
-         //生成报表
-         String dateString = sdf.format(date);
+         //生成报表 获取前一天日期
+    	 Date date = new Date();
+    	 Date yesDay = DictItemOperation.getYesDay(date, -1);
     	 
     	 System.out.println("批量开始 ");
     	 
@@ -103,19 +103,19 @@ public class BslSchedulerImpl implements BslSchedulerService{
          insertHistoryStockChangeInfo();
          
          //6.成型机组生产日报表
-         insertProdMakeInfoReport(dateString);
+         insertProdMakeInfoReport(yesDay);
          
          //7.纵剪机组生产日报表
-         insertHalfProdMakeInfoReport(dateString);
+         insertHalfProdMakeInfoReport(yesDay);
          
          //8.产成品销售报表
-         insertProdSaleInfoReport(dateString);
+         insertProdSaleInfoReport(yesDay);
          
          //9.半成品销售报表
-         insertHalfProdSaleInfoReport(dateString);
+         insertHalfProdSaleInfoReport(yesDay);
          
          //10.原材料进库报表
-         insertRawInfoReport(dateString);   
+         insertRawInfoReport(yesDay);   
          
 
          //插入单炉库存重量日照（每天生成最新的数据）
@@ -282,14 +282,15 @@ public class BslSchedulerImpl implements BslSchedulerService{
     /**
      * 成型机组生产日报表
      */
-    public void  insertProdMakeInfoReport(String dateString){
+    public void  insertProdMakeInfoReport(Date yesDate){
     	DictItemOperation.log.info("===========生成成型机组生产日报表开始");
+        String dateString = sdf.format(yesDate);
     	int result = bslProductInfoMapper.insertProdMakeInfoReport(dateString);
 		if(result<0){
 		     throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
 		}
 		//如果是月底，则生成月报
-		if(DictItemOperation.isEndOfMonth(date)){
+		if(DictItemOperation.isEndOfMonth(yesDate)){
 			//Todo..
 		}
 		
@@ -299,8 +300,9 @@ public class BslSchedulerImpl implements BslSchedulerService{
     /**
      * 纵剪机组生产日报表
      */
-    public void  insertHalfProdMakeInfoReport(String dateString){
+    public void  insertHalfProdMakeInfoReport(Date yesDate){
     	DictItemOperation.log.info("===========生成纵剪机组生产日报表开始");
+    	String dateString = sdf.format(yesDate);
     	int result = bslProductInfoMapper.insertHalfProdMakeInfoReport(dateString);
 		if(result<0){
 		     throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
@@ -311,8 +313,9 @@ public class BslSchedulerImpl implements BslSchedulerService{
     /**
      * 产成品销售报表
      */
-    public void  insertProdSaleInfoReport(String dateString){
+    public void  insertProdSaleInfoReport(Date yesDate){
     	DictItemOperation.log.info("===========生成产成品销售报表开始");
+    	String dateString = sdf.format(yesDate);
     	int result = bslProductInfoMapper.insertProdSaleInfoReport(dateString);
 		if(result<0){
 		     throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
@@ -323,8 +326,9 @@ public class BslSchedulerImpl implements BslSchedulerService{
     /**
      * 半成品销售报表
      */
-    public void  insertHalfProdSaleInfoReport(String dateString){
+    public void  insertHalfProdSaleInfoReport(Date yesDate){
     	DictItemOperation.log.info("===========生成半成品销售报表开始");
+    	String dateString = sdf.format(yesDate);
     	int result = bslProductInfoMapper.insertHalfProdSaleInfoReport(dateString);
 		if(result<0){
 		     throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
@@ -335,8 +339,9 @@ public class BslSchedulerImpl implements BslSchedulerService{
     /**
      * 原材料进库报表
      */
-    public void  insertRawInfoReport(String dateString){
+    public void  insertRawInfoReport(Date yesDate){
     	DictItemOperation.log.info("===========生成原材料进库报表开始");
+    	String dateString = sdf.format(yesDate);
     	int result = bslProductInfoMapper.insertRawInfoReport(dateString);
 		if(result<0){
 		     throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
