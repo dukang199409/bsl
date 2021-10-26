@@ -686,8 +686,10 @@ var TT = BSL = {
         } else if(val == '2'){
         	return '月报';
         } else if(val == '3'){
+        	return '半年报';
+        } else if(val == '4'){
         	return '年报';
-        } else {
+        }else {
         	return val;
         }
     },

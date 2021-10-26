@@ -72,4 +72,10 @@ public interface BslProductInfoMapper {
     int insertHalfProdSaleInfoReport(String dateString);
     int insertRawInfoReport(String dateString);
     
+    int insertProdMakeInfoReportBT(QueryCriteria queryCriteria);
+    int insertHalfProdMakeInfoReportBT(QueryCriteria queryCriteria);
+    int insertProdSaleInfoReportBT(QueryCriteria queryCriteria);
+    int insertHalfProdSaleInfoReportBT(QueryCriteria queryCriteria);
+    int insertRawInfoReportBT(QueryCriteria queryCriteria);
+    
 }

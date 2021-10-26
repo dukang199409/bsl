@@ -135,6 +135,11 @@ public class DictItemOperation {
 	public static final String 参数_480纵剪带默认废料率 = "005";
 	public static final String 参数_800纵剪带默认废料率 = "006";
 	
+	public static final String 报表类型_日报 = "1";
+	public static final String 报表类型_月报 = "2";
+	public static final String 报表类型_半年报 = "3";
+	public static final String 报表类型_年报 = "4";
+	
 	public static final SimpleDateFormat 日期转换实例 = new SimpleDateFormat("yyyy-MM-dd");
 	public static final SimpleDateFormat 日期转换实例yyyyMMdd = new SimpleDateFormat("yyyyMMdd");
 	public static final SimpleDateFormat 日期转换实例时分秒 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -227,6 +232,17 @@ public class DictItemOperation {
     	}else{
     		return false;
     	} 
+    }
+    
+    /**
+     * 判断某天所在月的第一天
+     * @return
+     */
+    public static Date getFirstOfMonth(Date date){
+    	Calendar calendar = Calendar.getInstance();
+    	calendar.setTime(date);
+    	calendar.set(Calendar.DAY_OF_MONTH,1);
+    	return calendar.getTime();
     }
     
     /**
