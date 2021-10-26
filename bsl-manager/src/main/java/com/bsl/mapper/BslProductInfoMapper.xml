@@ -1514,138 +1514,174 @@
    <!-- 月报和年报脚本 -->
    <insert id="insertProdMakeInfoReportBT" parameterType="com.bsl.select.QueryCriteria">
    		insert into bsl_report_prod_make_info
-   		select 
-   			substr(#{endDate,jdbcType=VARCHAR},1,6)，
-   			#{dataType,jdbcType=VARCHAR},
-   			'2',
-			t1.prod_make_jz,
-			t1.prod_plan_no,
-			t1.prod_norm,
-			t1.prod_material,
-			t1.prod_bs,
-			t1.prod_zs,
-			ifnull(t1.prod_weight,0) prod_weight,
-			t2.prod_norm prod_norm_zjd,
-			t2.prod_tl_bs,
-			ifnull(t2.prod_use_weight,0) prod_use_weight,
-			ifnull(t3.prod_dcl_weight,0) prod_dcl_weight,
-			case when 0 > (ifnull(t2.prod_use_weight,0) - ifnull(t1.prod_weight,0) - ifnull(t3.prod_dcl_weight,0)) then 0
-			else ifnull(t2.prod_use_weight,0) - ifnull(t1.prod_weight,0) - ifnull(t3.prod_dcl_weight,0) end waste_weight,
-			case when ifnull(t2.prod_use_weight,0) =0 then 0
-			else round(ifnull(t1.prod_weight,0)/ifnull(t2.prod_use_weight,0),3)
+		select 
+			substr(#{endDate,jdbcType=VARCHAR},1,6) datadate,
+			'2',
+			'2',
+			t.prod_make_jz,
+			'',
+			t.prod_norm,
+			t.prod_material,
+			sum(t.prod_bs),
+			sum(t.prod_zs),
+			sum(t.prod_weight),
+			t.prod_norm_zjd,
+			sum(t.prod_tl_bs),
+			sum(t.prod_use_weight),
+			sum(t.prod_dcl_weight),
+			sum(t.waste_weight),
+			case when sum(t.prod_use_weight) =0 then 0
+			else round(sum(t.prod_weight)/sum(t.prod_use_weight),3)
 			end prod_ccl,
-			'' remark,
+			'',
 			now()
-		from
-		
+		from 
 		(select 
-			prod_make_jz,
-			prod_plan_no,
-			prod_norm,
-			prod_material,
-			count(1) as prod_bs,
-			sum(prod_num) as prod_zs,
-			sum(prod_rel_weight) as prod_weight
-		from bsl_product_info
-		where date_format(crt_date,'%Y%m%d') between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
-		and prod_type = '2'
-		group by prod_make_jz,prod_plan_no,prod_norm,prod_material) t1
-
-		left join 
+				t1.prod_make_jz,
+				t1.prod_plan_no,
+				t1.prod_norm,
+				t1.prod_material,
+				t1.prod_bs,
+				t1.prod_zs,
+				ifnull(t1.prod_weight,0) prod_weight,
+				t2.prod_norm prod_norm_zjd,
+				t2.prod_tl_bs,
+				ifnull(t2.prod_use_weight,0) prod_use_weight,
+				ifnull(t3.prod_dcl_weight,0) prod_dcl_weight,
+				case when 0 > (ifnull(t2.prod_use_weight,0) - ifnull(t1.prod_weight,0) - ifnull(t3.prod_dcl_weight,0)) then 0
+				else ifnull(t2.prod_use_weight,0) - ifnull(t1.prod_weight,0) - ifnull(t3.prod_dcl_weight,0) end waste_weight
+			from
+			
+			(select 
+				prod_make_jz,
+				prod_plan_no,
+				prod_norm,
+				prod_material,
+				count(1) as prod_bs,
+				sum(prod_num) as prod_zs,
+				sum(prod_rel_weight) as prod_weight
+			from bsl_product_info
+			where date_format(crt_date,'%Y%m%d') between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+			and prod_type = '2'
+			group by prod_make_jz,prod_plan_no,prod_norm,prod_material) t1
 		
-		(select 
-			prod_out_plan,
-			prod_norm,
-			prod_material,
-			count(1) as prod_tl_bs,
-			sum(prod_rel_weight) as prod_use_weight
-		from bsl_product_info
-		where date_format(prod_out_date,'%Y%m%d') between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
-		and prod_type = '1'
-		group by prod_out_plan,prod_norm,prod_material) t2
-		on t1.prod_plan_no = t2.prod_out_plan
-		
-		left join 
-		(select 
-			prod_plan_no,
-			sum(prod_rel_weight) as prod_dcl_weight
-		from bsl_product_info
-		where date_format(crt_date,'%Y%m%d') between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
-		and prod_type = '4'
-		group by prod_plan_no) t3
-		on t1.prod_plan_no = t3.prod_plan_no
+			left join 
+			
+			(select 
+				prod_out_plan,
+				prod_norm,
+				prod_material,
+				count(1) as prod_tl_bs,
+				sum(prod_rel_weight) as prod_use_weight
+			from bsl_product_info
+			where date_format(prod_out_date,'%Y%m%d')  between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+			and prod_type = '1'
+			group by prod_out_plan,prod_norm,prod_material) t2
+			on t1.prod_plan_no = t2.prod_out_plan
+			
+			left join 
+			(select 
+				prod_plan_no,
+				sum(prod_rel_weight) as prod_dcl_weight
+			from bsl_product_info
+			where date_format(crt_date,'%Y%m%d')  between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+			and prod_type = '4'
+			group by prod_plan_no) t3
+			on t1.prod_plan_no = t3.prod_plan_no) t
+			group by t.prod_make_jz,
+				t.prod_norm,
+				t.prod_material,
+				t.prod_norm_zjd
    		
    </insert>
    
     <insert id="insertHalfProdMakeInfoReportBT" parameterType="com.bsl.select.QueryCriteria">
    		insert into bsl_report_prod_make_info
    		select 
-   			substr(#{endDate,jdbcType=VARCHAR},1,6)，
-   			#{dataType,jdbcType=VARCHAR},
-   			'1',
-			t1.prod_make_jz,
-			t1.prod_plan_no,
-			t1.prod_norm,
-			t1.prod_material,
-			t1.prod_bs,
-			t1.prod_bs prod_zs,
-			ifnull(t1.prod_weight,0) prod_weight,
-			t2.prod_norm prod_norm_zjd,
-			t2.prod_tl_bs,
-			ifnull(t2.prod_use_weight,0) prod_use_weight,
-			ifnull(t3.prod_dcl_weight,0) prod_dcl_weight,
-			case when 0 > (ifnull(t2.prod_use_weight,0) - ifnull(t1.prod_weight,0) - ifnull(t3.prod_dcl_weight,0)) then 0
-			else ifnull(t2.prod_use_weight,0) - ifnull(t1.prod_weight,0) - ifnull(t3.prod_dcl_weight,0) end waste_weight,
-			case when ifnull(t2.prod_use_weight,0) =0 then 0
-			else round(ifnull(t1.prod_weight,0)/ifnull(t2.prod_use_weight,0),3)
+			substr(#{endDate,jdbcType=VARCHAR},1,6) datadate,
+			'2',
+			'1',
+			t.prod_make_jz,
+			'',
+			t.prod_norm,
+			t.prod_material,
+			sum(t.prod_bs),
+			sum(t.prod_zs),
+			sum(t.prod_weight),
+			t.prod_norm_zjd,
+			sum(t.prod_tl_bs),
+			sum(t.prod_use_weight),
+			sum(t.prod_dcl_weight),
+			sum(t.waste_weight),
+			case when sum(t.prod_use_weight) =0 then 0
+			else round(sum(t.prod_weight)/sum(t.prod_use_weight),3)
 			end prod_ccl,
-			'' remark,
+			'',
 			now()
-		from
-		
+		from 
 		(select 
-			prod_make_jz,
-			prod_plan_no,
-			prod_norm,
-			prod_material,
-			count(1) as prod_bs,
-			sum(prod_num) as prod_zs,
-			sum(prod_rel_weight) as prod_weight
-		from bsl_product_info
-		where date_format(crt_date,'%Y%m%d') between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
-		and prod_type = '1'
-		group by prod_make_jz,prod_plan_no,prod_norm,prod_material) t1
-		
-		left join 
-		
-		(select 
-			prod_out_plan,
-			prod_norm,
-			prod_material,
-			count(1) as prod_tl_bs,
-			sum(prod_rel_weight) as prod_use_weight
-		from bsl_product_info
-		where date_format(prod_out_date,'%Y%m%d') between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
-		and prod_type = '0'
-		group by prod_out_plan,prod_norm,prod_material) t2
-		on t1.prod_plan_no = t2.prod_out_plan
-		
-		left join 
-		(select 
-			prod_plan_no,
-			sum(prod_rel_weight) as prod_dcl_weight
-		from bsl_product_info
-		where date_format(crt_date,'%Y%m%d') between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
-		and prod_type = '4'
-		group by prod_plan_no) t3
-		on t1.prod_plan_no = t3.prod_plan_no
+					t1.prod_make_jz,
+					t1.prod_plan_no,
+					t1.prod_norm,
+					t1.prod_material,
+					t1.prod_bs,
+					t1.prod_bs prod_zs,
+					ifnull(t1.prod_weight,0) prod_weight,
+					t2.prod_norm prod_norm_zjd,
+					t2.prod_tl_bs,
+					ifnull(t2.prod_use_weight,0) prod_use_weight,
+					ifnull(t3.prod_dcl_weight,0) prod_dcl_weight,
+					case when 0 > (ifnull(t2.prod_use_weight,0) - ifnull(t1.prod_weight,0) - ifnull(t3.prod_dcl_weight,0)) then 0
+					else ifnull(t2.prod_use_weight,0) - ifnull(t1.prod_weight,0) - ifnull(t3.prod_dcl_weight,0) end waste_weight
+				from
+				
+				(select 
+					prod_make_jz,
+					prod_plan_no,
+					prod_norm,
+					prod_material,
+					count(1) as prod_bs,
+					sum(prod_num) as prod_zs,
+					sum(prod_rel_weight) as prod_weight
+				from bsl_product_info
+				where date_format(crt_date,'%Y%m%d') between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+				and prod_type = '1'
+				group by prod_make_jz,prod_plan_no,prod_norm,prod_material) t1
+				
+				left join 
+				
+				(select 
+					prod_out_plan,
+					prod_norm,
+					prod_material,
+					count(1) as prod_tl_bs,
+					sum(prod_rel_weight) as prod_use_weight
+				from bsl_product_info
+				where date_format(prod_out_date,'%Y%m%d') between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+				and prod_type = '0'
+				group by prod_out_plan,prod_norm,prod_material) t2
+				on t1.prod_plan_no = t2.prod_out_plan
+				
+				left join 
+				(select 
+					prod_plan_no,
+					sum(prod_rel_weight) as prod_dcl_weight
+				from bsl_product_info
+				where date_format(crt_date,'%Y%m%d') between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+				and prod_type = '4'
+				group by prod_plan_no) t3
+				on t1.prod_plan_no = t3.prod_plan_no)t
+			group by t.prod_make_jz,
+				t.prod_norm,
+				t.prod_material,
+				t.prod_norm_zjd
    		
    </insert>
    
     <insert id="insertProdSaleInfoReportBT" parameterType="com.bsl.select.QueryCriteria">
    		insert into bsl_report_sale_info
    		select 
-   			substr(#{endDate,jdbcType=VARCHAR},1,6)，
+   			substr(#{endDate,jdbcType=VARCHAR},1,6),
    			#{dataType,jdbcType=VARCHAR},
    			'2',
 			s.bs_customer,
@@ -1702,7 +1738,7 @@
     <insert id="insertHalfProdSaleInfoReportBT" parameterType="com.bsl.select.QueryCriteria">
    		insert into bsl_report_sale_info
    		select 
-   			substr(#{endDate,jdbcType=VARCHAR},1,6)，
+   			substr(#{endDate,jdbcType=VARCHAR},1,6),
    			#{dataType,jdbcType=VARCHAR},
    			'1',
 			s.bs_customer,
@@ -1758,7 +1794,7 @@
     <insert id="insertRawInfoReportBT" parameterType="com.bsl.select.QueryCriteria">
    		insert into bsl_report_raw_info 
    		select 
-   			substr(#{endDate,jdbcType=VARCHAR},1,6)，
+   			substr(#{endDate,jdbcType=VARCHAR},1,6),
    			#{dataType,jdbcType=VARCHAR},
 			t.prod_norm,
 			t.prod_material,
