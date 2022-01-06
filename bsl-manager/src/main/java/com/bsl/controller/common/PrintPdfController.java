@@ -377,7 +377,13 @@ public class PrintPdfController {
 				
 				Integer prodNumSum = 0;
 				Float prodWeightTotal = 0f;
+				Float prod_weight = 0f;
 				for (BslProductInfoCollect bslProductInfo : bslSaleInfoDetails) {
+					if(DictItemOperation.产品类型_卷板.equals(bslProductInfo.getProdType())){
+						prod_weight = bslProductInfo.getProdRecordWeightTotal();
+					}else{
+						prod_weight = bslProductInfo.getProdWeightTotal();
+					}
 					inList.add(
 							new BslMakePlanInfoDetailExtra(
 									bslProductInfo.getProdPlanNo(),
@@ -386,12 +392,12 @@ public class PrintPdfController {
 									jedisClient.get("prodMaterial:"+bslProductInfo.getProdMaterial()),
 									StringUtil.castToString(bslProductInfo.getProdLength()),
 									StringUtil.castToString(bslProductInfo.getProdNumCount()),
-									StringUtil.castToString(bslProductInfo.getProdWeightTotal()),
+									StringUtil.castToString(prod_weight),
 									jedisClient.get("prodLevel:"+bslProductInfo.getProdLevel())
 									)
 							);
 					prodNumSum += bslProductInfo.getProdNumCount();
-					prodWeightTotal += bslProductInfo.getProdWeightTotal();
+					prodWeightTotal += prod_weight;
 				}
 				prodWeightTotal = ((float)Math.round(prodWeightTotal*1000))/1000;
 				List<PDFCell> footList = new ArrayList<>();
@@ -489,7 +495,13 @@ public class PrintPdfController {
 				
 				Integer prodNumSum = 0;
 				Float prodWeightTotal = 0f;
+				Float prod_weight = 0f;
 				for (BslProductInfoCollect bslProductInfo : bslSaleInfoDetails) {
+					if(DictItemOperation.产品类型_卷板.equals(bslProductInfo.getProdType())){
+						prod_weight = bslProductInfo.getProdRecordWeightTotal();
+					}else{
+						prod_weight = bslProductInfo.getProdWeightTotal();
+					}
 					inList.add(
 							new BslMakePlanInfoDetailExtra(
 									bslProductInfo.getProdPlanNo(),
@@ -498,12 +510,12 @@ public class PrintPdfController {
 									jedisClient.get("prodMaterial:"+bslProductInfo.getProdMaterial()),
 									StringUtil.castToString(bslProductInfo.getProdLength()),
 									StringUtil.castToString(bslProductInfo.getProdNumCount()),
-									StringUtil.castToString(bslProductInfo.getProdWeightTotal()),
+									StringUtil.castToString(prod_weight),
 									jedisClient.get("prodLevel:"+bslProductInfo.getProdLevel())
 									)
 							);
 					prodNumSum += bslProductInfo.getProdNumCount();
-					prodWeightTotal += bslProductInfo.getProdWeightTotal();
+					prodWeightTotal += prod_weight;
 				}
 				prodWeightTotal = ((float)Math.round(prodWeightTotal*1000))/1000;
 				List<PDFCell> footList = new ArrayList<>();
@@ -1118,7 +1130,13 @@ public class PrintPdfController {
 				
 				Integer prodNumSum = 0;
 				Float prodWeightTotal = 0f;
+				Float prod_weight = 0f;
 				for (BslProductInfoCollect bslProductInfo : bslSaleInfoDetails) {
+					if(DictItemOperation.产品类型_卷板.equals(bslProductInfo.getProdType())){
+						prod_weight = bslProductInfo.getProdRecordWeightTotal();
+					}else{
+						prod_weight = bslProductInfo.getProdWeightTotal();
+					}
 					inList.add(
 							new BslMakePlanInfoDetailExtra(
 									bslProductInfo.getProdPlanNo(),
@@ -1127,12 +1145,12 @@ public class PrintPdfController {
 									jedisClient.get("prodMaterial:"+bslProductInfo.getProdMaterial()),
 									StringUtil.castToString(bslProductInfo.getProdLength()),
 									StringUtil.castToString(bslProductInfo.getProdNumCount()),
-									StringUtil.castToString(bslProductInfo.getProdWeightTotal()),
+									StringUtil.castToString(prod_weight),
 									jedisClient.get("prodLevel:"+bslProductInfo.getProdLevel())
 									)
 							);
 					prodNumSum += bslProductInfo.getProdNumCount();
-					prodWeightTotal += bslProductInfo.getProdWeightTotal();
+					prodWeightTotal += prod_weight;
 				}
 				prodWeightTotal = ((float)Math.round(prodWeightTotal*1000))/1000;
 				List<PDFCell> footList = new ArrayList<>();

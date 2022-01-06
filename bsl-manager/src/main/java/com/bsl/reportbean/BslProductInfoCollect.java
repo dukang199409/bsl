@@ -3,12 +3,26 @@ package com.bsl.reportbean;
 public class BslProductInfoCollect {
 	private String prodPlanNo;
 	private String prodName;
+	private String prodType;
 	private String prodNorm;
 	private String prodMaterial;
 	private Float prodLength;
 	private Integer prodNumCount;
 	private Float prodWeightTotal;
+	private Float prodRecordWeightTotal;
 	private String prodLevel;
+	public String getProdType() {
+		return prodType;
+	}
+	public void setProdType(String prodType) {
+		this.prodType = prodType;
+	}
+	public Float getProdRecordWeightTotal() {
+		return prodRecordWeightTotal;
+	}
+	public void setProdRecordWeightTotal(Float prodRecordWeightTotal) {
+		this.prodRecordWeightTotal = prodRecordWeightTotal;
+	}
 	public String getProdPlanNo() {
 		return prodPlanNo;
 	}
