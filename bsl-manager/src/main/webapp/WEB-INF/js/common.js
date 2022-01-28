@@ -594,6 +594,8 @@ var TT = BSL = {
         	return 'Q235B';
         } else if(val == '3'){
         	return 'Q345B';
+        } else if(val == '4'){
+        	return 'Q355C';
         }else if(val == '6'){
         	return 'Q355B';
         } else if(val == '7'){
