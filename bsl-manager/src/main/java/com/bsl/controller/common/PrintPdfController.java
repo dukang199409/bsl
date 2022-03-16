@@ -127,6 +127,11 @@ public class PrintPdfController {
 			}
 		}
 		List<BslProductQualityInfo> bslProductQualityInfoLists = qualityPrintService.getCarDetailByList(prodOutCarnosList);
+		//获取产品名称
+		String prodname = "";
+		for (BslProductQualityInfo bslProductQualityInfo : bslProductQualityInfoLists) {
+			prodname += "、" + bslProductQualityInfo.getProdName();
+		}
 		
 		//获取客户信息
 		BslBsPlanInfo bslBsPlanInfo = salePlanService.getSalePlanByCarno(prodOutCarnos[0]);
@@ -172,15 +177,6 @@ public class PrintPdfController {
 				}
 				prodWeightTotal = ((float)Math.round(prodWeightTotal*1000))/1000;
 				
-				String prodName = "方管";
-				if("2".equals(bslBsPlanInfo.getBsFlag())){
-					prodName = "纵剪带";
-				}else if ("3".equals(bslBsPlanInfo.getBsFlag())) {
-					prodName = "方管";
-				}else if ("5".equals(bslBsPlanInfo.getBsFlag()) || "6".equals(bslBsPlanInfo.getBsFlag())) {
-					prodName = "卷板";
-				}
-				
 				String bsShipper = "湖南宝顺联冷弯科技有限公司\nHunan Precious Sunlion Roll \nForming Technology Co., Ltd.";
 				if("湖南宝顺联冷弯科技有限公司".equals(bslBsPlanInfo.getBsShipper())){
 					bsShipper = "湖南宝顺联冷弯科技有限公司\nHunan Precious Sunlion Roll \nForming Technology Co., Ltd.";
@@ -200,7 +196,7 @@ public class PrintPdfController {
 				headList.add(new PDFCell("订货单位\nPUROHASER", CreatePdfUtil.keyfont1, Element.ALIGN_CENTER, 4, true));
 				headList.add(new PDFCell(bslBsPlanInfo.getBsCustomer(), CreatePdfUtil.textfont2, Element.ALIGN_CENTER, 12, true));
 				headList.add(new PDFCell("产品名称\nCOMMODITY", CreatePdfUtil.keyfont1, Element.ALIGN_CENTER, 5, true));
-				headList.add(new PDFCell(prodName, CreatePdfUtil.textfont2, Element.ALIGN_CENTER, 4, true));
+				headList.add(new PDFCell(prodname, CreatePdfUtil.textfont2, Element.ALIGN_CENTER, 4, true));
 				headList.add(new PDFCell("签发日期\nDATE OF ISSUE", CreatePdfUtil.keyfont1, Element.ALIGN_CENTER, 5, true));
 				headList.add(new PDFCell(DateUtil.getFormatText(new Date(),"yyyy-MM-dd HH:mm:ss"), CreatePdfUtil.textfont2, Element.ALIGN_CENTER, 4, true));
 				
