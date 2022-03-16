@@ -129,8 +129,14 @@ public class PrintPdfController {
 		List<BslProductQualityInfo> bslProductQualityInfoLists = qualityPrintService.getCarDetailByList(prodOutCarnosList);
 		//获取产品名称
 		String prodname = "";
+		List<String> prodNames = new ArrayList<>();
 		for (BslProductQualityInfo bslProductQualityInfo : bslProductQualityInfoLists) {
-			prodname += "、" + bslProductQualityInfo.getProdName();
+			if(!prodNames.contains(bslProductQualityInfo.getProdName())){
+				prodNames.add(bslProductQualityInfo.getProdName());
+			}
+		}
+		for (String prodnameTmp : prodNames) {
+			prodname += prodnameTmp + "、";
 		}
 		
 		//获取客户信息
