@@ -14,12 +14,20 @@
 	            <td width="210" align="right">
 	            	<input name="planId" class="easyui-textbox" panelHeight="auto"  type="text" data-options="required:false" style="width:200px;"  readonly="readonly"></input>
 	            </td>
+	            <td width="120" align="right">制造商:</td>
+	            <td width="210" align="right">
+	            	<select name="planShipper" class="easyui-combobox" panelHeight="auto" data-options="required:true,editable:true" style="width:200px;">
+			         	  <option value="">请选择...</option>
+				          <option value="湖南宝顺联冷弯科技有限公司">湖南宝顺联冷弯科技有限公司</option>
+				          <option value="湖南鸿铮金属科技有限公司">湖南鸿铮金属科技有限公司</option>
+					</select>
+	            </td>  
+	        </tr>
+	        <tr>
 	       		<td width="120" align="right">用料规格:</td>
             	 <td width="210" align="right">
 	            	<input name="prodNorm" class="easyui-textbox" type="text" data-options="required:true,validType:'length[0,40]'" style="width:200px;"></input>
 	            </td>
-	        </tr>
-	        <tr>
 	             <td width="120" align="right">用料钢种:</td>
 	            <td width="210" align="right">
 	            	<select name="prodMaterial" class="easyui-combobox" panelHeight="auto" data-options="editable:true" style="width:200px;">
@@ -28,10 +36,6 @@
 			          	   	<option value="${a.enumKey}">${a.enumValue}</option>
 			          </c:forEach>
 					</select>
-	            </td>
-	            <td width="120" align="right">生产订单号:</td>
-	            <td width="210"  align="right">
-	            	<input name="prodOrder" class="easyui-textbox" data-options="required:false,validType:'length[0,20]'" style="text; width: 200px;"></input>
 	            </td>
 	        </tr>
 	         <tr>
@@ -85,10 +89,16 @@
 	            </td>
 	        </tr>
 	        <tr>
+	            <td width="120" align="right">生产订单号:</td>
+	            <td width="210"  align="right">
+	            	<input name="prodOrder" class="easyui-textbox" data-options="required:false,validType:'length[0,20]'" style="text; width: 200px;"></input>
+	            </td>
 	        	<td width="120" align="right">工厂:</td>
 	            <td width="210"  align="right">
 	            	<input class="easyui-textbox" name="company" data-options="required:false,validType:'length[0,20]'" style="text; width: 200px;"></input>
 	            </td>
+	        </tr>
+	        <tr>
 	             <td width="120" align="right">来料客户:</td>
 	            <td width="210" align="right">
 	            	<select name="customer" class="easyui-combobox" panelHeight="auto" data-options="editable:true" style="width:200px;">
@@ -98,8 +108,6 @@
 			          </c:forEach>
 					</select>
 	            </td>
-	        </tr>
-	        <tr>
 	            <td width="120" align="right">备注:</td>
 	            <td width="210"  align="right">
 	            	<input class="easyui-textbox" name="remark" data-options="required:false,validType:'length[0,120]'" style="text; width: 200px;"></input>

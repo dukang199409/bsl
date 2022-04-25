@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.bsl.pojo.BslMakePlanInfo" >
     <id column="plan_id" property="planId" jdbcType="VARCHAR" />
     <result column="plan_flag" property="planFlag" jdbcType="CHAR" />
+    <result column="plan_shipper" property="planShipper" jdbcType="VARCHAR" />
     <result column="company" property="company" jdbcType="VARCHAR" />
     <result column="plan_department" property="planDepartment" jdbcType="CHAR" />
     <result column="plan_jz" property="planJz" jdbcType="CHAR" />
@@ -84,9 +85,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    plan_id, plan_flag, company, plan_department, plan_jz, plan_luno, plan_status, prod_norm, 
-    prod_weight, prod_num, prod_material, make_type, prod_order, make_name, make_prod_norm, 
-    customer, already_num, already_sum, inputuser, checkuser, crt_date, remark
+    plan_id, plan_flag, plan_shipper, company, plan_department, plan_jz, plan_luno, plan_status, 
+    prod_norm, prod_weight, prod_num, prod_material, make_type, prod_order, make_name, 
+    make_prod_norm, customer, already_num, already_sum, inputuser, checkuser, crt_date, 
+    remark
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bsl.pojo.BslMakePlanInfoExample" >
     select
@@ -119,22 +121,22 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.bsl.pojo.BslMakePlanInfo" >
-    insert into bsl_make_plan_info (plan_id, plan_flag, company, 
-      plan_department, plan_jz, plan_luno, 
-      plan_status, prod_norm, prod_weight, 
-      prod_num, prod_material, make_type, 
-      prod_order, make_name, make_prod_norm, 
-      customer, already_num, already_sum, 
-      inputuser, checkuser, crt_date, 
-      remark)
-    values (#{planId,jdbcType=VARCHAR}, #{planFlag,jdbcType=CHAR}, #{company,jdbcType=VARCHAR}, 
-      #{planDepartment,jdbcType=CHAR}, #{planJz,jdbcType=CHAR}, #{planLuno,jdbcType=VARCHAR}, 
-      #{planStatus,jdbcType=CHAR}, #{prodNorm,jdbcType=VARCHAR}, #{prodWeight,jdbcType=REAL}, 
-      #{prodNum,jdbcType=INTEGER}, #{prodMaterial,jdbcType=CHAR}, #{makeType,jdbcType=CHAR}, 
-      #{prodOrder,jdbcType=VARCHAR}, #{makeName,jdbcType=VARCHAR}, #{makeProdNorm,jdbcType=VARCHAR}, 
-      #{customer,jdbcType=CHAR}, #{alreadyNum,jdbcType=INTEGER}, #{alreadySum,jdbcType=REAL}, 
-      #{inputuser,jdbcType=VARCHAR}, #{checkuser,jdbcType=VARCHAR}, #{crtDate,jdbcType=DATE}, 
-      #{remark,jdbcType=VARCHAR})
+    insert into bsl_make_plan_info (plan_id, plan_flag, plan_shipper, 
+      company, plan_department, plan_jz, 
+      plan_luno, plan_status, prod_norm, 
+      prod_weight, prod_num, prod_material, 
+      make_type, prod_order, make_name, 
+      make_prod_norm, customer, already_num, 
+      already_sum, inputuser, checkuser, 
+      crt_date, remark)
+    values (#{planId,jdbcType=VARCHAR}, #{planFlag,jdbcType=CHAR}, #{planShipper,jdbcType=VARCHAR}, 
+      #{company,jdbcType=VARCHAR}, #{planDepartment,jdbcType=CHAR}, #{planJz,jdbcType=CHAR}, 
+      #{planLuno,jdbcType=VARCHAR}, #{planStatus,jdbcType=CHAR}, #{prodNorm,jdbcType=VARCHAR}, 
+      #{prodWeight,jdbcType=REAL}, #{prodNum,jdbcType=INTEGER}, #{prodMaterial,jdbcType=CHAR}, 
+      #{makeType,jdbcType=CHAR}, #{prodOrder,jdbcType=VARCHAR}, #{makeName,jdbcType=VARCHAR}, 
+      #{makeProdNorm,jdbcType=VARCHAR}, #{customer,jdbcType=CHAR}, #{alreadyNum,jdbcType=INTEGER}, 
+      #{alreadySum,jdbcType=REAL}, #{inputuser,jdbcType=VARCHAR}, #{checkuser,jdbcType=VARCHAR}, 
+      #{crtDate,jdbcType=DATE}, #{remark,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.bsl.pojo.BslMakePlanInfo" >
     insert into bsl_make_plan_info
@@ -144,6 +146,9 @@
       </if>
       <if test="planFlag != null" >
         plan_flag,
+      </if>
+      <if test="planShipper != null" >
+        plan_shipper,
       </if>
       <if test="company != null" >
         company,
@@ -212,6 +217,9 @@
       </if>
       <if test="planFlag != null" >
         #{planFlag,jdbcType=CHAR},
+      </if>
+      <if test="planShipper != null" >
+        #{planShipper,jdbcType=VARCHAR},
       </if>
       <if test="company != null" >
         #{company,jdbcType=VARCHAR},
@@ -290,6 +298,9 @@
       <if test="record.planFlag != null" >
         plan_flag = #{record.planFlag,jdbcType=CHAR},
       </if>
+      <if test="record.planShipper != null" >
+        plan_shipper = #{record.planShipper,jdbcType=VARCHAR},
+      </if>
       <if test="record.company != null" >
         company = #{record.company,jdbcType=VARCHAR},
       </if>
@@ -359,6 +370,7 @@
     update bsl_make_plan_info
     set plan_id = #{record.planId,jdbcType=VARCHAR},
       plan_flag = #{record.planFlag,jdbcType=CHAR},
+      plan_shipper = #{record.planShipper,jdbcType=VARCHAR},
       company = #{record.company,jdbcType=VARCHAR},
       plan_department = #{record.planDepartment,jdbcType=CHAR},
       plan_jz = #{record.planJz,jdbcType=CHAR},
@@ -388,6 +400,9 @@
     <set >
       <if test="planFlag != null" >
         plan_flag = #{planFlag,jdbcType=CHAR},
+      </if>
+      <if test="planShipper != null" >
+        plan_shipper = #{planShipper,jdbcType=VARCHAR},
       </if>
       <if test="company != null" >
         company = #{company,jdbcType=VARCHAR},
@@ -455,6 +470,7 @@
   <update id="updateByPrimaryKey" parameterType="com.bsl.pojo.BslMakePlanInfo" >
     update bsl_make_plan_info
     set plan_flag = #{planFlag,jdbcType=CHAR},
+      plan_shipper = #{planShipper,jdbcType=VARCHAR},
       company = #{company,jdbcType=VARCHAR},
       plan_department = #{planDepartment,jdbcType=CHAR},
       plan_jz = #{planJz,jdbcType=CHAR},
@@ -480,6 +496,7 @@
    <resultMap id="BaseResultMapCCrate" type="com.bsl.reportbean.BslMakePlanInfoPro" >
     <result column="plan_id" property="planId" jdbcType="VARCHAR" />
     <result column="plan_flag" property="planFlag" jdbcType="CHAR" />
+    <result column="plan_shipper" property="planShipper" jdbcType="VARCHAR" />
     <result column="plan_jz" property="planJz" jdbcType="CHAR" />
     <result column="company" property="company" jdbcType="VARCHAR" />
     <result column="plan_department" property="planDepartment" jdbcType="CHAR" />
@@ -510,6 +527,7 @@
 			select 
 				t.plan_id, 
 				t.plan_flag, 
+				t.plan_shipper,
 				t.plan_jz,
 				t.company, 
 				t.plan_department, 
@@ -581,6 +599,7 @@
 			select 
 				t.plan_id, 
 				t.plan_flag, 
+				t.plan_shipper,
 				t.plan_jz,
 				t.company, 
 				t.plan_department, 
@@ -645,5 +664,4 @@
 		     order by ${orderByClause}
 		</if>
   </select>
-  
 </mapper>

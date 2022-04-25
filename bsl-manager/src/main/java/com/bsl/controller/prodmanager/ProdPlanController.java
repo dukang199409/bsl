@@ -105,6 +105,9 @@ public class ProdPlanController {
 		if(StringUtils.isBlank(bslMakePlanInfo.getPlanJz())){
 			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "制造机组不能为空");
 		}
+		if(StringUtils.isBlank(bslMakePlanInfo.getPlanShipper())){
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "制造商不能为空");
+		}
 		try {
 			return prodPlanService.addProdPlanInfo(bslMakePlanInfo);
 		} catch (Exception e) {
@@ -142,6 +145,9 @@ public class ProdPlanController {
 		}
 		if(StringUtils.isBlank(bslMakePlanInfo.getPlanJz())){
 			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "制造机组不能为空");
+		}
+		if(StringUtils.isBlank(bslMakePlanInfo.getPlanShipper())){
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "制造商不能为空");
 		}
 		try {
 			return prodPlanService.updateProdPlanInfo(bslMakePlanInfo);

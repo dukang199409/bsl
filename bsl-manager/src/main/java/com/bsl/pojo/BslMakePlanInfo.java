@@ -7,6 +7,8 @@ public class BslMakePlanInfo {
 
     private String planFlag;
 
+    private String planShipper;
+
     private String company;
 
     private String planDepartment;
@@ -61,6 +63,14 @@ public class BslMakePlanInfo {
 
     public void setPlanFlag(String planFlag) {
         this.planFlag = planFlag == null ? null : planFlag.trim();
+    }
+
+    public String getPlanShipper() {
+        return planShipper;
+    }
+
+    public void setPlanShipper(String planShipper) {
+        this.planShipper = planShipper == null ? null : planShipper.trim();
     }
 
     public String getCompany() {

@@ -9,6 +9,16 @@
 <div style="padding:10px 10px 10px 10px">
 	<form id="prodPlanAddForm" class="itemForm" method="post">
 	    <table cellpadding="5">
+		    <tr>
+		    	<td width="120" align="right">制造商:</td>
+	            <td width="210" align="right">
+	            	<select name="planShipper" class="easyui-combobox" panelHeight="auto" data-options="required:true,editable:true" style="width:200px;">
+			         	  <option value="">请选择...</option>
+				          <option value="湖南宝顺联冷弯科技有限公司">湖南宝顺联冷弯科技有限公司</option>
+				          <option value="湖南鸿铮金属科技有限公司">湖南鸿铮金属科技有限公司</option>
+					</select>
+	            </td>  
+	        </tr>
 	        <tr>
 	       		<td width="120" align="right">用料规格:</td>
             	 <td width="210" align="right">

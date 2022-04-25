@@ -6,6 +6,8 @@ public class BslMakePlanInfoPro {
     private String planId;
 
     private String planFlag;
+    
+    private String planShipper;
 
     private String company;
 
@@ -53,7 +55,15 @@ public class BslMakePlanInfoPro {
     
     private String planJz;
     
-    public String getPlanJz() {
+    public String getPlanShipper() {
+		return planShipper;
+	}
+
+	public void setPlanShipper(String planShipper) {
+		this.planShipper = planShipper;
+	}
+
+	public String getPlanJz() {
 		return planJz;
 	}
 

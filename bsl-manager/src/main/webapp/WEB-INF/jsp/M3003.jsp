@@ -115,6 +115,7 @@
 	        	<th data-options="field:'ck',checkbox:true"></th>
 	        	<th data-options="field:'planId',width:130,sortable:true">产品生产指令号</th>
 	            <th data-options="field:'planStatus',width:100,formatter:BSL.formatPlanStatus,sortable:true">指令状态</th>
+	            <th data-options="field:'planShipper',width:170,sortable:true">制造商</th>
 	            <th data-options="field:'planJz',width:100,sortable:true,formatter:BSL.formatPlanJz">生产机组</th>
 	            <th data-options="field:'prodNorm',width:100,sortable:true">用料规格</th>
 	        	<th data-options="field:'prodMaterial',width:100,formatter:BSL.formatProdMaterial,sortable:true">用料钢种</th>	
