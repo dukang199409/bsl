@@ -147,6 +147,7 @@
 	        	<th data-options="field:'prodNum',width:60,sortable:true">数量</th>
 	        	<th data-options="field:'prodDclFlag',width:130,formatter:BSL.formatProdDclFlag,sortable:true">外协厂标志</th>
 	        	<th data-options="field:'prodCompany',width:100,sortable:true">厂家</th>
+	        	<th data-options="field:'prodCustomer',width:100,sortable:true">客户</th>
 	            <th data-options="field:'prodLevel',width:90,formatter:BSL.formatProdLevel,sortable:true">质量等级</th>
 	            <th data-options="field:'prodSource',width:90,formatter:BSL.formatProdSource,sortable:true">产品来源</th>
 	            <th data-options="field:'prodUserType',width:90,formatter:BSL.formatMakeType,sortable:true">纵剪带用途</th>
