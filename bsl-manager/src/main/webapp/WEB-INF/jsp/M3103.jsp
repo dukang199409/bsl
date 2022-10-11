@@ -151,6 +151,8 @@
 	</div>
 	<div id="prodWxAddWindowB" class="easyui-window" title="外协厂产品补录入库" data-options="modal:true,closed:true,iconCls:'edit_add',href:'/prodWxManager/M3103-addb'" style="width:780px;height:340px;padding:10px;">
 	</div>
+	<div id="prodWxDealWindow" class="easyui-window" title="外协厂产品加工" data-options="modal:true,closed:true,iconCls:'receipt-edit',href:'/prodWxManager/M3103-deal'" style="width:780px;height:360px;padding:10px;">
+	</div>
 </div>
 <script>
 
@@ -215,6 +217,37 @@
     }
     
     var toolbarM3103 = [{
+        text:'加工',
+        iconCls:'icon-edit',
+        handler:function(){
+        	var ids = getM3103SelectionsIds();
+        	if(ids.length == 0){
+        		$.messager.alert('提示','必须选择一条记录加工!');
+        		return ;
+        	}
+        	if(ids.indexOf(',') > 0){
+        		$.messager.alert('提示','只能选择一条记录加工!');
+        		return ;
+        	}
+        	var data = $("#prodWxInfoList").datagrid("getSelections")[0];
+        	if(data.prodStatus != "1"){
+        		$.messager.alert('提示','只有入库的产品才能加工!');
+        		return ;
+        	}
+        	$("#prodWxDealWindow").window({
+        		onLoad :function(){
+        			//回显数据
+        			data.prodOriId = data.prodId;
+	        		data.prodBc = '6';
+	        		data.prodRuc = '7';
+	            	data.prodLength = '';
+	            	data.prodName = '';
+	            	data.prodRelWeight = '';
+        			$("#prodWxInfoDealForm").form("load",data);
+        		}
+        	}).window("open");
+        }
+    },{
         text:'补录入库',
         iconCls:'icon-add',
         handler:function(){

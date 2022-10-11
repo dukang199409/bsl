@@ -67,4 +67,10 @@ public interface ProdService {
 	
 	//根据盘号获取已入库待处理品包数
 	BSLResult getProdDclRuNums(String prodId);
+	
+	//产品入库-外协产产品加工
+	BSLResult addWxProd3103(BslProductInfo bslProductInfo,int sumNum);
+	
+	//产品入库-外协产产品加工完成
+	BSLResult updateWxProdDealFinishStatus(String prodId, String user);
 }

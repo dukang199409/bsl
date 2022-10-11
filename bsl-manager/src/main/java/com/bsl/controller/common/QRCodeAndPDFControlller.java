@@ -18,9 +18,7 @@ import com.bsl.dao.JedisClient;
 import com.bsl.mapper.BslProductInfoMapper;
 import com.bsl.pojo.BslMakePlanInfo;
 import com.bsl.pojo.BslProductInfo;
-import com.bsl.select.DictItemOperation;
 import com.bsl.select.QueryExample;
-import com.bsl.service.plan.MakePlanService;
 import com.bsl.service.prodmanager.ProdPlanService;
 import com.bsl.service.rawmaterialsmanager.RawService;
 import org.apache.commons.lang3.StringUtils;
@@ -38,9 +36,6 @@ public class QRCodeAndPDFControlller {
 	@Autowired
 	private ProdPlanService prodPlanService;
 	
-	@Autowired
-	private MakePlanService makePlanService;
-
 	@RequestMapping(value = "/importPdf", method = RequestMethod.POST)
 	public String importPdf(HttpServletRequest request, HttpServletResponse response, QueryExample example) {
 		JedisClient jedisClient = (JedisClient)SpringContextUtils.getBean("jedisClient");
@@ -93,8 +88,7 @@ public class QRCodeAndPDFControlller {
 			paramMap.put("prodId", StringUtil.castToString(productInfo.getProdId()));
 			paramMap.put("prodLevel", jedisClient.get("prodLevel:"+productInfo.getProdLevel()));
 			paramMap.put("prodLuno", StringUtil.castToString(productInfo.getProdLuno()));
-			BslMakePlanInfo bslMakePlanInfo = makePlanService.getMakePlanInfoById(productInfo.getProdPlanNo());
-			paramMap.put("planDepartment", jedisClient.get("planDepartment:"+bslMakePlanInfo.getPlanDepartment()));// 生产班组
+			paramMap.put("planDepartment",jedisClient.get("prodBc:"+productInfo.getProdBc()));//生产班组
 			paramMap.put("bsCompany",  StringUtil.castToString(productInfo.getProdCompany()));// 来料顾客
 			paramMap.put("bsCarno", StringUtil.castToString(productInfo.getRemark()));// 运输
 			paramMap.put("crtDate", DateUtil.getFormatText(productInfo.getCrtDate(), "yyyy-MM-dd HH:mm"));// DateUtil.getFormatText(productInfo.getCrtDate(),"yyyy/MM/dd")
@@ -133,13 +127,16 @@ public class QRCodeAndPDFControlller {
 		try {
 			BslProductInfo productInfo = rawService.queryByPrimaryKey(prodId);
 			String prod_shipper = "";
-			BslMakePlanInfo prodPlanInfo = prodPlanService.getProdPlanInfo(productInfo.getProdPlanNo());
-			String plan_department = "";
-			if(DictItemOperation.是否标志_否.equals(productInfo.getProdDclFlag())){
-				if(prodPlanInfo != null){
-					plan_department = jedisClient.get("planDepartment:"+prodPlanInfo.getPlanDepartment());
+			String prod_plan_no = "";
+			if(!StringUtils.isBlank(productInfo.getProdPlanNo())){
+				prod_plan_no = productInfo.getProdPlanNo();
+			}else{
+				BslProductInfo productInfoOri = rawService.queryByPrimaryKey(productInfo.getProdOriId());
+				if(productInfoOri != null){
+					prod_plan_no = productInfoOri.getProdPlanNo();
 				}
 			}
+			BslMakePlanInfo prodPlanInfo = prodPlanService.getProdPlanInfo(prod_plan_no);
 			if(prodPlanInfo != null){
 				prod_shipper = prodPlanInfo.getPlanShipper();
 			}
@@ -152,13 +149,13 @@ public class QRCodeAndPDFControlller {
 			paramMap.put("prod_length", StringUtil.castToString(productInfo.getProdLength())+"米");
 			paramMap.put("prod_plan_no", StringUtil.castToString(productInfo.getProdPlanNo()));//生产批号 
 			paramMap.put("prod_level", jedisClient.get("prodLevel:"+productInfo.getProdLevel()));
-			paramMap.put("prod_source_company", prodPlanInfo.getPlanShipper());// 制造厂商
-			paramMap.put("prod_shipper", prodPlanInfo.getPlanShipper());// 制造商
+			paramMap.put("prod_source_company", prod_shipper);// 制造厂商
+			paramMap.put("prod_shipper", prod_shipper);// 制造商
 			paramMap.put("telphone", "13918249223");// 电话
 			paramMap.put("crtDate", DateUtil.getFormatText(productInfo.getCrtDate(), "yyyy-MM-dd HH:mm"));// DateUtil.getFormatText(productInfo.getCrtDate(),"yyyy/MM/dd")
 			paramMap.put("prod_check_user", StringUtil.castToString(productInfo.getProdCheckuser()));
 			paramMap.put("prod_num", StringUtil.castToString(productInfo.getProdNum()));
-			paramMap.put("plan_department", plan_department );//生产班组
+			paramMap.put("plan_department",jedisClient.get("prodBc:"+productInfo.getProdBc()));//生产班组
 			paramMap.put("plan_luno", StringUtil.castToString(productInfo.getProdLuno()));//炉号
 	
 			Map<String, String> fileNameMap = new HashMap<>();
@@ -213,7 +210,7 @@ public class QRCodeAndPDFControlller {
 			paramMap.put("prod_source_company", prod_shipper);// 制造厂商
 			paramMap.put("prod_shipper", prodPlanInfo.getPlanShipper());// 制造商
 			paramMap.put("prod_num", StringUtil.castToString(productInfo.getProdNum()));
-			paramMap.put("plan_department",  jedisClient.get("planDepartment:"+prodPlanInfo.getPlanDepartment()));//生产班组
+			paramMap.put("plan_department",jedisClient.get("prodBc:"+productInfo.getProdBc()));//生产班组
 			paramMap.put("plan_luno", StringUtil.castToString(productInfo.getProdLuno()));//炉号
 	
 			Map<String, String> fileNameMap = new HashMap<>();

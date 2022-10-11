@@ -144,6 +144,75 @@ public class WxProdController {
 		}
 	}
 	
+	/**
+	 * 外协厂产品加工入库
+	 * @param 
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping("/addWxProd3103")
+	@ResponseBody
+	public BSLResult addWxProd3103(BslProductInfo bslProductInfo,String sumNum){
+		int sumNumInt = Integer.parseInt(sumNum);
+		if(StringUtils.isBlank(bslProductInfo.getProdName())){
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "物料名称不能为空");
+		}
+		if(StringUtils.isBlank(bslProductInfo.getProdNorm())){
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "产品规格不能为空");
+		}
+		if(StringUtils.isBlank(bslProductInfo.getProdMaterial())){
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "产品钢种不能为空");
+		}
+		if(StringUtils.isBlank(bslProductInfo.getProdOriId())){
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "产品父级代加工产品编号不能为空");
+		}
+		if(bslProductInfo.getProdLength() == null || bslProductInfo.getProdLength() == 0){
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "产品定尺不能为空");
+		}
+		if(bslProductInfo.getProdRelWeight() == null || bslProductInfo.getProdRelWeight() == 0){
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "产品实际重量不能为空");
+		}
+		if(bslProductInfo.getProdNum() == null || bslProductInfo.getProdNum() == 0){
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "产品件数不能为空");
+		}
+		if(StringUtils.isBlank(bslProductInfo.getProdBc())){
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "生产班次不能为空");
+		}
+		if(StringUtils.isBlank(bslProductInfo.getProdRuc())){
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "入库仓库不能为空");
+		}
+		try {
+			return prodService.addWxProd3103(bslProductInfo,sumNumInt);
+		} catch (Exception e) {
+			DictItemOperation.log.info("===========异常:"+e.getMessage());
+			return BSLResult.build(ErrorCodeInfo.错误类型_交易异常,e.getMessage());
+		}
+	}
+	
+	/**
+	 * 外协厂产品加工完成，产品状态修改
+	 * @param 
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping("/dealWxProdFinish")
+	@ResponseBody
+	public BSLResult dealWxProdFinish(String prodId,String user){
+		if(StringUtils.isBlank(prodId)){
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "产品编码不能为空");
+		}
+		if(StringUtils.isBlank(user)){
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "录入人不能为空");
+		}
+		
+		try {
+			return prodService.updateWxProdDealFinishStatus(prodId,user);
+		} catch (Exception e) {
+			DictItemOperation.log.info("===========异常:"+e.getMessage());
+			return BSLResult.build(ErrorCodeInfo.错误类型_交易异常,e.getMessage());
+		}
+	}
+	
 	@RequestMapping("/{page}")
 	public String showUserPage(@PathVariable String page, HttpServletRequest request) {
 		//新增的时候，查询可以处理的待处理品

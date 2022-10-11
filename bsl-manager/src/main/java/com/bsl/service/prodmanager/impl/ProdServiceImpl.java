@@ -836,6 +836,19 @@ public class ProdServiceImpl implements ProdService {
 	}
 	
 	/**
+	 * 外协厂加工产品自动生成编号
+	 * XCPW+日期+3位序号
+	 * @return
+	 */
+	public String createProdIdWxJs() {
+		long incr = jedisClient.incr(REDIS_NEXT_PROD_W_ID);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		String prodId = String.format("XCPWJS%s%03d", sdf.format(new Date()), incr);
+		return prodId;
+	}
+	
+	
+	/**
 	 * 库存变动流水自动生成编号
 	 * CH+日期+4位序号
 	 * @return
@@ -1478,6 +1491,137 @@ public class ProdServiceImpl implements ProdService {
 		
 		return BSLResult.ok(prodId+"-1");
 	}
+	
+	/**
+	 * 产品入库-外协产产品加工
+	 */
+	@Override
+	public BSLResult addWxProd3103(BslProductInfo bslProductInfo, int sumNum) {
+		//二次校验
+		//获取待处理品信息
+		String prodCompany = "";
+		String prodCustomer = "";
+		Float relOriWeight = 0f;
+		BslProductInfo bslProductInfoOriProd = bslProductInfoMapper.selectByPrimaryKey(bslProductInfo.getProdOriId());
+		if(bslProductInfoOriProd != null){
+			//校验炉号
+			if(!bslProductInfo.getProdLuno().equals(bslProductInfoOriProd.getProdLuno())){
+				throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "产品炉号必须与父级产品炉号一致");
+			}
+			//校验钢种
+			if(!bslProductInfo.getProdMaterial().equals(bslProductInfoOriProd.getProdMaterial())){
+				throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "产品钢种必须与父级产品钢种一致");
+			}
+			//校验规格
+			if(!bslProductInfo.getProdNorm().equals(bslProductInfoOriProd.getProdNorm())){
+				throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "产品规格必须与父级产品规格一致");
+			}
+			prodCompany = bslProductInfoOriProd.getProdCompany();
+			prodCustomer = bslProductInfoOriProd.getProdCustomer();
+			relOriWeight = bslProductInfoOriProd.getProdRelWeight();
+			if(relOriWeight<bslProductInfo.getProdRelWeight()){
+				throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "子产品总重量不能高于父级产品重量");
+			}
+		}
+		
+		//判断入库盘数,平分重量
+		Float relWeight = bslProductInfo.getProdRelWeight()/sumNum;
+		relWeight = ((float)Math.round(relWeight*1000))/1000;
+		bslProductInfo.setProdRelWeight(relWeight);
+		
+		//记录入库流水
+		BslStockChangeDetail bslStockChangeDetail = new BslStockChangeDetail();
+		String returnProdId = "";
+		String prodId;
+		
+		for (int i = 0; i < sumNum; i++) {
+			//校验完成，开始入库
+			prodId = createProdIdWxJs();
+			bslProductInfo.setProdId(prodId);//生成编号
+			bslProductInfo.setProdType(DictItemOperation.产品类型_成品);
+			bslProductInfo.setProdPrintWeight(bslProductInfo.getProdRelWeight());//打印重量为实际重量
+			bslProductInfo.setCrtDate(new Date());//创建日期当天
+			bslProductInfo.setProdStatus(DictItemOperation.产品状态_已入库);
+			bslProductInfo.setProdDclFlag(DictItemOperation.产品外协厂标志_加工);
+			bslProductInfo.setProdCompany(prodCompany);//厂家同原来一致
+			bslProductInfo.setProdCustomer(prodCustomer);
+			
+			int result = bslProductInfoMapper.insert(bslProductInfo);
+			if(result<0){
+				throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
+			}else if(result==0){
+				throw new BSLException(ErrorCodeInfo.错误类型_查询无记录,"入库失败");
+			}
+			
+			//插入成功之后记录插入流水
+			bslStockChangeDetail = new BslStockChangeDetail();
+			bslStockChangeDetail.setTransSerno(createStockChangeId());//流水
+			bslStockChangeDetail.setProdId(bslProductInfo.getProdId());//产品编号
+			bslStockChangeDetail.setPlanSerno(bslProductInfo.getProdPlanNo());//对应的生产指令号
+			bslStockChangeDetail.setTransCode(DictItemOperation.库存变动交易码_入库);//交易码
+			bslStockChangeDetail.setProdType(DictItemOperation.产品类型_成品);//产品类型
+			bslStockChangeDetail.setRubbishWeight(bslProductInfo.getProdRelWeight());//重量
+			bslStockChangeDetail.setInputuser(bslProductInfo.getProdCheckuser());//录入人
+			bslStockChangeDetail.setCrtDate(new Date());
+			int resultStock = bslStockChangeDetailMapper.insert(bslStockChangeDetail);
+			if(resultStock<0){
+				throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
+			}else if(resultStock==0){
+				throw new BSLException(ErrorCodeInfo.错误类型_查询无记录,"新增库存变动表失败");
+			}
+			
+			//记录返回起始编号
+			if(i==0){
+				returnProdId = prodId;
+			}
+		}
+		return BSLResult.ok(returnProdId);
+	}
+	
+	/**
+	 * 外协厂产品加工完成
+	 */
+	@Override
+	public BSLResult updateWxProdDealFinishStatus(String prodId, String user) {
+		BslProductInfo bslProductInfo = bslProductInfoMapper.selectByPrimaryKey(prodId);
+		if(bslProductInfo == null){
+			throw new BSLException(ErrorCodeInfo.错误类型_查询无记录, "根据产品编号查询记录为空");
+		}
+		//校验状态，只有是未处理的状态才能修改
+		if(!DictItemOperation.产品状态_已入库.equals(bslProductInfo.getProdStatus())){
+			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "只有在库的产品才允许完成");
+		}
+		//开始完成
+		bslProductInfo.setProdStatus(DictItemOperation.产品状态_处理完成);
+		bslProductInfo.setUpdDate(new Date());
+		bslProductInfo.setProdCheckuser(user);
+		int result = bslProductInfoMapper.updateByPrimaryKeySelective(bslProductInfo);
+		if(result<0){
+			throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
+		}else if(result==0){
+			throw new BSLException(ErrorCodeInfo.错误类型_查询无记录,"完成失败");
+		}
+		
+		//记录完成信息
+		BslStockChangeDetail bslStockChangeDetailRaw = new BslStockChangeDetail();
+		bslStockChangeDetailRaw.setTransSerno(createStockChangeId());//流水
+		bslStockChangeDetailRaw.setProdId(bslProductInfo.getProdId());//编号
+		bslStockChangeDetailRaw.setPlanSerno(bslProductInfo.getProdPlanNo());
+		bslStockChangeDetailRaw.setTransCode(DictItemOperation.库存变动交易码_完成);//交易码
+		bslStockChangeDetailRaw.setProdType(DictItemOperation.产品类型_成品);
+		bslStockChangeDetailRaw.setRubbishWeight(bslProductInfo.getProdRelWeight());//重量
+		bslStockChangeDetailRaw.setInputuser(user);//录入人
+		bslStockChangeDetailRaw.setCrtDate(new Date());
+		int resultStockRaw = bslStockChangeDetailMapper.insert(bslStockChangeDetailRaw);
+		if(resultStockRaw<0){
+			throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
+		}else if(resultStockRaw==0){
+			throw new BSLException(ErrorCodeInfo.错误类型_查询无记录,"新增库存变动表失败");
+		}
+		
+		return BSLResult.ok(prodId);
+	}
+
 
 	/**
 	 * 查询某指令制造的产品用料组成信息

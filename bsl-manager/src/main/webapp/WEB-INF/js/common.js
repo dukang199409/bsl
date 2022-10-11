@@ -335,6 +335,8 @@ var TT = BSL = {
         	return '480机组待处理仓';
         } else if(val == '6'){
         	return '委外仓';
+        } else if(val == '7'){
+        	return '加工产品成品库';
         } else {
         	return val;
         }
