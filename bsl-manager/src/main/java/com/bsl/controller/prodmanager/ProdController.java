@@ -444,6 +444,22 @@ public class ProdController {
 		}
 	}
 	
+	@RequestMapping("/getProdById")
+	@ResponseBody
+	public BSLResult getProdById(String prodId) {
+		//根据编号查询产品信息
+		if(StringUtils.isBlank(prodId)){
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "产品编号不能为空");
+		}
+		try {
+			BSLResult bslResult = prodService.getProdById(prodId);
+			return bslResult;
+		} catch (Exception e) {
+			DictItemOperation.log.info("===========异常:"+e.getMessage());
+			return BSLResult.build(ErrorCodeInfo.错误类型_交易异常,e.getMessage());
+		}
+	}
+	
 	@RequestMapping("/{page}")
 	public String showUserPage(@PathVariable String page, HttpServletRequest request) {
 		/*//新增的时候，查询该指令下正在执行的盘号

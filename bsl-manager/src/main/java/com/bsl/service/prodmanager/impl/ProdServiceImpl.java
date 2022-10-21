@@ -1075,6 +1075,8 @@ public class ProdServiceImpl implements ProdService {
 		if (!StringUtils.isBlank(queryCriteria.getProdDclFlag())) {
 			criteria.andProdDclFlagEqualTo(queryCriteria.getProdDclFlag());
 		}
+		//只查询仓库是6-委外仓的，因为外协厂产品可以切割，区分入7-加工产品成品库
+		criteria.andProdRucEqualTo(DictItemOperation.入库仓库_委外仓);
 		
 		//开始日期结束日期
 		//起始日期 结束日期
@@ -1621,6 +1623,181 @@ public class ProdServiceImpl implements ProdService {
 		
 		return BSLResult.ok(prodId);
 	}
+	
+	/**
+	 * 产品补录入库-外协产产品加工
+	 */
+	@Override
+	public BSLResult addM3108Prod(BslProductInfo bslProductInfo) {
+		//二次校验
+		//获取待处理品信息
+		String prodCompany = "";
+		String prodCustomer = "";
+		Float relOriWeight = 0f;
+		BslProductInfo bslProductInfoOriProd = bslProductInfoMapper.selectByPrimaryKey(bslProductInfo.getProdOriId());
+		if(bslProductInfoOriProd != null){
+			//校验炉号
+			if(!bslProductInfo.getProdLuno().equals(bslProductInfoOriProd.getProdLuno())){
+				throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "产品炉号必须与父级产品炉号一致");
+			}
+			//校验钢种
+			if(!bslProductInfo.getProdMaterial().equals(bslProductInfoOriProd.getProdMaterial())){
+				throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "产品钢种必须与父级产品钢种一致");
+			}
+			//校验规格
+			if(!bslProductInfo.getProdNorm().equals(bslProductInfoOriProd.getProdNorm())){
+				throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "产品规格必须与父级产品规格一致");
+			}
+			prodCompany = bslProductInfoOriProd.getProdCompany();
+			prodCustomer = bslProductInfoOriProd.getProdCustomer();
+			relOriWeight = bslProductInfoOriProd.getProdRelWeight();
+			if(relOriWeight<bslProductInfo.getProdRelWeight()){
+				throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "子产品总重量不能高于父级产品重量");
+			}
+		}
+		
+		
+		//记录入库流水
+		BslStockChangeDetail bslStockChangeDetail = new BslStockChangeDetail();
+		String prodId = createProdIdWxJs();
+		
+		//校验完成，开始入库
+		bslProductInfo.setProdId(prodId);//生成编号
+		bslProductInfo.setProdType(DictItemOperation.产品类型_成品);
+		bslProductInfo.setProdPrintWeight(bslProductInfo.getProdRelWeight());//打印重量为实际重量
+		bslProductInfo.setCrtDate(new Date());//创建日期当天
+		bslProductInfo.setProdStatus(DictItemOperation.产品状态_已入库);
+		bslProductInfo.setProdDclFlag(DictItemOperation.产品外协厂标志_加工);
+		bslProductInfo.setProdCompany(prodCompany);//厂家同原来一致
+		bslProductInfo.setProdCustomer(prodCustomer);
+		
+		int result = bslProductInfoMapper.insert(bslProductInfo);
+		if(result<0){
+			throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
+		}else if(result==0){
+			throw new BSLException(ErrorCodeInfo.错误类型_查询无记录,"入库失败");
+		}
+			
+		//插入成功之后记录插入流水
+		bslStockChangeDetail = new BslStockChangeDetail();
+		bslStockChangeDetail.setTransSerno(createStockChangeId());//流水
+		bslStockChangeDetail.setProdId(bslProductInfo.getProdId());//产品编号
+		bslStockChangeDetail.setPlanSerno(bslProductInfo.getProdPlanNo());//对应的生产指令号
+		bslStockChangeDetail.setTransCode(DictItemOperation.库存变动交易码_入库);//交易码
+		bslStockChangeDetail.setProdType(DictItemOperation.产品类型_成品);//产品类型
+		bslStockChangeDetail.setRubbishWeight(bslProductInfo.getProdRelWeight());//重量
+		bslStockChangeDetail.setInputuser(bslProductInfo.getProdCheckuser());//录入人
+		bslStockChangeDetail.setCrtDate(new Date());
+		int resultStock = bslStockChangeDetailMapper.insert(bslStockChangeDetail);
+		if(resultStock<0){
+			throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
+		}else if(resultStock==0){
+			throw new BSLException(ErrorCodeInfo.错误类型_查询无记录,"新增库存变动表失败");
+		}
+		
+		return BSLResult.ok(prodId);
+	}
+	
+	/**
+	 * 加工产品成品库存信息查询 查询7-加工产品成品库
+	 */
+	@Override
+	public BSLResult getM3108WxDealProdInfo(QueryCriteria queryCriteria) {
+		//创建查询的实例，并赋值
+		BslProductInfoExample bslProductInfoExample = new BslProductInfoExample();
+		Criteria criteria = bslProductInfoExample.createCriteria();
+		criteria.andProdTypeEqualTo(DictItemOperation.产品类型_成品);
+		criteria.andProdDclFlagEqualTo(DictItemOperation.产品外协厂标志_加工);
+		//产品编号
+		if (!StringUtils.isBlank(queryCriteria.getProdId())) {
+			criteria.andProdIdLike(StringUtil.likeStr(queryCriteria.getProdId()));
+		}
+		//成品生产批号
+		if (!StringUtils.isBlank(queryCriteria.getProdPlanNo())) {
+			criteria.andProdPlanNoLike(StringUtil.likeStr(queryCriteria.getProdPlanNo()));
+		}
+		//炉号
+		if (!StringUtils.isBlank(queryCriteria.getProdLuno())) {
+			criteria.andProdLunoLike(StringUtil.likeStr(queryCriteria.getProdLuno()));
+		}
+		//父级待处理品编号
+		if (!StringUtils.isBlank(queryCriteria.getProdOriId())) {
+			criteria.andProdOriIdLike(StringUtil.likeStr(queryCriteria.getProdOriId()));
+		}
+		//出库指令号
+		if (!StringUtils.isBlank(queryCriteria.getProdOutPlan())) {
+			criteria.andProdOutPlanLike(StringUtil.likeStr(queryCriteria.getProdOutPlan()));
+		}
+		//产品规格
+		if(!StringUtils.isBlank(queryCriteria.getProdNorm())){
+			criteria.andProdNormLike("%"+queryCriteria.getProdNorm()+"%");
+		}
+		//钢种
+		if (!StringUtils.isBlank(queryCriteria.getProdMaterial())) {
+			criteria.andProdMaterialEqualTo(queryCriteria.getProdMaterial());
+		}
+		//产品状态
+		if (!StringUtils.isBlank(queryCriteria.getProdStatus())) {
+			criteria.andProdStatusEqualTo(queryCriteria.getProdStatus());
+		}
+		//班次
+		if (!StringUtils.isBlank(queryCriteria.getProdBc())) {
+			criteria.andProdBcEqualTo(queryCriteria.getProdBc());
+		}
+		//转换单号
+		if (!StringUtils.isBlank(queryCriteria.getProdFhck())) {
+			criteria.andProdFhckLike(queryCriteria.getProdFhck());
+		}
+		//外协厂标志
+		if (!StringUtils.isBlank(queryCriteria.getProdDclFlag())) {
+			criteria.andProdDclFlagEqualTo(queryCriteria.getProdDclFlag());
+		}
+		//只查询仓库是6-委外仓的，因为外协厂产品可以切割，区分入7-加工产品成品库
+		criteria.andProdRucEqualTo(DictItemOperation.入库仓库_加工产品成品库);
+		
+		//开始日期结束日期
+		//起始日期 结束日期
+		Date dateStart = new Date();
+		Date dateEnd = new Date();
+		if(!StringUtils.isBlank(queryCriteria.getStartDate())){
+			try {
+				dateStart = DictItemOperation.日期转换实例.parse(queryCriteria.getStartDate());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}else{
+			try {
+				dateStart = DictItemOperation.日期转换实例.parse("2018-01-01");
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		if(!StringUtils.isBlank(queryCriteria.getEndDate())){
+			try {
+				dateEnd = DictItemOperation.日期转换实例.parse(queryCriteria.getEndDate());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}else{
+			dateEnd = new Date();
+		}
+		criteria.andCrtDateBetween(dateStart,dateEnd);
+		
+		//分页处理
+		PageHelper.startPage(Integer.parseInt(queryCriteria.getPage()), Integer.parseInt(queryCriteria.getRows()));
+		//调用sql查询
+		if(StringUtils.isBlank(queryCriteria.getSort()) || StringUtils.isBlank(queryCriteria.getOrder())){
+			bslProductInfoExample.setOrderByClause("`crt_date` desc,`prod_id` desc,`prod_plan_no`");
+		}else{
+			String sortSql = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, queryCriteria.getSort());
+			if(!StringUtils.isBlank(sortSql)){	
+				bslProductInfoExample.setOrderByClause("`"+sortSql+"` "+ queryCriteria.getOrder());
+			}
+		}
+		List<BslProductInfo> bslProductInfos = bslProductInfoMapper.selectByExample(bslProductInfoExample);
+		PageInfo<BslProductInfo> pageInfo = new PageInfo<BslProductInfo>(bslProductInfos);
+		return BSLResult.ok(bslProductInfos,"prodServiceImpl","getM3108WxDealProdInfo",pageInfo.getTotal(),bslProductInfos);
+	}
 
 
 	/**
@@ -1677,6 +1854,18 @@ public class ProdServiceImpl implements ProdService {
 			bslRuInFo.setProdRuWeight(prodRuWeight);
 		}
 		return BSLResult.ok(bslRuInFo);
+	}
+
+	/**
+	 * 根据编号查询产品信息
+	 */
+	@Override
+	public BSLResult getProdById(String prodId) {
+		BslProductInfo bslProductInfo = bslProductInfoMapper.selectByPrimaryKey(prodId);
+		if(bslProductInfo == null){
+			throw new BSLException(ErrorCodeInfo.错误类型_查询无记录, "没有查询到指定的产品信息，产品编号："+prodId);
+		}
+		return BSLResult.ok(bslProductInfo);
 	}
 
 }

@@ -37,6 +37,7 @@ public class DictItemOperation {
 	public static final String 产品状态_已转场 = "7";
 	
 	public static final String 入库仓库_委外仓 = "6";
+	public static final String 入库仓库_加工产品成品库 = "7";
 	
 	public static final String 产品来源_自购入库 = "0";
 	public static final String 产品来源_厂家入库 = "1";

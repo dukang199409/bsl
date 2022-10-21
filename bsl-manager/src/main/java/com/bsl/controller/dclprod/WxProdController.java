@@ -31,7 +31,7 @@ public class WxProdController {
 	private WxDclProdService wxDclProdService;
 	
 	/**
-	 *根据条件查询2-产品信息,标志待处理品入库
+	 *委外仓产成品库存查询
 	 */
 	@RequestMapping("/listByCriteria")
 	@ResponseBody
@@ -190,6 +190,50 @@ public class WxProdController {
 	}
 	
 	/**
+	 * 外协厂产品加工补录入库
+	 * @param 
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping("/addM3108Prod")
+	@ResponseBody
+	public BSLResult addM3108Prod(BslProductInfo bslProductInfo){
+		if(StringUtils.isBlank(bslProductInfo.getProdName())){
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "物料名称不能为空");
+		}
+		if(StringUtils.isBlank(bslProductInfo.getProdNorm())){
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "产品规格不能为空");
+		}
+		if(StringUtils.isBlank(bslProductInfo.getProdMaterial())){
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "产品钢种不能为空");
+		}
+		if(StringUtils.isBlank(bslProductInfo.getProdOriId())){
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "产品父级代加工产品编号不能为空");
+		}
+		if(bslProductInfo.getProdLength() == null || bslProductInfo.getProdLength() == 0){
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "产品定尺不能为空");
+		}
+		if(bslProductInfo.getProdRelWeight() == null || bslProductInfo.getProdRelWeight() == 0){
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "产品实际重量不能为空");
+		}
+		if(bslProductInfo.getProdNum() == null || bslProductInfo.getProdNum() == 0){
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "产品件数不能为空");
+		}
+		if(StringUtils.isBlank(bslProductInfo.getProdBc())){
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "生产班次不能为空");
+		}
+		if(StringUtils.isBlank(bslProductInfo.getProdRuc())){
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "入库仓库不能为空");
+		}
+		try {
+			return prodService.addM3108Prod(bslProductInfo);
+		} catch (Exception e) {
+			DictItemOperation.log.info("===========异常:"+e.getMessage());
+			return BSLResult.build(ErrorCodeInfo.错误类型_交易异常,e.getMessage());
+		}
+	}
+	
+	/**
 	 * 外协厂产品加工完成，产品状态修改
 	 * @param 
 	 * @param 
@@ -212,6 +256,24 @@ public class WxProdController {
 			return BSLResult.build(ErrorCodeInfo.错误类型_交易异常,e.getMessage());
 		}
 	}
+	
+	/**
+	 * 加工产品成品库存台账信息查询
+	 */
+	@RequestMapping("/getM3108WxDealProdInfo")
+	@ResponseBody
+	public BSLResult getM3108WxDealProdInfo(QueryCriteria queryCriteria){
+		BSLResult result = null;
+		if(StringUtils.isBlank(queryCriteria.getPage())) {
+			result =  BSLResult.build(400, "页码不能为空");
+		}else if(StringUtils.isBlank(queryCriteria.getRows())) {
+			result =  BSLResult.build(400, "每页记录数不能为空");
+		}else{
+			result = prodService.getM3108WxDealProdInfo(queryCriteria);
+		}
+		return result;
+	}
+	
 	
 	@RequestMapping("/{page}")
 	public String showUserPage(@PathVariable String page, HttpServletRequest request) {

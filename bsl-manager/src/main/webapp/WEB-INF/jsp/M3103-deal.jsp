@@ -16,7 +16,7 @@
 	            </td>      
 	            <td width="120" align="right">产品钢种:</td>
 	            <td width="210" align="right">
-	            	<select name="prodMaterial" id="prodMaterialM3103Deal" class="easyui-combobox" panelHeight="auto" data-options="editable:true" style="width:200px;">
+	            	<select name="prodMaterial" id="prodMaterialM3103Deal" readonly="readonly" class="easyui-combobox" panelHeight="auto" data-options="editable:true" style="width:200px;">
 			           <option value="">请选择...</option>
 			           <c:forEach items="${prodMaterialList}" var="a">
 			          	   	<option value="${a.enumKey}">${a.enumValue}</option>

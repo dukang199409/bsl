@@ -58,19 +58,20 @@ public interface ProdService {
 	BSLResult updateProdWxInfo(BslProductInfo bslProductInfo);
 	//已入库产品信息删除
 	BSLResult deleteWxProd(String prodId,String user);
-	
 	//已入库产品信息拆分
 	BSLResult updateProdInfoCut(QueryCriteria queryCriteria);
-	
 	//根据指令号获取产品组成信息
 	BSLResult getProdMakeUseInfo(QueryCriteria queryCriteria);
-	
 	//根据盘号获取已入库待处理品包数
 	BSLResult getProdDclRuNums(String prodId);
-	
 	//产品入库-外协产产品加工
 	BSLResult addWxProd3103(BslProductInfo bslProductInfo,int sumNum);
-	
 	//产品入库-外协产产品加工完成
 	BSLResult updateWxProdDealFinishStatus(String prodId, String user);
+	//加工产品成品库存信息查询
+	BSLResult getM3108WxDealProdInfo(QueryCriteria queryCriteria);
+	//根据编号查询产品信息
+	BSLResult getProdById(String prodId);
+	//外协厂产品加工补录入库
+	BSLResult addM3108Prod(BslProductInfo bslProductInfo);
 }
