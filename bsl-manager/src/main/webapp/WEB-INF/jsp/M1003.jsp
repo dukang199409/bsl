@@ -124,7 +124,6 @@
 	        	<th data-options="field:'prodName',width:100,sortable:true">物料名称</th>
 	            <th data-options="field:'prodStatus',width:100,formatter:BSL.formatProdStatus,sortable:true">状态</th>
 	        	<th data-options="field:'prodNorm',sortable:true,width:100">规格</th>
-	        	<th data-options="field:'prodLength',width:100,sortable:true">定尺/米</th>
 	        	<th data-options="field:'prodMaterial',width:80,formatter:BSL.formatProdMaterial,sortable:true">钢种</th>
 	        	<th data-options="field:'prodLuno',width:120,sortable:true">炉(批)号</th>
 	        	<th data-options="field:'prodOriId',width:100,sortable:true">来源钢卷号</th>
