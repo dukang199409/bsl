@@ -837,13 +837,13 @@ public class ProdServiceImpl implements ProdService {
 	
 	/**
 	 * 外协厂加工产品自动生成编号
-	 * XCPW+日期+3位序号
+	 * XWS+日期+3位序号
 	 * @return
 	 */
 	public String createProdIdWxJs() {
 		long incr = jedisClient.incr(REDIS_NEXT_PROD_W_ID);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		String prodId = String.format("XCPWJS%s%03d", sdf.format(new Date()), incr);
+		String prodId = String.format("XWS%s%03d", sdf.format(new Date()), incr);
 		return prodId;
 	}
 	
