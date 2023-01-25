@@ -51,6 +51,12 @@ public class ProdRetReAddController {
 		if(bslProductInfo.getProdRelWeight() == null || bslProductInfo.getProdRelWeight() == 0) {
 			return  BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "产品重量不能为空");
 		}
+		if(StringUtils.isBlank(bslProductInfo.getProdDclFlag())){
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "外协厂标志不能为空");
+		}
+		if(StringUtils.isBlank(bslProductInfo.getProdRuc())){
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "入库仓库不能为空");
+		}
 		if(DictItemOperation.产品类型_成品.equals(bslProductInfo.getProdType())){
 			if(bslProductInfo.getProdLength() == null || bslProductInfo.getProdLength() == 0) {
 				return  BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "产品类型为产品时定尺不能为空");

@@ -23,13 +23,11 @@
 		        <tr>
 		        	<td width="120" align="right">销售出库单号:</td>
 		            <td width="210" align="right">
-		            	<input name="prodOutPlan" id="prodOutPlanM5007" class="easyui-textbox" type="text" data-options="required:true,validType:'length[0,20]',events:{blur:onProdOutPlanM5007}" style="width:200px;"></input>
+		            	<input name="prodOutPlan" id="prodOutPlanM5007" class="easyui-textbox" type="text" data-options="required:true,validType:'length[0,20]'" style="width:200px;"></input>
 		            </td>
 		            <td width="120" align="right">车次流水:</td>
 	            	<td width="210" align="right">
-		            	<select name="prodOutCarno" id="prodOutCarnoM5007" class="easyui-combobox" panelHeight="auto" data-options="editable:true,required:true" style="width:200px;">
-				          <option value="">请选择...</option>
-						</select>
+		            	<input name="prodOutCarno" id="prodOutCarnoM5007" class="easyui-textbox" type="text" data-options="required:true,validType:'length[0,100]'" style="width:200px;"></input>
 		            </td>
 		        </tr>
 		        <tr>
@@ -77,13 +75,16 @@
 		            <td width="210" align="right">
 		            	<input name="prodPrice" id="prodPriceM5007" class="easyui-numberbox" type="text" data-options="required:false,min:0,precision:2,validType:'length[0,10]'" style="width:200px;"></input>
 		            </td>
-		            <td width="120" align="right">磅差处理/退货重量/吨:</td>
+		            <td width="120" align="right">产品重量/吨:</td>
 		            <td width="210" align="right">
-		            	<input name="prodRelWeight" id="prodRelWeightM5007" class="easyui-numberbox" type="text" data-options="required:true,min:0,precision:3,validType:'length[0,10]'"  style="width:200px;"></input>
+		            	<input name="prodRelWeight" id="prodRelWeightM5007" class="easyui-numberbox" type="text" data-options="required:false,min:0,precision:3,validType:'length[0,10]'"  style="width:200px;"></input>
 		            </td>
-		            <td width="120" align="left">
-	        			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="getWeightCheckM5007()" style="width:70px;">称重</a>
-	        		</td>
+		        </tr>
+		        <tr>
+		            <td width="120" align="right">磅差/退货重量/吨:</td>
+		            <td width="210" align="right">
+		            	<input name="prodRetWeight" id="prodRetWeightM5007" class="easyui-numberbox" type="text" data-options="required:true,min:0,precision:3,validType:'length[0,10]'"  style="width:200px;"></input>
+		            </td>
 		        </tr>
 		        <tr hidden="true">
 		            <td width="120" align="right">录入人:</td>
@@ -126,7 +127,9 @@
 			var params = {"prodId":prodId};
 			$.post("/changeStatus/getProdInfo",params, function(data){
 				if(data.status == 200){
-					$("#prodOutPlanM5007").textbox('setValue',data.data.prodOutPlan)
+					$("#prodOutPlanM5007").textbox('setValue',data.data.prodOutPlan);
+					$("#prodOutCarnoM5007").textbox('setValue',data.data.prodOutCarno);
+					$("#prodRelWeightM5007").numberbox('setValue',data.data.prodRelWeight);
 					$("#prodNameM5007").textbox('setValue',data.data.prodName);
 					$("#prodTypeM5007").combobox('setValue',data.data.prodType);
 					$("#prodLunoM5007").textbox('setValue',data.data.prodLuno);
@@ -145,31 +148,6 @@
 		}
 	}
 	
-	//根据出库单号获取车次枚举
-	function onProdOutPlanM5007(){
-		var prodOutPlan = $("#prodOutPlanM5007").textbox("getValue");
-		if(prodOutPlan == null || prodOutPlan == ''){
-			return;
-		}
-		var params = {'prodOutPlan':prodOutPlan}
-		$.post("/prodReturn/carInfo",params,function(data){
-			if(data.status == 200){
-				//回显车次枚举
-				$("#prodOutCarnoM5007").combobox('setValue', '');
-				$("#prodOutCarnoM5007").combobox('loadData', {});
-				var dataSource = [];
-				console.log(data.data);
-				for(var i=0;i<data.data.length;i++){
-					var value = data.data[i];
-					dataSource.push({"value":value,"text":value});
-				}
-				$("#prodOutCarnoM5007").combobox("loadData",dataSource);
-				
-			} else {
-				$.messager.alert('提示', data.msg);
-			}
-		});
-	}
 	
 	//提交表单
 	function submitM5007Form(){

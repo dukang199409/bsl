@@ -61,7 +61,7 @@ public class ProdRetReAddServiceImpl implements ProdRetReAddService {
 	public String createProdId(String startString) {
 		long incr = jedisClient.incr(REDIS_NEXT_PROD_ID);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		String prodId = String.format("%s%s%02dR",startString,sdf.format(new Date()), incr);
+		String prodId = String.format("%s%s%02d",startString,sdf.format(new Date()), incr);
 		return prodId;
 	}
 	
@@ -86,6 +86,8 @@ public class ProdRetReAddServiceImpl implements ProdRetReAddService {
 		prod.setProdSource(DictItemOperation.产品来源_退货入库);
 		prod.setProdInputuser(bslProductInfo.getProdInputuser());
 		prod.setCrtDate(new Date());
+		prod.setProdDclFlag(bslProductInfo.getProdDclFlag());
+		prod.setProdRuc(bslProductInfo.getProdRuc());
 		prod.setRemark("退货");
 		
 		if(!StringUtils.isBlank(prodId)){
@@ -100,15 +102,14 @@ public class ProdRetReAddServiceImpl implements ProdRetReAddService {
 			if(DictItemOperation.产品类型_成品.equals(prodType)){
 				prod.setProdLength(reAddProd.getProdLength());
 				prod.setProdNum(bslProductInfo.getProdNum());
-				prod.setProdDclFlag(DictItemOperation.产品外协厂标志_本厂);
-				prod.setProdId(createProdId("XR"));
+				prod.setProdId(createProdId("RX"));
 			}else if(DictItemOperation.产品类型_半成品.equals(prodType)){
 				prod.setProdNum(1);
 				prod.setProdUserType(DictItemOperation.纵剪带用途_公用);
-				prod.setProdId(createProdId("ZR"));
+				prod.setProdId(createProdId("RZ"));
 			}else if(DictItemOperation.产品类型_卷板.equals(prodType)){
 				prod.setProdNum(1);
-				prod.setProdId(createProdId("YLR"));
+				prod.setProdId(createProdId("RYL"));
 			}
 		}else{
 			prod.setProdNorm(bslProductInfo.getProdNorm());
@@ -116,15 +117,14 @@ public class ProdRetReAddServiceImpl implements ProdRetReAddService {
 			if(DictItemOperation.产品类型_成品.equals(prodType)){
 				prod.setProdLength(bslProductInfo.getProdLength());
 				prod.setProdNum(bslProductInfo.getProdNum());
-				prod.setProdDclFlag(DictItemOperation.产品外协厂标志_本厂);
-				prod.setProdId(createProdId("X"));
+				prod.setProdId(createProdId("RX"));
 			}else if(DictItemOperation.产品类型_半成品.equals(prodType)){
 				prod.setProdNum(1);
 				prod.setProdUserType(DictItemOperation.纵剪带用途_公用);
-				prod.setProdId(createProdId("Z"));
+				prod.setProdId(createProdId("RZ"));
 			}else if(DictItemOperation.产品类型_卷板.equals(prodType)){
 				prod.setProdNum(1);
-				prod.setProdId(createProdId("YL"));
+				prod.setProdId(createProdId("RYL"));
 			}
 			
 		}

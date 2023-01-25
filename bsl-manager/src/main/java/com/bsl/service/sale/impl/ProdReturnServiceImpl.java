@@ -72,7 +72,7 @@ public class ProdReturnServiceImpl implements ProdReturnService {
 	 * @return
 	 */
 	@Override
-	public BSLResult updateProdReturn(BslProductInfo bslProductInfo, String dealType,Float prodPrice) {
+	public BSLResult updateProdReturn(BslProductInfo bslProductInfo, String dealType,Float prodPrice,Float prodRetWeight) {
 		String prodOutPlan = bslProductInfo.getProdOutPlan();
 		if(StringUtils.isBlank(prodOutPlan)){
 			throw new BSLException(ErrorCodeInfo.错误类型_参数为空,"销售通知单号不能为空！");
@@ -89,20 +89,20 @@ public class ProdReturnServiceImpl implements ProdReturnService {
 		String trans_code = "";
 		String remake = "";
 		if(DictItemOperation.处理类型_磅差处理.equals(dealType)){
-			bslCarRetchaInfo.setChaWeight(bslProductInfo.getProdRelWeight());
+			bslCarRetchaInfo.setChaWeight(prodRetWeight);
 			if(bslBsPlanInfo.getBsChaweight() == null){
-				bslBsPlanInfo.setBsChaweight(bslProductInfo.getProdRelWeight());
+				bslBsPlanInfo.setBsChaweight(prodRetWeight);
 			}else{
-				bslBsPlanInfo.setBsChaweight(bslProductInfo.getProdRelWeight()+bslBsPlanInfo.getBsChaweight());
+				bslBsPlanInfo.setBsChaweight(prodRetWeight+bslBsPlanInfo.getBsChaweight());
 			}
 			trans_code = DictItemOperation.库存变动交易码_磅差处理;
 			remake = "磅差处理";
 		}else if(DictItemOperation.处理类型_退货处理.equals(dealType)){
-			bslCarRetchaInfo.setRetWeight(bslProductInfo.getProdRelWeight());
+			bslCarRetchaInfo.setRetWeight(prodRetWeight);
 			if(bslBsPlanInfo.getBsRetweight() == null){
-				bslBsPlanInfo.setBsRetweight(bslProductInfo.getProdRelWeight());
+				bslBsPlanInfo.setBsRetweight(prodRetWeight);
 			}else{
-				bslBsPlanInfo.setBsRetweight(bslProductInfo.getProdRelWeight()+bslBsPlanInfo.getBsRetweight());
+				bslBsPlanInfo.setBsRetweight(prodRetWeight+bslBsPlanInfo.getBsRetweight());
 			}
 			trans_code = DictItemOperation.库存变动交易码_退货;
 			remake = "退货";
@@ -139,7 +139,7 @@ public class ProdReturnServiceImpl implements ProdReturnService {
 		bslStockChangeDetail.setPlanSerno(prodOutPlan);//对应的生产指令单号
 		bslStockChangeDetail.setTransCode(trans_code);//交易码
 		bslStockChangeDetail.setProdType(prodType);//产品类型
-		bslStockChangeDetail.setRubbishWeight(bslProductInfo.getProdRelWeight());//重量
+		bslStockChangeDetail.setRubbishWeight(prodRetWeight);//重量
 		bslStockChangeDetail.setInputuser(bslProductInfo.getProdInputuser());//录入人
 		bslStockChangeDetail.setPrice(prodPrice);//价格
 		bslStockChangeDetail.setCrtDate(new Date());

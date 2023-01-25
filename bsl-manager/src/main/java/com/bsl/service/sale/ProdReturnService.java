@@ -10,7 +10,7 @@ import com.bsl.pojo.BslProductInfo;
 public interface ProdReturnService {
 	
 	//销售退回/磅差处理
-	BSLResult updateProdReturn(BslProductInfo bslProductInfo,String dealType,Float prodPrice);
+	BSLResult updateProdReturn(BslProductInfo bslProductInfo,String dealType,Float prodPrice,Float prodRetWeight);
 	
 	//根据出库单号获取流水信息
 	BSLResult getCarInfo(String prodOutPlan);

@@ -51,6 +51,26 @@
 		            	<input name="prodNum" id="prodNumM5008" class="easyui-numberbox" type="text" data-options="required:true,min:0,precision:0,validType:'length[0,10]'" value="1" style="width:200px;"></input>
 		            </td> 
 		        </tr>
+		        <tr>	
+		           <td width="120" align="right">外协厂标志:</td>
+		            <td width="210" align="right">
+		            	<select name="prodDclFlag" id="prodDclFlagM5008" class="easyui-combobox" panelHeight="auto" data-options="required:true,editable:true" style="width:200px;">
+				          <option value="">请选择...</option>
+				           <c:forEach items="${prodDclFlagList}" var="a">
+			          	   	<option value="${a.enumKey}">${a.enumValue}</option>
+			          </c:forEach>
+						</select>
+					</td>
+		            <td width="120" align="right">入库仓库/区:</td>
+		            <td width="210" align="right">
+		            	<select name="prodRuc" id="prodRucM5008" class="easyui-combobox" panelHeight="auto" data-options="required:true,editable:true" style="width:200px;">
+				           <option value="">请选择...</option>
+				          <c:forEach items="${prodRucList}" var="a">
+				          	   	<option value="${a.enumKey}">${a.enumValue}</option>
+				          </c:forEach>
+						</select>
+		            </td> 
+		        </tr>
 		        <tr>
 		        	<td width="120" align="right">备注:</td>
 		            <td width="210" align="right">

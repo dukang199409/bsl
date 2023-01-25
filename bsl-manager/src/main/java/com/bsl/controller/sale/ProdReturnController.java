@@ -32,7 +32,11 @@ public class ProdReturnController {
 	 */
 	@RequestMapping(value="/deal", method=RequestMethod.POST)
 	@ResponseBody
-	public BSLResult updateProdReturn(BslProductInfo bslProductInfo,String dealType,Float prodPrice) {
+	public BSLResult updateProdReturn(BslProductInfo bslProductInfo,String dealType,Float prodPrice,String prodRetWeight) {
+		if(StringUtils.isBlank(prodRetWeight)) {
+			return  BSLResult.build(400, "磅差/退货重量不能为空");
+		}
+		Float prodRetWeightF = Float.valueOf(prodRetWeight);
 		if(StringUtils.isBlank(dealType)) {
 			return  BSLResult.build(400, "处理类型不能为空");
 		}
@@ -46,7 +50,7 @@ public class ProdReturnController {
 			return  BSLResult.build(400, "磅差处理重量/退货重量不能为空");
 		}
 		try {
-			return prodReturnService.updateProdReturn(bslProductInfo, dealType,prodPrice);
+			return prodReturnService.updateProdReturn(bslProductInfo, dealType ,prodPrice, prodRetWeightF);
 		} catch (Exception e) {
 			DictItemOperation.log.info("===========异常:"+e.getMessage());
 			return BSLResult.build(ErrorCodeInfo.错误类型_交易异常,e.getMessage());
