@@ -147,6 +147,7 @@
 		$('#prodQualitySerachForm').form('reset');
 	}
 	
+	
 	function getM5010SelectionsIds(){
     	var salePlanList = $("#prodQualityList");
     	var sels = salePlanList.datagrid("getSelections");
