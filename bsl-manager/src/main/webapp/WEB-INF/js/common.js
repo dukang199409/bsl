@@ -541,6 +541,8 @@ var TT = BSL = {
         	return '转场';
         } else if(val == '2'){
         	return '加工';
+        } else if(val == '3'){
+        	return '外厂来料';
         } else {
         	return val;
         }

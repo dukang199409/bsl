@@ -1030,7 +1030,10 @@ public class ProdServiceImpl implements ProdService {
 		BslProductInfoExample bslProductInfoExample = new BslProductInfoExample();
 		Criteria criteria = bslProductInfoExample.createCriteria();
 		criteria.andProdTypeEqualTo(DictItemOperation.产品类型_成品);
+		//查询转场过去或者是外协厂待处理品加工的产品
 		criteria.andProdDclFlagNotEqualTo(DictItemOperation.产品外协厂标志_本厂);
+		//只查询仓库是6-委外仓的，因为外协厂产品可以加工，入7-加工产品成品库
+		criteria.andProdRucEqualTo(DictItemOperation.入库仓库_委外仓);
 		//产品编号
 		if (!StringUtils.isBlank(queryCriteria.getProdId())) {
 			criteria.andProdIdLike(StringUtil.likeStr(queryCriteria.getProdId()));
@@ -1075,8 +1078,6 @@ public class ProdServiceImpl implements ProdService {
 		if (!StringUtils.isBlank(queryCriteria.getProdDclFlag())) {
 			criteria.andProdDclFlagEqualTo(queryCriteria.getProdDclFlag());
 		}
-		//只查询仓库是6-委外仓的，因为外协厂产品可以切割，区分入7-加工产品成品库
-		criteria.andProdRucEqualTo(DictItemOperation.入库仓库_委外仓);
 		
 		//开始日期结束日期
 		//起始日期 结束日期

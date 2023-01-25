@@ -47,6 +47,7 @@ public class DictItemOperation {
 	public static final String 产品外协厂标志_本厂 = "0";
 	public static final String 产品外协厂标志_转场 = "1";
 	public static final String 产品外协厂标志_加工 = "2";
+	public static final String 产品外协厂标志_外厂来料 = "3";
 	
 	public static final String 是否标志_是 = "1";
 	public static final String 是否标志_否 = "0";
@@ -63,6 +64,7 @@ public class DictItemOperation {
 	public static final String 收发类别_委外仓废品发货 = "9";
 	public static final String 收发类别_成品转场发货 = "10";
 	public static final String 收发类别_废品转场发货 = "11";
+	public static final String 收发类别_外厂成品来料单 = "12";
 	
 	public static final String 提货方式_客户自提 = "0";
 	public static final String 提货方式_配送 = "1";

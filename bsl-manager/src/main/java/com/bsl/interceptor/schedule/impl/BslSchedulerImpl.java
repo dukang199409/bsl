@@ -41,7 +41,7 @@ public class BslSchedulerImpl implements BslSchedulerService{
 	private String REDIS_NEXT_RAW_ID;
 	@Value("REDIS_NEXT_STOCKCHANGE_ID")
 	private String REDIS_NEXT_STOCKCHANGE_ID;
-	@Value("REDIS_NEXT_PROD_PLAN_ID_KEY")
+	@Value("REDIS_NEXT_PROD_PLAN_ID")
 	private String REDIS_NEXT_PROD_PLAN_ID;
 	@Value("REDIS_NEXT_PLAN_DETAIL_ID")
 	private String REDIS_NEXT_PLAN_DETAIL_ID;
