@@ -723,20 +723,21 @@
     <result column="prod_norm" property="prodNorm" jdbcType="VARCHAR" />
     <result column="prod_material" property="prodMaterial" jdbcType="CHAR" />
     <result column="prod_length" property="prodLength" jdbcType="REAL" />
+    <result column="prod_luno" property="prodLuno" jdbcType="VARCHAR" />
     <result column="prod_num_count" property="prodNumCount" jdbcType="INTEGER" />
     <result column="prod_weight_total" property="prodWeightTotal" jdbcType="REAL" />
     <result column="prod_record_weight_total" property="prodRecordWeightTotal" jdbcType="REAL" />
     <result column="prod_level" property="prodLevel" jdbcType="CHAR" />
   </resultMap>
   <select id="querySaleOutBill" resultMap="ProdResultMap" parameterType="com.bsl.select.QueryExample">
-  	select prod_plan_no,prod_type,prod_name,prod_norm,prod_material,prod_length,sum(prod_num) as prod_num_count,
+  	select prod_plan_no,prod_type,prod_name,prod_norm,prod_material,prod_length,prod_luno,sum(prod_num) as prod_num_count,
   	sum(prod_rel_weight) as prod_weight_total,sum(ifnull(prod_record_weight,0)) as prod_record_weight_total,prod_level
 	from bsl_product_info
 	where prod_out_plan = #{planId,jdbcType=VARCHAR}
 	<if test="planDetailId != null" >
         and prod_sale_serno = #{planDetailId,jdbcType=VARCHAR} 
     </if>
-	group by prod_plan_no,prod_type,prod_name,prod_norm,prod_material,prod_length,prod_level
+	group by prod_plan_no,prod_type,prod_name,prod_norm,prod_material,prod_length,prod_luno,prod_level
   </select>
   <select id="querySaleOutBillWaste" resultMap="ProdResultMap" parameterType="com.bsl.select.QueryExample">
   	select '' as prod_plan_no,
@@ -744,6 +745,7 @@
 	 '' as prod_norm,
 	 '' as prod_material,
 	 '' as prod_length,
+	 '' as prod_luno,
 	 prod_sumnum as prod_num_count,
 	 prod_sumweight as prod_weight_total,
 	 '' as prod_level
@@ -762,7 +764,7 @@
     </if>
   </select>
   <select id="querySaleOutByProds" resultMap="ProdResultMap" parameterType="com.bsl.select.QueryExample">
-  	select prod_plan_no,prod_type,prod_name,prod_norm,prod_material,prod_length,sum(prod_num) as prod_num_count,
+  	select prod_plan_no,prod_type,prod_name,prod_norm,prod_material,prod_length,prod_luno,sum(prod_num) as prod_num_count,
   	sum(prod_print_weight) as prod_weight_total,sum(ifnull(prod_record_weight,0)) as prod_record_weight_total,prod_level
 	from bsl_product_info
 	where prod_out_plan = #{planId,jdbcType=VARCHAR}
@@ -775,7 +777,7 @@
         	#{item}
         </foreach>
     </if>
-	group by prod_plan_no,prod_type,prod_name,prod_norm,prod_material,prod_length,prod_level
+	group by prod_plan_no,prod_type,prod_name,prod_norm,prod_material,prod_length,prod_luno,prod_level
   </select>
   
   <resultMap id="ProdGroupResultMap" type="com.bsl.reportbean.BslOutProductDetailInfo" >

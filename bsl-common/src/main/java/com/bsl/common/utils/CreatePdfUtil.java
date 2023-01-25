@@ -284,7 +284,7 @@ public class CreatePdfUtil{
      */
     public <T> void generatePDF(List<PDFCell> headList,String[] fields,String[] titles,List<T> list,int colNum,List<PDFCell> footList) {
         
-        // 创建一个只有5列的表格
+        // 创建一个表格
         PdfPTable table = createTable(colNum);
         for (PDFCell pdfCell : headList) {
         	table.addCell(createCell(pdfCell.getValue(), pdfCell.getFont(), pdfCell.getAlign(),pdfCell.getColspan(),pdfCell.isBoderFlag()));

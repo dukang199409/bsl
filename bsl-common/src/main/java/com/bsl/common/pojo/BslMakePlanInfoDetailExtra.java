@@ -1,31 +1,23 @@
 package com.bsl.common.pojo;
 
 public class BslMakePlanInfoDetailExtra {
-	// 产品名称
 	private String makeName;
-	// 规格
 	private String prodNorm;
-	// 钢种
 	private String prodMaterial;
-	// 质量等级
 	private String prodLevel;
-	// 条数
 	private String prodNum;
-	// 单位
 	private String unit;
-	// 计划产出量
 	private String planOutputVolume;
-	// 实际重量
 	private String prodWeight;
-	// 计划完工日期
     private String planFinistDate;
-    // 实收机组
     private String collectedUnits;
-    // 成品规格
     private String makeProdNorm;
-    // 备注
     private String remark;
-    private String note;
+	private String prodLuno;
+    private String prodPlanNo;
+    private String prodName;
+    private String prodLength;
+	private String note;
     private String bak;
     private String a;
     private String b;
@@ -38,6 +30,30 @@ public class BslMakePlanInfoDetailExtra {
     private String i;
     private String j;
     
+    public String getProdLuno() {
+		return prodLuno;
+	}
+	public void setProdLuno(String prodLuno) {
+		this.prodLuno = prodLuno;
+	}
+	public String getProdPlanNo() {
+		return prodPlanNo;
+	}
+	public void setProdPlanNo(String prodPlanNo) {
+		this.prodPlanNo = prodPlanNo;
+	}
+	public String getProdName() {
+		return prodName;
+	}
+	public void setProdName(String prodName) {
+		this.prodName = prodName;
+	}
+	public String getProdLength() {
+		return prodLength;
+	}
+	public void setProdLength(String prodLength) {
+		this.prodLength = prodLength;
+	}
 	public String getMakeName() {
 		return makeName;
 	}
@@ -270,29 +286,20 @@ public class BslMakePlanInfoDetailExtra {
 	}
 	
 	/**
-	 * 销售出库单
-	 * @param makeName
-	 * @param prodNorm
-	 * @param prodMaterial
-	 * @param prodLevel
-	 * @param prodNum
-	 * @param unit
-	 * @param planOutputVolume
-	 * @param prodWeight
-	 * @param planFinistDate
+	 * 销售出库单 9
 	 */
-	public BslMakePlanInfoDetailExtra(String makeName, String prodNorm, String prodMaterial, String prodLevel,
-			String prodNum, String unit, String planOutputVolume, String prodWeight, String planFinistDate) {
+	public BslMakePlanInfoDetailExtra(String prodPlanNo, String prodName, String prodNorm, String prodMaterial,
+			String prodLength, String prodLuno, String prodNum, String prodWeight, String prodLevel) {
 		super();
-		this.makeName = makeName;
+		this.prodPlanNo = prodPlanNo;
+		this.prodName = prodName;
 		this.prodNorm = prodNorm;
 		this.prodMaterial = prodMaterial;
-		this.prodLevel = prodLevel;
+		this.prodLength = prodLength;
+		this.prodLuno = prodLuno;
 		this.prodNum = prodNum;
-		this.unit = unit;
-		this.planOutputVolume = planOutputVolume;
 		this.prodWeight = prodWeight;
-		this.planFinistDate = planFinistDate;
+		this.prodLevel = prodLevel;
 	}
 	public BslMakePlanInfoDetailExtra(String makeName, String prodMaterial, String prodLevel,
 			String prodNum, String unit, String planOutputVolume, String prodWeight, String planFinistDate) {

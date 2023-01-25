@@ -7,10 +7,17 @@ public class BslProductInfoCollect {
 	private String prodNorm;
 	private String prodMaterial;
 	private Float prodLength;
+	private String prodLuno;
 	private Integer prodNumCount;
 	private Float prodWeightTotal;
 	private Float prodRecordWeightTotal;
 	private String prodLevel;
+	public String getProdLuno() {
+		return prodLuno;
+	}
+	public void setProdLuno(String prodLuno) {
+		this.prodLuno = prodLuno;
+	}
 	public String getProdType() {
 		return prodType;
 	}
