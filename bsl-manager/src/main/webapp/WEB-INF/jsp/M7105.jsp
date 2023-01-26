@@ -2,19 +2,33 @@
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div>
-	<div class="easyui-panel" title="原材料进库表报" style="padding:10px 10px 10px 10px">
+	<div class="easyui-panel" title="原材料进库日报表" style="padding:10px 10px 10px 10px">
 		<form id="M7105Form" class="itemForm" method="post">
 		   <table>
-		   		<tr>
-		            <td width="120" align="right">报表类别:</td>
+		   		 <tr>
+		            <td width="120" align="right">规格:</td>
 		            <td width="210" align="right">
-		            	<select name="dataType" id="dataTypeM7105" class="easyui-combobox" panelHeight="auto" data-options="editable:true" style="width:200px;">
+	            		<input name="prodNorm" id="prodNormM7105" class="easyui-textbox" type="text" data-options="required:false,validType:'length[0,40]'" style="width:200px;"></input>
+	            	</td>
+		            <td width="120" align="right">钢种:</td>
+		            <td width="210" align="right">
+		            	<select name="prodMaterial" id="prodMaterialM7105" class="easyui-combobox" panelHeight="auto" data-options="editable:true" style="width:200px;">
 				          <option value="">请选择...</option>
-				            <c:forEach items="${dataTypeList}" var="a">
+				           <c:forEach items="${prodMaterialList}" var="a">
 			          	   	<option value="${a.enumKey}">${a.enumValue}</option>
-			          	  </c:forEach>
+			          </c:forEach>
 						</select>
+					</td>
+		        </tr>
+		         <tr>	
+		            <td width="120" align="right">客户:</td>
+		            <td width="210" align="right">
+		            	<input name="prodCustomer" id="prodCustomerM7105" class="easyui-textbox" type="text" data-options="required:false,validType:'length[0,120]'" style="width:200px;" maxLength="10"></input>
 		            </td>
+		        	<td width="120" align="right">厂家:</td>
+		            <td width="210" align="right">
+		            	<input name="prodCompany" id="prodCompanyM7105" class="easyui-textbox" type="text" data-options="required:false,validType:'length[0,120]'" style="width:200px;" maxLength="10"></input>
+		            </td>  
 		        </tr>
 		         <tr>
 		            <td width="120" align="right">开始日期:</td>
@@ -54,25 +68,24 @@
 	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearM7105Form()">重置</a>
 		</div>
 	</div>
-	 <table class="easyui-datagrid" id="M7105List" title="原材料进库表报"  style="height:590px"
-	       data-options="singleSelect:true,rownumbers:true,collapsible:true,pagination:true,url:'/report/listByCriteriaM7105',method:'post',onBeforeLoad:onBeforeLoadM7105,pageSize:30,toolbar:toolbarM7105">
+	 <table class="easyui-datagrid" id="M7105List" title="原材料进库日报表"  style="height:590px"
+	       data-options="singleSelect:true,rownumbers:true,collapsible:true,pagination:true,url:'/report/listM7105',method:'post',onBeforeLoad:onBeforeLoadM7105,pageSize:30,toolbar:toolbarM7105">
 	    <thead>
 	        <tr>
 	        	<th data-options="field:'ck',checkbox:true"></th>
 	        	<th data-options="field:'dataDate',width:100">统计日期</th>
-	        	<th data-options="field:'dataType',width:100,formatter:BSL.formatDataType">报表类别</th>
-	        	<th data-options="field:'prodNorm',width:100">规格</th>
-	            <th data-options="field:'prodMaterial',width:100,formatter:BSL.formatProdMaterial">钢种</th>
-	            <th data-options="field:'prodNum',width:100">数量</th>
-	            <th data-options="field:'prodRecordWeight',width:125">原料来料重量/吨</th>
-	            <th data-options="field:'prodRelWeight',width:125">来料复磅重量/吨</th>
-	            <th data-options="field:'prodPrintWeight',width:125">原料入库重量/吨</th>
-	            <th data-options="field:'prodSource',width:120,formatter:BSL.formatBsFlag">产品来源</th>
-	            <th data-options="field:'prodCompany',width:100">厂家</th>
-	            <th data-options="field:'prodCustomer',width:100">客户</th>
-	            <th data-options="field:'remark',width:100">备注</th>
-	            <th data-options="field:'crtDate',width:120,formatter:BSL.formatDateTime,sortable:true">创建日期</th>
-	            
+	        	<th data-options="field:'prodNorm',width:125">规格</th>
+	            <th data-options="field:'prodMaterial',width:125,formatter:BSL.formatProdMaterial">钢种</th>
+	            <th data-options="field:'prodRuWeight',width:125">原料入库重量/吨</th>
+	            <th data-options="field:'prodRuNum',width:100">入库件数</th>
+	            <th data-options="field:'prodOutWeight',width:125">原料出库重量/吨</th>
+	            <th data-options="field:'prodOutNum',width:100">出库件数</th>
+	            <th data-options="field:'prodAtWeight',width:125">原料库存重量/吨</th>
+	            <th data-options="field:'prodAtNum',width:100">库存件数</th>
+	            <th data-options="field:'prodCompany',width:125">厂家</th>
+	            <th data-options="field:'prodCustomer',width:125">客户</th>
+	            <th data-options="field:'remark',width:125">备注</th>
+	            <th data-options="field:'crtDate',width:125,formatter:BSL.formatDateTime,sortable:true">创建日期</th>
 	        </tr>
 	    </thead>
 	</table>
@@ -81,7 +94,10 @@
 
 	function onBeforeLoadM7105(){
 		var queryParams = $('#M7105List').datagrid('options').queryParams;
-		queryParams.dataType = $('#dataTypeM7105').combobox("getValue");
+		queryParams.prodNorm = $('#prodNormM7105').val();
+		queryParams.prodMaterial = $('#prodMaterialM7105').combobox("getValue");
+		queryParams.prodCustomer = $('#prodCustomerM7105').val();
+		queryParams.prodCompany = $('#prodCompanyM7105').val();
 		queryParams.startDate = $('#startDateM7105').datebox("getValue");
 		queryParams.endDate = $('#endDateM7105').datebox("getValue");
 	}
@@ -96,7 +112,7 @@
 		$("#rowsM7105").textbox('setValue',rows);
 		//ajax的post方式提交表单
 		//$("#receiptSearchForm").serialize()将表单序列号为key-value形式的字符串
-		$.post("/report/listByCriteriaM7105",$("#M7105Form").serialize(), function(data){
+		$.post("/report/listM7105",$("#M7105Form").serialize(), function(data){
 			if(data.status == 200){				
 	            $('#M7105List').datagrid('loadData',  {"total":data.total,"rows":data.rows});
 	            $("#classNameM7105").textbox('setValue',data.className);
@@ -151,12 +167,15 @@
 				mapParam.set("titles",titles);
 				mapParam.set("className",className);
 				mapParam.set("methodName",methodName);
-				mapParam.set("excelName","原材料进库表报");
+				mapParam.set("excelName","原材料库存报表");
 				mapParam.set("loginUserId",$("#user_id").html());
 				mapParam.set("rows","5000");
 				mapParam.set("page","1");
 				//查询条件 把所有查询条件带上
-				mapParam.set("dataType",$('#dataTypeM7105').combobox("getValue"));
+				mapParam.set("prodNorm", $('#prodNormM7105').val());
+				mapParam.set("prodMaterial",$('#prodMaterialM7105').combobox("getValue"));
+				mapParam.set("prodCustomer",$('#prodCustomerM7105').val());
+				mapParam.set("prodCompany",$('#prodCompanyM7105').val());
 				mapParam.set("startDate",$('#startDateM7105').datebox("getValue"));
 				mapParam.set("endDate",$('#endDateM7105').datebox("getValue"));
 				BSL.toExcel(mapParam);

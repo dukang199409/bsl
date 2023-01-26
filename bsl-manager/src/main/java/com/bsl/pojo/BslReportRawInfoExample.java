@@ -202,76 +202,6 @@ public class BslReportRawInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andDataTypeIsNull() {
-            addCriterion("data_type is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataTypeIsNotNull() {
-            addCriterion("data_type is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataTypeEqualTo(String value) {
-            addCriterion("data_type =", value, "dataType");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataTypeNotEqualTo(String value) {
-            addCriterion("data_type <>", value, "dataType");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataTypeGreaterThan(String value) {
-            addCriterion("data_type >", value, "dataType");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataTypeGreaterThanOrEqualTo(String value) {
-            addCriterion("data_type >=", value, "dataType");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataTypeLessThan(String value) {
-            addCriterion("data_type <", value, "dataType");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataTypeLessThanOrEqualTo(String value) {
-            addCriterion("data_type <=", value, "dataType");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataTypeLike(String value) {
-            addCriterion("data_type like", value, "dataType");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataTypeNotLike(String value) {
-            addCriterion("data_type not like", value, "dataType");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataTypeIn(List<String> values) {
-            addCriterion("data_type in", values, "dataType");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataTypeNotIn(List<String> values) {
-            addCriterion("data_type not in", values, "dataType");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataTypeBetween(String value1, String value2) {
-            addCriterion("data_type between", value1, value2, "dataType");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataTypeNotBetween(String value1, String value2) {
-            addCriterion("data_type not between", value1, value2, "dataType");
-            return (Criteria) this;
-        }
-
         public Criteria andProdNormIsNull() {
             addCriterion("prod_norm is null");
             return (Criteria) this;
@@ -412,313 +342,363 @@ public class BslReportRawInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andProdNumIsNull() {
-            addCriterion("prod_num is null");
+        public Criteria andProdRuWeightIsNull() {
+            addCriterion("prod_ru_weight is null");
             return (Criteria) this;
         }
 
-        public Criteria andProdNumIsNotNull() {
-            addCriterion("prod_num is not null");
+        public Criteria andProdRuWeightIsNotNull() {
+            addCriterion("prod_ru_weight is not null");
             return (Criteria) this;
         }
 
-        public Criteria andProdNumEqualTo(Float value) {
-            addCriterion("prod_num =", value, "prodNum");
+        public Criteria andProdRuWeightEqualTo(Float value) {
+            addCriterion("prod_ru_weight =", value, "prodRuWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdNumNotEqualTo(Float value) {
-            addCriterion("prod_num <>", value, "prodNum");
+        public Criteria andProdRuWeightNotEqualTo(Float value) {
+            addCriterion("prod_ru_weight <>", value, "prodRuWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdNumGreaterThan(Float value) {
-            addCriterion("prod_num >", value, "prodNum");
+        public Criteria andProdRuWeightGreaterThan(Float value) {
+            addCriterion("prod_ru_weight >", value, "prodRuWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdNumGreaterThanOrEqualTo(Float value) {
-            addCriterion("prod_num >=", value, "prodNum");
+        public Criteria andProdRuWeightGreaterThanOrEqualTo(Float value) {
+            addCriterion("prod_ru_weight >=", value, "prodRuWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdNumLessThan(Float value) {
-            addCriterion("prod_num <", value, "prodNum");
+        public Criteria andProdRuWeightLessThan(Float value) {
+            addCriterion("prod_ru_weight <", value, "prodRuWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdNumLessThanOrEqualTo(Float value) {
-            addCriterion("prod_num <=", value, "prodNum");
+        public Criteria andProdRuWeightLessThanOrEqualTo(Float value) {
+            addCriterion("prod_ru_weight <=", value, "prodRuWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdNumIn(List<Float> values) {
-            addCriterion("prod_num in", values, "prodNum");
+        public Criteria andProdRuWeightIn(List<Float> values) {
+            addCriterion("prod_ru_weight in", values, "prodRuWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdNumNotIn(List<Float> values) {
-            addCriterion("prod_num not in", values, "prodNum");
+        public Criteria andProdRuWeightNotIn(List<Float> values) {
+            addCriterion("prod_ru_weight not in", values, "prodRuWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdNumBetween(Float value1, Float value2) {
-            addCriterion("prod_num between", value1, value2, "prodNum");
+        public Criteria andProdRuWeightBetween(Float value1, Float value2) {
+            addCriterion("prod_ru_weight between", value1, value2, "prodRuWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdNumNotBetween(Float value1, Float value2) {
-            addCriterion("prod_num not between", value1, value2, "prodNum");
+        public Criteria andProdRuWeightNotBetween(Float value1, Float value2) {
+            addCriterion("prod_ru_weight not between", value1, value2, "prodRuWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdRecordWeightIsNull() {
-            addCriterion("prod_record_weight is null");
+        public Criteria andProdRuNumIsNull() {
+            addCriterion("prod_ru_num is null");
             return (Criteria) this;
         }
 
-        public Criteria andProdRecordWeightIsNotNull() {
-            addCriterion("prod_record_weight is not null");
+        public Criteria andProdRuNumIsNotNull() {
+            addCriterion("prod_ru_num is not null");
             return (Criteria) this;
         }
 
-        public Criteria andProdRecordWeightEqualTo(Float value) {
-            addCriterion("prod_record_weight =", value, "prodRecordWeight");
+        public Criteria andProdRuNumEqualTo(Float value) {
+            addCriterion("prod_ru_num =", value, "prodRuNum");
             return (Criteria) this;
         }
 
-        public Criteria andProdRecordWeightNotEqualTo(Float value) {
-            addCriterion("prod_record_weight <>", value, "prodRecordWeight");
+        public Criteria andProdRuNumNotEqualTo(Float value) {
+            addCriterion("prod_ru_num <>", value, "prodRuNum");
             return (Criteria) this;
         }
 
-        public Criteria andProdRecordWeightGreaterThan(Float value) {
-            addCriterion("prod_record_weight >", value, "prodRecordWeight");
+        public Criteria andProdRuNumGreaterThan(Float value) {
+            addCriterion("prod_ru_num >", value, "prodRuNum");
             return (Criteria) this;
         }
 
-        public Criteria andProdRecordWeightGreaterThanOrEqualTo(Float value) {
-            addCriterion("prod_record_weight >=", value, "prodRecordWeight");
+        public Criteria andProdRuNumGreaterThanOrEqualTo(Float value) {
+            addCriterion("prod_ru_num >=", value, "prodRuNum");
             return (Criteria) this;
         }
 
-        public Criteria andProdRecordWeightLessThan(Float value) {
-            addCriterion("prod_record_weight <", value, "prodRecordWeight");
+        public Criteria andProdRuNumLessThan(Float value) {
+            addCriterion("prod_ru_num <", value, "prodRuNum");
             return (Criteria) this;
         }
 
-        public Criteria andProdRecordWeightLessThanOrEqualTo(Float value) {
-            addCriterion("prod_record_weight <=", value, "prodRecordWeight");
+        public Criteria andProdRuNumLessThanOrEqualTo(Float value) {
+            addCriterion("prod_ru_num <=", value, "prodRuNum");
             return (Criteria) this;
         }
 
-        public Criteria andProdRecordWeightIn(List<Float> values) {
-            addCriterion("prod_record_weight in", values, "prodRecordWeight");
+        public Criteria andProdRuNumIn(List<Float> values) {
+            addCriterion("prod_ru_num in", values, "prodRuNum");
             return (Criteria) this;
         }
 
-        public Criteria andProdRecordWeightNotIn(List<Float> values) {
-            addCriterion("prod_record_weight not in", values, "prodRecordWeight");
+        public Criteria andProdRuNumNotIn(List<Float> values) {
+            addCriterion("prod_ru_num not in", values, "prodRuNum");
             return (Criteria) this;
         }
 
-        public Criteria andProdRecordWeightBetween(Float value1, Float value2) {
-            addCriterion("prod_record_weight between", value1, value2, "prodRecordWeight");
+        public Criteria andProdRuNumBetween(Float value1, Float value2) {
+            addCriterion("prod_ru_num between", value1, value2, "prodRuNum");
             return (Criteria) this;
         }
 
-        public Criteria andProdRecordWeightNotBetween(Float value1, Float value2) {
-            addCriterion("prod_record_weight not between", value1, value2, "prodRecordWeight");
+        public Criteria andProdRuNumNotBetween(Float value1, Float value2) {
+            addCriterion("prod_ru_num not between", value1, value2, "prodRuNum");
             return (Criteria) this;
         }
 
-        public Criteria andProdRelWeightIsNull() {
-            addCriterion("prod_rel_weight is null");
+        public Criteria andProdOutWeightIsNull() {
+            addCriterion("prod_out_weight is null");
             return (Criteria) this;
         }
 
-        public Criteria andProdRelWeightIsNotNull() {
-            addCriterion("prod_rel_weight is not null");
+        public Criteria andProdOutWeightIsNotNull() {
+            addCriterion("prod_out_weight is not null");
             return (Criteria) this;
         }
 
-        public Criteria andProdRelWeightEqualTo(Float value) {
-            addCriterion("prod_rel_weight =", value, "prodRelWeight");
+        public Criteria andProdOutWeightEqualTo(Float value) {
+            addCriterion("prod_out_weight =", value, "prodOutWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdRelWeightNotEqualTo(Float value) {
-            addCriterion("prod_rel_weight <>", value, "prodRelWeight");
+        public Criteria andProdOutWeightNotEqualTo(Float value) {
+            addCriterion("prod_out_weight <>", value, "prodOutWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdRelWeightGreaterThan(Float value) {
-            addCriterion("prod_rel_weight >", value, "prodRelWeight");
+        public Criteria andProdOutWeightGreaterThan(Float value) {
+            addCriterion("prod_out_weight >", value, "prodOutWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdRelWeightGreaterThanOrEqualTo(Float value) {
-            addCriterion("prod_rel_weight >=", value, "prodRelWeight");
+        public Criteria andProdOutWeightGreaterThanOrEqualTo(Float value) {
+            addCriterion("prod_out_weight >=", value, "prodOutWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdRelWeightLessThan(Float value) {
-            addCriterion("prod_rel_weight <", value, "prodRelWeight");
+        public Criteria andProdOutWeightLessThan(Float value) {
+            addCriterion("prod_out_weight <", value, "prodOutWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdRelWeightLessThanOrEqualTo(Float value) {
-            addCriterion("prod_rel_weight <=", value, "prodRelWeight");
+        public Criteria andProdOutWeightLessThanOrEqualTo(Float value) {
+            addCriterion("prod_out_weight <=", value, "prodOutWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdRelWeightIn(List<Float> values) {
-            addCriterion("prod_rel_weight in", values, "prodRelWeight");
+        public Criteria andProdOutWeightIn(List<Float> values) {
+            addCriterion("prod_out_weight in", values, "prodOutWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdRelWeightNotIn(List<Float> values) {
-            addCriterion("prod_rel_weight not in", values, "prodRelWeight");
+        public Criteria andProdOutWeightNotIn(List<Float> values) {
+            addCriterion("prod_out_weight not in", values, "prodOutWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdRelWeightBetween(Float value1, Float value2) {
-            addCriterion("prod_rel_weight between", value1, value2, "prodRelWeight");
+        public Criteria andProdOutWeightBetween(Float value1, Float value2) {
+            addCriterion("prod_out_weight between", value1, value2, "prodOutWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdRelWeightNotBetween(Float value1, Float value2) {
-            addCriterion("prod_rel_weight not between", value1, value2, "prodRelWeight");
+        public Criteria andProdOutWeightNotBetween(Float value1, Float value2) {
+            addCriterion("prod_out_weight not between", value1, value2, "prodOutWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdPrintWeightIsNull() {
-            addCriterion("prod_print_weight is null");
+        public Criteria andProdOutNumIsNull() {
+            addCriterion("prod_out_num is null");
             return (Criteria) this;
         }
 
-        public Criteria andProdPrintWeightIsNotNull() {
-            addCriterion("prod_print_weight is not null");
+        public Criteria andProdOutNumIsNotNull() {
+            addCriterion("prod_out_num is not null");
             return (Criteria) this;
         }
 
-        public Criteria andProdPrintWeightEqualTo(Float value) {
-            addCriterion("prod_print_weight =", value, "prodPrintWeight");
+        public Criteria andProdOutNumEqualTo(Float value) {
+            addCriterion("prod_out_num =", value, "prodOutNum");
             return (Criteria) this;
         }
 
-        public Criteria andProdPrintWeightNotEqualTo(Float value) {
-            addCriterion("prod_print_weight <>", value, "prodPrintWeight");
+        public Criteria andProdOutNumNotEqualTo(Float value) {
+            addCriterion("prod_out_num <>", value, "prodOutNum");
             return (Criteria) this;
         }
 
-        public Criteria andProdPrintWeightGreaterThan(Float value) {
-            addCriterion("prod_print_weight >", value, "prodPrintWeight");
+        public Criteria andProdOutNumGreaterThan(Float value) {
+            addCriterion("prod_out_num >", value, "prodOutNum");
             return (Criteria) this;
         }
 
-        public Criteria andProdPrintWeightGreaterThanOrEqualTo(Float value) {
-            addCriterion("prod_print_weight >=", value, "prodPrintWeight");
+        public Criteria andProdOutNumGreaterThanOrEqualTo(Float value) {
+            addCriterion("prod_out_num >=", value, "prodOutNum");
             return (Criteria) this;
         }
 
-        public Criteria andProdPrintWeightLessThan(Float value) {
-            addCriterion("prod_print_weight <", value, "prodPrintWeight");
+        public Criteria andProdOutNumLessThan(Float value) {
+            addCriterion("prod_out_num <", value, "prodOutNum");
             return (Criteria) this;
         }
 
-        public Criteria andProdPrintWeightLessThanOrEqualTo(Float value) {
-            addCriterion("prod_print_weight <=", value, "prodPrintWeight");
+        public Criteria andProdOutNumLessThanOrEqualTo(Float value) {
+            addCriterion("prod_out_num <=", value, "prodOutNum");
             return (Criteria) this;
         }
 
-        public Criteria andProdPrintWeightIn(List<Float> values) {
-            addCriterion("prod_print_weight in", values, "prodPrintWeight");
+        public Criteria andProdOutNumIn(List<Float> values) {
+            addCriterion("prod_out_num in", values, "prodOutNum");
             return (Criteria) this;
         }
 
-        public Criteria andProdPrintWeightNotIn(List<Float> values) {
-            addCriterion("prod_print_weight not in", values, "prodPrintWeight");
+        public Criteria andProdOutNumNotIn(List<Float> values) {
+            addCriterion("prod_out_num not in", values, "prodOutNum");
             return (Criteria) this;
         }
 
-        public Criteria andProdPrintWeightBetween(Float value1, Float value2) {
-            addCriterion("prod_print_weight between", value1, value2, "prodPrintWeight");
+        public Criteria andProdOutNumBetween(Float value1, Float value2) {
+            addCriterion("prod_out_num between", value1, value2, "prodOutNum");
             return (Criteria) this;
         }
 
-        public Criteria andProdPrintWeightNotBetween(Float value1, Float value2) {
-            addCriterion("prod_print_weight not between", value1, value2, "prodPrintWeight");
+        public Criteria andProdOutNumNotBetween(Float value1, Float value2) {
+            addCriterion("prod_out_num not between", value1, value2, "prodOutNum");
             return (Criteria) this;
         }
 
-        public Criteria andProdSourceIsNull() {
-            addCriterion("prod_source is null");
+        public Criteria andProdAtWeightIsNull() {
+            addCriterion("prod_at_weight is null");
             return (Criteria) this;
         }
 
-        public Criteria andProdSourceIsNotNull() {
-            addCriterion("prod_source is not null");
+        public Criteria andProdAtWeightIsNotNull() {
+            addCriterion("prod_at_weight is not null");
             return (Criteria) this;
         }
 
-        public Criteria andProdSourceEqualTo(String value) {
-            addCriterion("prod_source =", value, "prodSource");
+        public Criteria andProdAtWeightEqualTo(Float value) {
+            addCriterion("prod_at_weight =", value, "prodAtWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdSourceNotEqualTo(String value) {
-            addCriterion("prod_source <>", value, "prodSource");
+        public Criteria andProdAtWeightNotEqualTo(Float value) {
+            addCriterion("prod_at_weight <>", value, "prodAtWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdSourceGreaterThan(String value) {
-            addCriterion("prod_source >", value, "prodSource");
+        public Criteria andProdAtWeightGreaterThan(Float value) {
+            addCriterion("prod_at_weight >", value, "prodAtWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdSourceGreaterThanOrEqualTo(String value) {
-            addCriterion("prod_source >=", value, "prodSource");
+        public Criteria andProdAtWeightGreaterThanOrEqualTo(Float value) {
+            addCriterion("prod_at_weight >=", value, "prodAtWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdSourceLessThan(String value) {
-            addCriterion("prod_source <", value, "prodSource");
+        public Criteria andProdAtWeightLessThan(Float value) {
+            addCriterion("prod_at_weight <", value, "prodAtWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdSourceLessThanOrEqualTo(String value) {
-            addCriterion("prod_source <=", value, "prodSource");
+        public Criteria andProdAtWeightLessThanOrEqualTo(Float value) {
+            addCriterion("prod_at_weight <=", value, "prodAtWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdSourceLike(String value) {
-            addCriterion("prod_source like", value, "prodSource");
+        public Criteria andProdAtWeightIn(List<Float> values) {
+            addCriterion("prod_at_weight in", values, "prodAtWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdSourceNotLike(String value) {
-            addCriterion("prod_source not like", value, "prodSource");
+        public Criteria andProdAtWeightNotIn(List<Float> values) {
+            addCriterion("prod_at_weight not in", values, "prodAtWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdSourceIn(List<String> values) {
-            addCriterion("prod_source in", values, "prodSource");
+        public Criteria andProdAtWeightBetween(Float value1, Float value2) {
+            addCriterion("prod_at_weight between", value1, value2, "prodAtWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdSourceNotIn(List<String> values) {
-            addCriterion("prod_source not in", values, "prodSource");
+        public Criteria andProdAtWeightNotBetween(Float value1, Float value2) {
+            addCriterion("prod_at_weight not between", value1, value2, "prodAtWeight");
             return (Criteria) this;
         }
 
-        public Criteria andProdSourceBetween(String value1, String value2) {
-            addCriterion("prod_source between", value1, value2, "prodSource");
+        public Criteria andProdAtNumIsNull() {
+            addCriterion("prod_at_num is null");
             return (Criteria) this;
         }
 
-        public Criteria andProdSourceNotBetween(String value1, String value2) {
-            addCriterion("prod_source not between", value1, value2, "prodSource");
+        public Criteria andProdAtNumIsNotNull() {
+            addCriterion("prod_at_num is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProdAtNumEqualTo(Float value) {
+            addCriterion("prod_at_num =", value, "prodAtNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andProdAtNumNotEqualTo(Float value) {
+            addCriterion("prod_at_num <>", value, "prodAtNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andProdAtNumGreaterThan(Float value) {
+            addCriterion("prod_at_num >", value, "prodAtNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andProdAtNumGreaterThanOrEqualTo(Float value) {
+            addCriterion("prod_at_num >=", value, "prodAtNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andProdAtNumLessThan(Float value) {
+            addCriterion("prod_at_num <", value, "prodAtNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andProdAtNumLessThanOrEqualTo(Float value) {
+            addCriterion("prod_at_num <=", value, "prodAtNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andProdAtNumIn(List<Float> values) {
+            addCriterion("prod_at_num in", values, "prodAtNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andProdAtNumNotIn(List<Float> values) {
+            addCriterion("prod_at_num not in", values, "prodAtNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andProdAtNumBetween(Float value1, Float value2) {
+            addCriterion("prod_at_num between", value1, value2, "prodAtNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andProdAtNumNotBetween(Float value1, Float value2) {
+            addCriterion("prod_at_num not between", value1, value2, "prodAtNum");
             return (Criteria) this;
         }
 

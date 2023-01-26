@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.bsl.common.pojo.EasyUIDataGridResult;
 import com.bsl.common.utils.BSLResult;
+import com.bsl.select.DictItemOperation;
+import com.bsl.select.ErrorCodeInfo;
 import com.bsl.select.QueryCriteria;
+import com.bsl.service.report.RawReportService;
 import com.bsl.service.report.ReportService;
 
 /**
@@ -20,6 +23,9 @@ public class ReportController {
 	
 	@Autowired
 	private ReportService reportService;
+	
+	@Autowired
+	private RawReportService rawReportService;
 	
 	/**
 	 * 成型机组生产报表
@@ -102,12 +108,12 @@ public class ReportController {
 	}
 	
 	/**
-	 * 原材料进库表报
+	 * 原材料进库报表日报
 	 * @param 
 	 * @param 
 	 * @return
 	 */
-	@RequestMapping("/listByCriteriaM7105")
+	@RequestMapping("/listM7105")
 	@ResponseBody
 	public BSLResult getM7105Report(QueryCriteria queryCriteria){
 		BSLResult result = null;
@@ -116,7 +122,57 @@ public class ReportController {
 		}else if(StringUtils.isBlank(queryCriteria.getRows())) {
 			result =  BSLResult.build(400, "每页记录数不能为空");
 		}else{
-			result = reportService.getM7105Report(queryCriteria);
+			result = rawReportService.getM7105Report(queryCriteria);
+		}
+		return result;
+	}
+	
+	/**
+	 * 原材料进库报表统计
+	 * @param 
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping("/listM7105s")
+	@ResponseBody
+	public BSLResult getM7105sReport(QueryCriteria queryCriteria){
+		BSLResult result = null;
+		if(StringUtils.isBlank(queryCriteria.getPage())) {
+			result =  BSLResult.build(400, "页码不能为空");
+		}else if(StringUtils.isBlank(queryCriteria.getRows())) {
+			result =  BSLResult.build(400, "每页记录数不能为空");
+		}else{
+			try {
+				return rawReportService.getM7105sReport(queryCriteria);
+			} catch (Exception e) {
+				DictItemOperation.log.info("===========异常:"+e.getMessage());
+				return BSLResult.build(ErrorCodeInfo.错误类型_交易异常,e.getMessage());
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * 原材料进库报表合计
+	 * @param 
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping("/listM7105sHJ")
+	@ResponseBody
+	public BSLResult getM7105sHJReport(QueryCriteria queryCriteria){
+		BSLResult result = null;
+		if(StringUtils.isBlank(queryCriteria.getPage())) {
+			result =  BSLResult.build(400, "页码不能为空");
+		}else if(StringUtils.isBlank(queryCriteria.getRows())) {
+			result =  BSLResult.build(400, "每页记录数不能为空");
+		}else{
+			try {
+				return rawReportService.getM7105sHJReport(queryCriteria);
+			} catch (Exception e) {
+				DictItemOperation.log.info("===========异常:"+e.getMessage());
+				return BSLResult.build(ErrorCodeInfo.错误类型_交易异常,e.getMessage());
+			}
 		}
 		return result;
 	}

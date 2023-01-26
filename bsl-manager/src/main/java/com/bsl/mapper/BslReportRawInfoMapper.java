@@ -2,6 +2,8 @@ package com.bsl.mapper;
 
 import com.bsl.pojo.BslReportRawInfo;
 import com.bsl.pojo.BslReportRawInfoExample;
+import com.bsl.reportbean.BslRawReportHJInfo;
+import com.bsl.select.QueryCriteria;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -19,4 +21,11 @@ public interface BslReportRawInfoMapper {
     int updateByExampleSelective(@Param("record") BslReportRawInfo record, @Param("example") BslReportRawInfoExample example);
 
     int updateByExample(@Param("record") BslReportRawInfo record, @Param("example") BslReportRawInfoExample example);
+
+    List<BslReportRawInfo> selectRawReportInfoTH(QueryCriteria queryCriteria);
+    
+    List<BslRawReportHJInfo> selectRawReportInfoHJ(QueryCriteria queryCriteria);
+    
+    int countNormRawReportInfoHJ(QueryCriteria queryCriteria);
+    
 }

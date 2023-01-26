@@ -76,7 +76,7 @@ public class BslSchedulerImpl implements BslSchedulerService{
 	@Autowired	 
 	BslStockChangeDetailHMapper bslStockChangeDetailHMapper;
 	
-    @Scheduled(cron="0 5 0 * * ? ")   //每天凌晨0点1分跑批
+    @Scheduled(cron="0 5 0 * * ? ")   //每天凌晨0点5分跑批
     @Override
     public void addBslScheduler(){
     	 DictItemOperation.log.info("===========批量开始："+new Date());
@@ -114,7 +114,8 @@ public class BslSchedulerImpl implements BslSchedulerService{
          insertHalfProdSaleInfoReport(yesDay);
          
          //10.原材料进库报表
-         insertRawInfoReport(yesDay);   
+         //insertRawInfoReport(yesDay);   
+         insertRawInfoReportNew(yesDay);
          
 
          //插入单炉库存重量日照（每天生成最新的数据）
@@ -522,7 +523,7 @@ public class BslSchedulerImpl implements BslSchedulerService{
     }
     
     /**
-     * 原材料进库报表
+     * 原材料进库报表（弃用）
      */
     public void  insertRawInfoReport(Date yesDate){
     	DictItemOperation.log.info("===========生成原材料进库报表开始");
@@ -580,6 +581,20 @@ public class BslSchedulerImpl implements BslSchedulerService{
 		}
 		
     	DictItemOperation.log.info("===========生成原材料进库报表结束");
+    }
+    
+    /**
+     * 原材料进库报表（新）
+     */
+    public void  insertRawInfoReportNew(Date yesDate){
+    	DictItemOperation.log.info("===========生成原材料进库报表新开始");
+    	String dateString = DictItemOperation.日期转换实例yyyyMMdd.format(yesDate);
+    	int result = bslProductInfoMapper.insertRawInfoReportNew(dateString);
+		if(result<0){
+		     throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
+		}
+		
+    	DictItemOperation.log.info("===========生成原材料进库报表新结束");
     }
     
     

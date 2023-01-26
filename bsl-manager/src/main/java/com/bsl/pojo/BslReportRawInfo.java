@@ -5,21 +5,21 @@ import java.util.Date;
 public class BslReportRawInfo {
     private String dataDate;
 
-    private String dataType;
-
     private String prodNorm;
 
     private String prodMaterial;
 
-    private Float prodNum;
+    private Float prodRuWeight;
 
-    private Float prodRecordWeight;
+    private Float prodRuNum;
 
-    private Float prodRelWeight;
+    private Float prodOutWeight;
 
-    private Float prodPrintWeight;
+    private Float prodOutNum;
 
-    private String prodSource;
+    private Float prodAtWeight;
+
+    private Float prodAtNum;
 
     private String prodCompany;
 
@@ -35,14 +35,6 @@ public class BslReportRawInfo {
 
     public void setDataDate(String dataDate) {
         this.dataDate = dataDate == null ? null : dataDate.trim();
-    }
-
-    public String getDataType() {
-        return dataType;
-    }
-
-    public void setDataType(String dataType) {
-        this.dataType = dataType == null ? null : dataType.trim();
     }
 
     public String getProdNorm() {
@@ -61,44 +53,52 @@ public class BslReportRawInfo {
         this.prodMaterial = prodMaterial == null ? null : prodMaterial.trim();
     }
 
-    public Float getProdNum() {
-        return prodNum;
+    public Float getProdRuWeight() {
+        return prodRuWeight;
     }
 
-    public void setProdNum(Float prodNum) {
-        this.prodNum = prodNum;
+    public void setProdRuWeight(Float prodRuWeight) {
+        this.prodRuWeight = prodRuWeight;
     }
 
-    public Float getProdRecordWeight() {
-        return prodRecordWeight;
+    public Float getProdRuNum() {
+        return prodRuNum;
     }
 
-    public void setProdRecordWeight(Float prodRecordWeight) {
-        this.prodRecordWeight = prodRecordWeight;
+    public void setProdRuNum(Float prodRuNum) {
+        this.prodRuNum = prodRuNum;
     }
 
-    public Float getProdRelWeight() {
-        return prodRelWeight;
+    public Float getProdOutWeight() {
+        return prodOutWeight;
     }
 
-    public void setProdRelWeight(Float prodRelWeight) {
-        this.prodRelWeight = prodRelWeight;
+    public void setProdOutWeight(Float prodOutWeight) {
+        this.prodOutWeight = prodOutWeight;
     }
 
-    public Float getProdPrintWeight() {
-        return prodPrintWeight;
+    public Float getProdOutNum() {
+        return prodOutNum;
     }
 
-    public void setProdPrintWeight(Float prodPrintWeight) {
-        this.prodPrintWeight = prodPrintWeight;
+    public void setProdOutNum(Float prodOutNum) {
+        this.prodOutNum = prodOutNum;
     }
 
-    public String getProdSource() {
-        return prodSource;
+    public Float getProdAtWeight() {
+        return prodAtWeight;
     }
 
-    public void setProdSource(String prodSource) {
-        this.prodSource = prodSource == null ? null : prodSource.trim();
+    public void setProdAtWeight(Float prodAtWeight) {
+        this.prodAtWeight = prodAtWeight;
+    }
+
+    public Float getProdAtNum() {
+        return prodAtNum;
+    }
+
+    public void setProdAtNum(Float prodAtNum) {
+        this.prodAtNum = prodAtNum;
     }
 
     public String getProdCompany() {

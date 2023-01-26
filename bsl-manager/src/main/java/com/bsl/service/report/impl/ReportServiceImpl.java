@@ -557,9 +557,19 @@ public class ReportServiceImpl implements ReportService {
 	public BSLResult getM7105Report(QueryCriteria queryCriteria) {
 		BslReportRawInfoExample bslReportRawInfoExample = new BslReportRawInfoExample();
 		com.bsl.pojo.BslReportRawInfoExample.Criteria criteria = bslReportRawInfoExample.createCriteria();
-		if(!StringUtils.isBlank(queryCriteria.getDataType())){
-			criteria.andDataTypeEqualTo(queryCriteria.getDataType());
+		if(!StringUtils.isBlank(queryCriteria.getProdMaterial())){
+			criteria.andProdMaterialEqualTo(queryCriteria.getProdMaterial());
 		}
+		if(!StringUtils.isBlank(queryCriteria.getProdNorm())){
+			criteria.andProdNormLike("%"+queryCriteria.getProdNorm()+"%");
+		}
+		if(!StringUtils.isBlank(queryCriteria.getProdCompany())){
+			criteria.andProdCompanyLike("%"+queryCriteria.getProdCompany()+"%");
+		}
+		if(!StringUtils.isBlank(queryCriteria.getProdCustomer())){
+			criteria.andProdCustomerLike("%"+queryCriteria.getProdCustomer()+"%");
+		}
+		
 		//开始日期结束日期
 		Date dateStart = new Date();
 		Date dateEnd = new Date();

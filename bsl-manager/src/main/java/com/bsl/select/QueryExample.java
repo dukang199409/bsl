@@ -88,7 +88,21 @@ public class QueryExample {
 	private String saleFlag;
 	private String planJz;
 	private String prodMakeJz;
+	private String prodCustomer;
+	private String prodCompany;
 	
+	public String getProdCustomer() {
+		return prodCustomer;
+	}
+	public void setProdCustomer(String prodCustomer) {
+		this.prodCustomer = prodCustomer;
+	}
+	public String getProdCompany() {
+		return prodCompany;
+	}
+	public void setProdCompany(String prodCompany) {
+		this.prodCompany = prodCompany;
+	}
 	public String getProdMakeJz() {
 		return prodMakeJz;
 	}

@@ -3,14 +3,14 @@
 <mapper namespace="com.bsl.mapper.BslReportRawInfoMapper" >
   <resultMap id="BaseResultMap" type="com.bsl.pojo.BslReportRawInfo" >
     <result column="data_date" property="dataDate" jdbcType="VARCHAR" />
-    <result column="data_type" property="dataType" jdbcType="CHAR" />
     <result column="prod_norm" property="prodNorm" jdbcType="VARCHAR" />
     <result column="prod_material" property="prodMaterial" jdbcType="CHAR" />
-    <result column="prod_num" property="prodNum" jdbcType="REAL" />
-    <result column="prod_record_weight" property="prodRecordWeight" jdbcType="REAL" />
-    <result column="prod_rel_weight" property="prodRelWeight" jdbcType="REAL" />
-    <result column="prod_print_weight" property="prodPrintWeight" jdbcType="REAL" />
-    <result column="prod_source" property="prodSource" jdbcType="CHAR" />
+    <result column="prod_ru_weight" property="prodRuWeight" jdbcType="REAL" />
+    <result column="prod_ru_num" property="prodRuNum" jdbcType="REAL" />
+    <result column="prod_out_weight" property="prodOutWeight" jdbcType="REAL" />
+    <result column="prod_out_num" property="prodOutNum" jdbcType="REAL" />
+    <result column="prod_at_weight" property="prodAtWeight" jdbcType="REAL" />
+    <result column="prod_at_num" property="prodAtNum" jdbcType="REAL" />
     <result column="prod_company" property="prodCompany" jdbcType="VARCHAR" />
     <result column="prod_customer" property="prodCustomer" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
@@ -75,8 +75,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    data_date, data_type, prod_norm, prod_material, prod_num, prod_record_weight, prod_rel_weight, 
-    prod_print_weight, prod_source, prod_company, prod_customer, remark, crt_date
+    data_date, prod_norm, prod_material, prod_ru_weight, prod_ru_num, prod_out_weight, 
+    prod_out_num, prod_at_weight, prod_at_num, prod_company, prod_customer, remark, crt_date
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bsl.pojo.BslReportRawInfoExample" >
     select
@@ -99,14 +99,14 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.bsl.pojo.BslReportRawInfo" >
-    insert into bsl_report_raw_info (data_date, data_type, prod_norm, 
-      prod_material, prod_num, prod_record_weight, 
-      prod_rel_weight, prod_print_weight, prod_source, 
+    insert into bsl_report_raw_info (data_date, prod_norm, prod_material, 
+      prod_ru_weight, prod_ru_num, prod_out_weight, 
+      prod_out_num, prod_at_weight, prod_at_num, 
       prod_company, prod_customer, remark, 
       crt_date)
-    values (#{dataDate,jdbcType=VARCHAR}, #{dataType,jdbcType=CHAR}, #{prodNorm,jdbcType=VARCHAR}, 
-      #{prodMaterial,jdbcType=CHAR}, #{prodNum,jdbcType=REAL}, #{prodRecordWeight,jdbcType=REAL}, 
-      #{prodRelWeight,jdbcType=REAL}, #{prodPrintWeight,jdbcType=REAL}, #{prodSource,jdbcType=CHAR}, 
+    values (#{dataDate,jdbcType=VARCHAR}, #{prodNorm,jdbcType=VARCHAR}, #{prodMaterial,jdbcType=CHAR}, 
+      #{prodRuWeight,jdbcType=REAL}, #{prodRuNum,jdbcType=REAL}, #{prodOutWeight,jdbcType=REAL}, 
+      #{prodOutNum,jdbcType=REAL}, #{prodAtWeight,jdbcType=REAL}, #{prodAtNum,jdbcType=REAL}, 
       #{prodCompany,jdbcType=VARCHAR}, #{prodCustomer,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{crtDate,jdbcType=DATE})
   </insert>
@@ -116,29 +116,29 @@
       <if test="dataDate != null" >
         data_date,
       </if>
-      <if test="dataType != null" >
-        data_type,
-      </if>
       <if test="prodNorm != null" >
         prod_norm,
       </if>
       <if test="prodMaterial != null" >
         prod_material,
       </if>
-      <if test="prodNum != null" >
-        prod_num,
+      <if test="prodRuWeight != null" >
+        prod_ru_weight,
       </if>
-      <if test="prodRecordWeight != null" >
-        prod_record_weight,
+      <if test="prodRuNum != null" >
+        prod_ru_num,
       </if>
-      <if test="prodRelWeight != null" >
-        prod_rel_weight,
+      <if test="prodOutWeight != null" >
+        prod_out_weight,
       </if>
-      <if test="prodPrintWeight != null" >
-        prod_print_weight,
+      <if test="prodOutNum != null" >
+        prod_out_num,
       </if>
-      <if test="prodSource != null" >
-        prod_source,
+      <if test="prodAtWeight != null" >
+        prod_at_weight,
+      </if>
+      <if test="prodAtNum != null" >
+        prod_at_num,
       </if>
       <if test="prodCompany != null" >
         prod_company,
@@ -157,29 +157,29 @@
       <if test="dataDate != null" >
         #{dataDate,jdbcType=VARCHAR},
       </if>
-      <if test="dataType != null" >
-        #{dataType,jdbcType=CHAR},
-      </if>
       <if test="prodNorm != null" >
         #{prodNorm,jdbcType=VARCHAR},
       </if>
       <if test="prodMaterial != null" >
         #{prodMaterial,jdbcType=CHAR},
       </if>
-      <if test="prodNum != null" >
-        #{prodNum,jdbcType=REAL},
+      <if test="prodRuWeight != null" >
+        #{prodRuWeight,jdbcType=REAL},
       </if>
-      <if test="prodRecordWeight != null" >
-        #{prodRecordWeight,jdbcType=REAL},
+      <if test="prodRuNum != null" >
+        #{prodRuNum,jdbcType=REAL},
       </if>
-      <if test="prodRelWeight != null" >
-        #{prodRelWeight,jdbcType=REAL},
+      <if test="prodOutWeight != null" >
+        #{prodOutWeight,jdbcType=REAL},
       </if>
-      <if test="prodPrintWeight != null" >
-        #{prodPrintWeight,jdbcType=REAL},
+      <if test="prodOutNum != null" >
+        #{prodOutNum,jdbcType=REAL},
       </if>
-      <if test="prodSource != null" >
-        #{prodSource,jdbcType=CHAR},
+      <if test="prodAtWeight != null" >
+        #{prodAtWeight,jdbcType=REAL},
+      </if>
+      <if test="prodAtNum != null" >
+        #{prodAtNum,jdbcType=REAL},
       </if>
       <if test="prodCompany != null" >
         #{prodCompany,jdbcType=VARCHAR},
@@ -207,29 +207,29 @@
       <if test="record.dataDate != null" >
         data_date = #{record.dataDate,jdbcType=VARCHAR},
       </if>
-      <if test="record.dataType != null" >
-        data_type = #{record.dataType,jdbcType=CHAR},
-      </if>
       <if test="record.prodNorm != null" >
         prod_norm = #{record.prodNorm,jdbcType=VARCHAR},
       </if>
       <if test="record.prodMaterial != null" >
         prod_material = #{record.prodMaterial,jdbcType=CHAR},
       </if>
-      <if test="record.prodNum != null" >
-        prod_num = #{record.prodNum,jdbcType=REAL},
+      <if test="record.prodRuWeight != null" >
+        prod_ru_weight = #{record.prodRuWeight,jdbcType=REAL},
       </if>
-      <if test="record.prodRecordWeight != null" >
-        prod_record_weight = #{record.prodRecordWeight,jdbcType=REAL},
+      <if test="record.prodRuNum != null" >
+        prod_ru_num = #{record.prodRuNum,jdbcType=REAL},
       </if>
-      <if test="record.prodRelWeight != null" >
-        prod_rel_weight = #{record.prodRelWeight,jdbcType=REAL},
+      <if test="record.prodOutWeight != null" >
+        prod_out_weight = #{record.prodOutWeight,jdbcType=REAL},
       </if>
-      <if test="record.prodPrintWeight != null" >
-        prod_print_weight = #{record.prodPrintWeight,jdbcType=REAL},
+      <if test="record.prodOutNum != null" >
+        prod_out_num = #{record.prodOutNum,jdbcType=REAL},
       </if>
-      <if test="record.prodSource != null" >
-        prod_source = #{record.prodSource,jdbcType=CHAR},
+      <if test="record.prodAtWeight != null" >
+        prod_at_weight = #{record.prodAtWeight,jdbcType=REAL},
+      </if>
+      <if test="record.prodAtNum != null" >
+        prod_at_num = #{record.prodAtNum,jdbcType=REAL},
       </if>
       <if test="record.prodCompany != null" >
         prod_company = #{record.prodCompany,jdbcType=VARCHAR},
@@ -251,14 +251,14 @@
   <update id="updateByExample" parameterType="map" >
     update bsl_report_raw_info
     set data_date = #{record.dataDate,jdbcType=VARCHAR},
-      data_type = #{record.dataType,jdbcType=CHAR},
       prod_norm = #{record.prodNorm,jdbcType=VARCHAR},
       prod_material = #{record.prodMaterial,jdbcType=CHAR},
-      prod_num = #{record.prodNum,jdbcType=REAL},
-      prod_record_weight = #{record.prodRecordWeight,jdbcType=REAL},
-      prod_rel_weight = #{record.prodRelWeight,jdbcType=REAL},
-      prod_print_weight = #{record.prodPrintWeight,jdbcType=REAL},
-      prod_source = #{record.prodSource,jdbcType=CHAR},
+      prod_ru_weight = #{record.prodRuWeight,jdbcType=REAL},
+      prod_ru_num = #{record.prodRuNum,jdbcType=REAL},
+      prod_out_weight = #{record.prodOutWeight,jdbcType=REAL},
+      prod_out_num = #{record.prodOutNum,jdbcType=REAL},
+      prod_at_weight = #{record.prodAtWeight,jdbcType=REAL},
+      prod_at_num = #{record.prodAtNum,jdbcType=REAL},
       prod_company = #{record.prodCompany,jdbcType=VARCHAR},
       prod_customer = #{record.prodCustomer,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
@@ -267,4 +267,161 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+  
+  <!-- 原料库存报表统计 -->
+  <select id="selectRawReportInfoTH" resultMap="BaseResultMap" parameterType="com.bsl.select.QueryCriteria">
+	  	select 
+			t1.prod_norm,
+			t1.prod_material,
+			t1.prod_ru_weight,
+			t1.prod_ru_num,
+			t1.prod_out_weight,
+			t1.prod_out_num,
+			ifnull(t2.prod_at_weight,0) prod_at_weight,
+			ifnull(t2.prod_at_num,0) prod_at_num,
+			t1.prod_company,
+			t1.prod_customer
+		from	
+		(select 
+			'' data_date,
+			t0.prod_norm,
+			t0.prod_material,
+			sum(t0.prod_ru_weight) prod_ru_weight,
+			sum(t0.prod_ru_num) prod_ru_num,
+			sum(t0.prod_out_weight) prod_out_weight,
+			sum(t0.prod_out_num) prod_out_num,
+			t0.prod_company,
+			t0.prod_customer
+		from bsl_report_raw_info t0
+		where t0.data_date between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+			<if test="prodNorm != null" >
+		        and t0.prod_norm like #{prodNorm,jdbcType=VARCHAR} 
+		    </if>
+		    <if test="prodMaterial != null" >
+		        and t0.prod_material = #{prodMaterial,jdbcType=VARCHAR} 
+		    </if>
+		     <if test="prodCompany != null" >
+		        and t0.prod_company like #{prodCompany,jdbcType=VARCHAR} 
+		    </if>
+		    <if test="prodCustomer != null" >
+		        and t0.prod_customer like #{prodCustomer,jdbcType=VARCHAR} 
+		    </if>
+		group by 
+			t0.prod_norm,
+			t0.prod_material,
+			t0.prod_company,
+			t0.prod_customer) t1
+		left join 
+		(select 
+			prod_norm,
+			prod_material,
+			prod_at_weight,
+			prod_at_num,
+			prod_company,
+			prod_customer
+		from bsl_report_raw_info
+		where data_date = #{endDate,jdbcType=VARCHAR}
+		) t2
+		on t1.prod_norm = t2.prod_norm
+		and t1.prod_material = t2.prod_material
+		and t1.prod_company = t2.prod_company
+		and t1.prod_customer = t2.prod_customer
+  </select>
+  
+  <resultMap id="RawReportInfoHJMap" type="com.bsl.reportbean.BslRawReportHJInfo" >
+    <result column="prod_ru_weight_hj" property="prodRuWeightHJ" jdbcType="REAL" />
+    <result column="prod_ru_num_hj" property="prodRuNumHJ" jdbcType="REAL" />
+    <result column="prod_out_weight_hj" property="prodOutWeightHJ" jdbcType="REAL" />
+    <result column="prod_out_num_hj" property="prodOutNumHJ" jdbcType="REAL" />
+    <result column="prod_at_weight_hj" property="prodAtWeightHJ" jdbcType="REAL" />
+    <result column="prod_at_num_hj" property="prodAtNumHJ" jdbcType="REAL" />
+  </resultMap>
+   <!-- 原料库存报表合计 -->
+  <select id="selectRawReportInfoHJ" resultMap="RawReportInfoHJMap" parameterType="com.bsl.select.QueryCriteria">
+	  	select 
+	  		sum(t.prod_ru_weight) prod_ru_weight_hj,
+	  		sum(t.prod_ru_num) prod_ru_num_hj,
+	  		sum(t.prod_out_weight) prod_out_weight_hj,
+	  		sum(t.prod_out_num) prod_out_num_hj,
+	  		sum(t.prod_at_weight) prod_at_weight_hj,
+	  		sum(t.prod_at_num) prod_at_num_hj
+	  	from (select 
+			t1.prod_norm,
+			t1.prod_material,
+			t1.prod_ru_weight,
+			t1.prod_ru_num,
+			t1.prod_out_weight,
+			t1.prod_out_num,
+			ifnull(t2.prod_at_weight,0) prod_at_weight,
+			ifnull(t2.prod_at_num,0) prod_at_num,
+			t1.prod_company,
+			t1.prod_customer
+		from	
+		(select 
+			'' data_date,
+			t0.prod_norm,
+			t0.prod_material,
+			sum(t0.prod_ru_weight) prod_ru_weight,
+			sum(t0.prod_ru_num) prod_ru_num,
+			sum(t0.prod_out_weight) prod_out_weight,
+			sum(t0.prod_out_num) prod_out_num,
+			t0.prod_company,
+			t0.prod_customer
+		from bsl_report_raw_info t0
+		where t0.data_date between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+			<if test="prodNorm != null" >
+		        and t0.prod_norm like #{prodNorm,jdbcType=VARCHAR} 
+		    </if>
+		    <if test="prodMaterial != null" >
+		        and t0.prod_material = #{prodMaterial,jdbcType=VARCHAR} 
+		    </if>
+		     <if test="prodCompany != null" >
+		        and t0.prod_company like #{prodCompany,jdbcType=VARCHAR} 
+		    </if>
+		    <if test="prodCustomer != null" >
+		        and t0.prod_customer like #{prodCustomer,jdbcType=VARCHAR} 
+		    </if>
+		group by 
+			t0.prod_norm,
+			t0.prod_material,
+			t0.prod_company,
+			t0.prod_customer) t1
+		left join 
+		(select 
+			prod_norm,
+			prod_material,
+			prod_at_weight,
+			prod_at_num,
+			prod_company,
+			prod_customer
+		from bsl_report_raw_info
+		where data_date = #{endDate,jdbcType=VARCHAR}
+		) t2
+		on t1.prod_norm = t2.prod_norm
+		and t1.prod_material = t2.prod_material
+		and t1.prod_company = t2.prod_company
+		and t1.prod_customer = t2.prod_customer) t
+  </select>
+  <!-- 规格数量统计 -->
+  <select id="countNormRawReportInfoHJ" resultType="java.lang.Integer" parameterType="com.bsl.select.QueryCriteria">
+	  	select count(1) from 
+	  	(select 
+	  		distinct t0.prod_norm,t0.prod_material
+		from bsl_report_raw_info t0
+		where t0.data_date between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+			<if test="prodNorm != null" >
+		        and t0.prod_norm like #{prodNorm,jdbcType=VARCHAR} 
+		    </if>
+		    <if test="prodMaterial != null" >
+		        and t0.prod_material = #{prodMaterial,jdbcType=VARCHAR} 
+		    </if>
+		     <if test="prodCompany != null" >
+		        and t0.prod_company like #{prodCompany,jdbcType=VARCHAR} 
+		    </if>
+		    <if test="prodCustomer != null" >
+		        and t0.prod_customer like #{prodCustomer,jdbcType=VARCHAR} 
+		    </if>
+		 ) t
+  </select>
+  
 </mapper>

@@ -1517,6 +1517,96 @@
 		where b.bs_type = '0'
    </insert>
    
+   <!-- 修改报表样式20230126 -->
+   <insert id="insertRawInfoReportNew" parameterType="java.lang.String">
+   		insert into bsl_report_raw_info 
+   		select 
+			#{dateString,jdbcType=VARCHAR},
+			t0.prod_norm,
+			t0.prod_material,
+			ifnull(t1.prod_ru_weight,0) prod_ru_weight,
+			ifnull(t1.prod_ru_num,0) prod_ru_num,
+			ifnull(t2.prod_out_weight,0) prod_out_weight,
+			ifnull(t2.prod_out_num,0) prod_out_num,
+			ifnull(t3.prod_at_weight,0) prod_at_weight,
+			ifnull(t3.prod_at_num,0) prod_at_num,
+			t0.prod_company,
+			t0.prod_customer,
+			'' remark,
+			now()
+		from
+		(select distinct prod_norm,
+			prod_material,
+			prod_company,
+			prod_customer
+		from bsl_product_info 
+		where prod_type = '0'
+		and (
+			date_format(crt_date,'%Y%m%d') = #{dateString,jdbcType=VARCHAR}
+			or date_format(prod_out_date,'%Y%m%d') = #{dateString,jdbcType=VARCHAR}
+			or prod_status= '1'
+		)) t0
+		left join 
+		(select 
+			prod_norm,
+			prod_material,
+			prod_company,
+			prod_customer,
+			sum(prod_rel_weight) prod_ru_weight,
+			count(1) prod_ru_num
+		from bsl_product_info 
+		where prod_type = '0'
+		and date_format(crt_date,'%Y%m%d') = #{dateString,jdbcType=VARCHAR}
+		group by prod_norm,
+			prod_material,
+			prod_company,
+			prod_customer) t1
+		on t0.prod_norm = t1.prod_norm
+		and t0.prod_material = t1.prod_material
+		and t0.prod_company = t1.prod_company
+		and t0.prod_customer = t1.prod_customer
+		
+		left join 
+		(select 
+			prod_norm,
+			prod_material,
+			prod_company,
+			prod_customer,
+			sum(prod_rel_weight) prod_out_weight,
+			count(1) prod_out_num
+		from bsl_product_info 
+		where prod_type = '0'
+		and date_format(prod_out_date,'%Y%m%d') = #{dateString,jdbcType=VARCHAR}
+		group by prod_norm,
+			prod_material,
+			prod_company,
+			prod_customer) t2
+		on t0.prod_norm = t2.prod_norm
+		and t0.prod_material = t2.prod_material
+		and t0.prod_company = t2.prod_company
+		and t0.prod_customer = t2.prod_customer
+		
+		left join 
+		(select 
+			prod_norm,
+			prod_material,
+			prod_company,
+			prod_customer,
+			sum(prod_rel_weight) prod_at_weight,
+			count(1) prod_at_num
+		from bsl_product_info 
+		where prod_type = '0'
+		and prod_status= '1'
+		group by prod_norm,
+			prod_material,
+			prod_company,
+			prod_customer) t3
+		on t0.prod_norm = t3.prod_norm
+		and t0.prod_material = t3.prod_material
+		and t0.prod_company = t3.prod_company
+		and t0.prod_customer = t3.prod_customer
+   </insert>
+   
    <!-- 月报和年报脚本 -->
    <insert id="insertProdMakeInfoReportBT" parameterType="com.bsl.select.QueryCriteria">
    		insert into bsl_report_prod_make_info
