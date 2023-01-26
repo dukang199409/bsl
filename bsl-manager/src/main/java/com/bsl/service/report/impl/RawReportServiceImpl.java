@@ -112,7 +112,8 @@ public class RawReportServiceImpl implements RawReportService {
 		if(StringUtils.isBlank(queryCriteria.getEndDate())){
 			throw new BSLException(ErrorCodeInfo.错误类型_查询无记录,"结束日期不能为空");
 		}
-		
+		queryCriteria.setStartDate(queryCriteria.getStartDate().replace("-", ""));
+		queryCriteria.setEndDate(queryCriteria.getEndDate().replace("-", ""));
 		//分页处理
 		PageHelper.startPage(Integer.parseInt(queryCriteria.getPage()), Integer.parseInt(queryCriteria.getRows()));
 		
@@ -142,6 +143,8 @@ public class RawReportServiceImpl implements RawReportService {
 		}else{
 			queryCriteria.setProdCustomer("%"+queryCriteria.getProdCustomer()+"%");
 		}
+		queryCriteria.setStartDate(queryCriteria.getStartDate().replace("-", ""));
+		queryCriteria.setEndDate(queryCriteria.getEndDate().replace("-", ""));
 		
 		List<BslRawReportHJInfo> bslReportRawHJInfos = bslReportRawInfoMapper.selectRawReportInfoHJ(queryCriteria);
 		int prodNormHJ = bslReportRawInfoMapper.countNormRawReportInfoHJ(queryCriteria);
