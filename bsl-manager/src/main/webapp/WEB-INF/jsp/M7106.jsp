@@ -76,12 +76,12 @@
 	            <th data-options="field:'prodRuZnum',width:100">产品入库支数</th>
 	            <th data-options="field:'prodRuBnum',width:100">产品入库包数</th>
 	            <th data-options="field:'prodRuWeight',width:125">产品入库重量/吨</th>
-	            <th data-options="field:'prodOutZnum',width:100">产品出库件数</th>
+	            <th data-options="field:'prodOutZnum',width:100">产品出库支数</th>
 	            <th data-options="field:'prodOutBnum',width:100">产品出库包数</th>
 	            <th data-options="field:'prodOutWeight',width:125">产品出库重量/吨</th>
 	            <th data-options="field:'prodAtZnum',width:100">产品库存支数</th>
 	            <th data-options="field:'prodAtBnum',width:100">产品库存包数</th>
-	            <th data-options="field:'prodAtWeight',width:125">产品出库重量/吨</th>
+	            <th data-options="field:'prodAtWeight',width:125">产品库存重量/吨</th>
 	            <th data-options="field:'prodCustomer',width:125">客户</th>
 	            <th data-options="field:'remark',width:125">备注</th>
 	            <th data-options="field:'crtDate',width:125,formatter:BSL.formatDateTime,sortable:true">创建日期</th>
