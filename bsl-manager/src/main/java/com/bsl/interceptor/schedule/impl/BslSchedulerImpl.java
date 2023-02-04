@@ -102,16 +102,16 @@ public class BslSchedulerImpl implements BslSchedulerService{
          insertHistoryStockChangeInfo();
          
          //6.成型机组生产日报表
-         insertProdMakeInfoReport(yesDay);
+         //insertProdMakeInfoReport(yesDay);
          
          //7.纵剪机组生产日报表
-         insertHalfProdMakeInfoReport(yesDay);
+         //insertHalfProdMakeInfoReport(yesDay);
          
          //8.产成品销售报表
-         insertProdSaleInfoReport(yesDay);
+         //insertProdSaleInfoReport(yesDay);
          
          //9.半成品销售报表
-         insertHalfProdSaleInfoReport(yesDay);
+         //insertHalfProdSaleInfoReport(yesDay);
          
          //10.原材料进库报表
          //insertRawInfoReport(yesDay);   

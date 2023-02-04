@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bsl.mapper.BslReportProdInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.bsl.pojo.BslReportProdInfo" >
+    <result column="data_date" property="dataDate" jdbcType="VARCHAR" />
+    <result column="prod_norm" property="prodNorm" jdbcType="VARCHAR" />
+    <result column="prod_length" property="prodLength" jdbcType="REAL" />
+    <result column="prod_material" property="prodMaterial" jdbcType="CHAR" />
+    <result column="prod_ru_znum" property="prodRuZnum" jdbcType="REAL" />
+    <result column="prod_ru_bnum" property="prodRuBnum" jdbcType="REAL" />
+    <result column="prod_ru_weight" property="prodRuWeight" jdbcType="REAL" />
+    <result column="prod_out_znum" property="prodOutZnum" jdbcType="REAL" />
+    <result column="prod_out_bnum" property="prodOutBnum" jdbcType="REAL" />
+    <result column="prod_out_weight" property="prodOutWeight" jdbcType="REAL" />
+    <result column="prod_at_znum" property="prodAtZnum" jdbcType="REAL" />
+    <result column="prod_at_bnum" property="prodAtBnum" jdbcType="REAL" />
+    <result column="prod_at_weight" property="prodAtWeight" jdbcType="REAL" />
+    <result column="prod_customer" property="prodCustomer" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="crt_date" property="crtDate" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    data_date, prod_norm, prod_length, prod_material, prod_ru_znum, prod_ru_bnum, prod_ru_weight, 
+    prod_out_znum, prod_out_bnum, prod_out_weight, prod_at_znum, prod_at_bnum, prod_at_weight, 
+    prod_customer, remark, crt_date
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bsl.pojo.BslReportProdInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bsl_report_prod_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.bsl.pojo.BslReportProdInfoExample" >
+    delete from bsl_report_prod_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bsl.pojo.BslReportProdInfo" >
+    insert into bsl_report_prod_info (data_date, prod_norm, prod_length, 
+      prod_material, prod_ru_znum, prod_ru_bnum, 
+      prod_ru_weight, prod_out_znum, prod_out_bnum, 
+      prod_out_weight, prod_at_znum, prod_at_bnum, 
+      prod_at_weight, prod_customer, remark, 
+      crt_date)
+    values (#{dataDate,jdbcType=VARCHAR}, #{prodNorm,jdbcType=VARCHAR}, #{prodLength,jdbcType=REAL}, 
+      #{prodMaterial,jdbcType=CHAR}, #{prodRuZnum,jdbcType=REAL}, #{prodRuBnum,jdbcType=REAL}, 
+      #{prodRuWeight,jdbcType=REAL}, #{prodOutZnum,jdbcType=REAL}, #{prodOutBnum,jdbcType=REAL}, 
+      #{prodOutWeight,jdbcType=REAL}, #{prodAtZnum,jdbcType=REAL}, #{prodAtBnum,jdbcType=REAL}, 
+      #{prodAtWeight,jdbcType=REAL}, #{prodCustomer,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{crtDate,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bsl.pojo.BslReportProdInfo" >
+    insert into bsl_report_prod_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="dataDate != null" >
+        data_date,
+      </if>
+      <if test="prodNorm != null" >
+        prod_norm,
+      </if>
+      <if test="prodLength != null" >
+        prod_length,
+      </if>
+      <if test="prodMaterial != null" >
+        prod_material,
+      </if>
+      <if test="prodRuZnum != null" >
+        prod_ru_znum,
+      </if>
+      <if test="prodRuBnum != null" >
+        prod_ru_bnum,
+      </if>
+      <if test="prodRuWeight != null" >
+        prod_ru_weight,
+      </if>
+      <if test="prodOutZnum != null" >
+        prod_out_znum,
+      </if>
+      <if test="prodOutBnum != null" >
+        prod_out_bnum,
+      </if>
+      <if test="prodOutWeight != null" >
+        prod_out_weight,
+      </if>
+      <if test="prodAtZnum != null" >
+        prod_at_znum,
+      </if>
+      <if test="prodAtBnum != null" >
+        prod_at_bnum,
+      </if>
+      <if test="prodAtWeight != null" >
+        prod_at_weight,
+      </if>
+      <if test="prodCustomer != null" >
+        prod_customer,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="crtDate != null" >
+        crt_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="dataDate != null" >
+        #{dataDate,jdbcType=VARCHAR},
+      </if>
+      <if test="prodNorm != null" >
+        #{prodNorm,jdbcType=VARCHAR},
+      </if>
+      <if test="prodLength != null" >
+        #{prodLength,jdbcType=REAL},
+      </if>
+      <if test="prodMaterial != null" >
+        #{prodMaterial,jdbcType=CHAR},
+      </if>
+      <if test="prodRuZnum != null" >
+        #{prodRuZnum,jdbcType=REAL},
+      </if>
+      <if test="prodRuBnum != null" >
+        #{prodRuBnum,jdbcType=REAL},
+      </if>
+      <if test="prodRuWeight != null" >
+        #{prodRuWeight,jdbcType=REAL},
+      </if>
+      <if test="prodOutZnum != null" >
+        #{prodOutZnum,jdbcType=REAL},
+      </if>
+      <if test="prodOutBnum != null" >
+        #{prodOutBnum,jdbcType=REAL},
+      </if>
+      <if test="prodOutWeight != null" >
+        #{prodOutWeight,jdbcType=REAL},
+      </if>
+      <if test="prodAtZnum != null" >
+        #{prodAtZnum,jdbcType=REAL},
+      </if>
+      <if test="prodAtBnum != null" >
+        #{prodAtBnum,jdbcType=REAL},
+      </if>
+      <if test="prodAtWeight != null" >
+        #{prodAtWeight,jdbcType=REAL},
+      </if>
+      <if test="prodCustomer != null" >
+        #{prodCustomer,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="crtDate != null" >
+        #{crtDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bsl.pojo.BslReportProdInfoExample" resultType="java.lang.Integer" >
+    select count(*) from bsl_report_prod_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bsl_report_prod_info
+    <set >
+      <if test="record.dataDate != null" >
+        data_date = #{record.dataDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.prodNorm != null" >
+        prod_norm = #{record.prodNorm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.prodLength != null" >
+        prod_length = #{record.prodLength,jdbcType=REAL},
+      </if>
+      <if test="record.prodMaterial != null" >
+        prod_material = #{record.prodMaterial,jdbcType=CHAR},
+      </if>
+      <if test="record.prodRuZnum != null" >
+        prod_ru_znum = #{record.prodRuZnum,jdbcType=REAL},
+      </if>
+      <if test="record.prodRuBnum != null" >
+        prod_ru_bnum = #{record.prodRuBnum,jdbcType=REAL},
+      </if>
+      <if test="record.prodRuWeight != null" >
+        prod_ru_weight = #{record.prodRuWeight,jdbcType=REAL},
+      </if>
+      <if test="record.prodOutZnum != null" >
+        prod_out_znum = #{record.prodOutZnum,jdbcType=REAL},
+      </if>
+      <if test="record.prodOutBnum != null" >
+        prod_out_bnum = #{record.prodOutBnum,jdbcType=REAL},
+      </if>
+      <if test="record.prodOutWeight != null" >
+        prod_out_weight = #{record.prodOutWeight,jdbcType=REAL},
+      </if>
+      <if test="record.prodAtZnum != null" >
+        prod_at_znum = #{record.prodAtZnum,jdbcType=REAL},
+      </if>
+      <if test="record.prodAtBnum != null" >
+        prod_at_bnum = #{record.prodAtBnum,jdbcType=REAL},
+      </if>
+      <if test="record.prodAtWeight != null" >
+        prod_at_weight = #{record.prodAtWeight,jdbcType=REAL},
+      </if>
+      <if test="record.prodCustomer != null" >
+        prod_customer = #{record.prodCustomer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.crtDate != null" >
+        crt_date = #{record.crtDate,jdbcType=DATE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bsl_report_prod_info
+    set data_date = #{record.dataDate,jdbcType=VARCHAR},
+      prod_norm = #{record.prodNorm,jdbcType=VARCHAR},
+      prod_length = #{record.prodLength,jdbcType=REAL},
+      prod_material = #{record.prodMaterial,jdbcType=CHAR},
+      prod_ru_znum = #{record.prodRuZnum,jdbcType=REAL},
+      prod_ru_bnum = #{record.prodRuBnum,jdbcType=REAL},
+      prod_ru_weight = #{record.prodRuWeight,jdbcType=REAL},
+      prod_out_znum = #{record.prodOutZnum,jdbcType=REAL},
+      prod_out_bnum = #{record.prodOutBnum,jdbcType=REAL},
+      prod_out_weight = #{record.prodOutWeight,jdbcType=REAL},
+      prod_at_znum = #{record.prodAtZnum,jdbcType=REAL},
+      prod_at_bnum = #{record.prodAtBnum,jdbcType=REAL},
+      prod_at_weight = #{record.prodAtWeight,jdbcType=REAL},
+      prod_customer = #{record.prodCustomer,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      crt_date = #{record.crtDate,jdbcType=DATE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

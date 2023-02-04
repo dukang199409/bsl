@@ -10,6 +10,7 @@ import com.bsl.common.utils.BSLResult;
 import com.bsl.select.DictItemOperation;
 import com.bsl.select.ErrorCodeInfo;
 import com.bsl.select.QueryCriteria;
+import com.bsl.service.report.ProdReportService;
 import com.bsl.service.report.RawReportService;
 import com.bsl.service.report.ReportService;
 
@@ -26,6 +27,9 @@ public class ReportController {
 	
 	@Autowired
 	private RawReportService rawReportService;
+	
+	@Autowired
+	private ProdReportService prodReportService;
 	
 	/**
 	 * 成型机组生产报表
@@ -173,6 +177,26 @@ public class ReportController {
 				DictItemOperation.log.info("===========异常:"+e.getMessage());
 				return BSLResult.build(ErrorCodeInfo.错误类型_交易异常,e.getMessage());
 			}
+		}
+		return result;
+	}
+	
+	/**
+	 * 产成品库存报表日报
+	 * @param 
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping("/listM7106")
+	@ResponseBody
+	public BSLResult getM7106Report(QueryCriteria queryCriteria){
+		BSLResult result = null;
+		if(StringUtils.isBlank(queryCriteria.getPage())) {
+			result =  BSLResult.build(400, "页码不能为空");
+		}else if(StringUtils.isBlank(queryCriteria.getRows())) {
+			result =  BSLResult.build(400, "每页记录数不能为空");
+		}else{
+			result = prodReportService.getM7106Report(queryCriteria);
 		}
 		return result;
 	}

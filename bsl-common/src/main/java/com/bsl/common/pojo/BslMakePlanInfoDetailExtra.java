@@ -301,18 +301,23 @@ public class BslMakePlanInfoDetailExtra {
 		this.prodWeight = prodWeight;
 		this.prodLevel = prodLevel;
 	}
-	public BslMakePlanInfoDetailExtra(String makeName, String prodMaterial, String prodLevel,
-			String prodNum, String unit, String planOutputVolume, String prodWeight, String planFinistDate) {
+	
+	/**
+	 * 销售出库单 20230127
+	 */
+	public BslMakePlanInfoDetailExtra(String prodPlanNo, String prodName, String prodNorm, String prodMaterial,
+			String prodLength, String prodNum, String prodWeight, String prodLevel) {
 		super();
-		this.makeName = makeName;
+		this.prodPlanNo = prodPlanNo;
+		this.prodName = prodName;
+		this.prodNorm = prodNorm;
 		this.prodMaterial = prodMaterial;
-		this.prodLevel = prodLevel;
+		this.prodLength = prodLength;
 		this.prodNum = prodNum;
-		this.unit = unit;
-		this.planOutputVolume = planOutputVolume;
 		this.prodWeight = prodWeight;
-		this.planFinistDate = planFinistDate;
+		this.prodLevel = prodLevel;
 	}
+
 	public BslMakePlanInfoDetailExtra(String makeName, String prodNorm, String prodMaterial, String prodLevel,
 			String prodNum, String unit, String planOutputVolume, String prodWeight, String planFinistDate,
 			String collectedUnits, String makeProdNorm, String remark, String note, String bak, String a, String b,

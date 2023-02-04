@@ -351,14 +351,14 @@ public class PrintPdfController {
 				}
 				//表头
 				List<PDFCell> headList = new ArrayList<>();
-				headList.add(new PDFCell("销售出库单", CreatePdfUtil.headfont, Element.ALIGN_CENTER, 10, true));
+				headList.add(new PDFCell("销售出库单", CreatePdfUtil.headfont, Element.ALIGN_CENTER, 7, true));
 				headList.add(new PDFCell("制单日期："+DateUtil.getFormatText(new Date(),"yyyy-MM-dd HH:mm:ss"), CreatePdfUtil.keyfont, Element.ALIGN_RIGHT, 10, true));
 				headList.add(new PDFCell("供应商：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
-				headList.add(new PDFCell(bslBsPlanInfo.getBsShipper(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 8, true));
+				headList.add(new PDFCell(bslBsPlanInfo.getBsShipper(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 7, true));
 				headList.add(new PDFCell("订单客户：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
 				headList.add(new PDFCell(bslBsPlanInfo.getBsCustomer(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
 				headList.add(new PDFCell("出库车次：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
-				headList.add(new PDFCell(prodOutCarnoNew, CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
+				headList.add(new PDFCell(prodOutCarnoNew, CreatePdfUtil.textfont, Element.ALIGN_LEFT, 2, true));
 				headList.add(new PDFCell("出库单号：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
 				headList.add(new PDFCell(!StringUtils.isBlank(queryExample.getPlanDetailId()) ? StringUtil.castToString(bslBsPlanInfo.getBsId())+"/"+queryExample.getPlanDetailId() : StringUtil.castToString(bslBsPlanInfo.getBsId()), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
 				Date updateDate = bslBsPlanInfo.getUpdDate();
@@ -367,14 +367,14 @@ public class PrintPdfController {
 					updateDate = bslSaleInfoDetail.getUpdDate();
 				}
 				headList.add(new PDFCell("出库日期：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
-				headList.add(new PDFCell(DateUtil.getFormatText(updateDate,"yyyy-MM-dd"), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
+				headList.add(new PDFCell(DateUtil.getFormatText(updateDate,"yyyy-MM-dd"), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 2, true));
 				headList.add(new PDFCell("出库仓库：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
 				headList.add(new PDFCell(prodRuc, CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
 				headList.add(new PDFCell("出库类别：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
-				headList.add(new PDFCell(jedisClient.get("bsFlagS:"+bslBsPlanInfo.getBsFlag()), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
+				headList.add(new PDFCell(jedisClient.get("bsFlagS:"+bslBsPlanInfo.getBsFlag()), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 2, true));
 				
-				String [] fields = {"prodPlanNo","prodName","prodNorm","prodMaterial","prodLength","prodLuno","prodNum","prodWeight","prodLevel"};
-				String [] titles = {"生产批号","物料名称","规格", "钢种", "定尺(米)", "炉号","数量(卷/支)", "重量(吨)","质量等级"};
+				String [] fields = {"prodPlanNo","prodName","prodNorm","prodMaterial","prodLength","prodNum","prodWeight","prodLevel"};
+				String [] titles = {"生产批号","物料名称","规格", "钢种", "定尺(米)", "数量(卷/支)", "重量(吨)","质量等级"};
 				List inList = new ArrayList<>();
 				
 				Integer prodNumSum = 0;
@@ -393,7 +393,6 @@ public class PrintPdfController {
 									bslProductInfo.getProdNorm(),
 									jedisClient.get("prodMaterial:"+bslProductInfo.getProdMaterial()),
 									StringUtil.castToString(bslProductInfo.getProdLength()),
-									bslProductInfo.getProdLuno(),
 									StringUtil.castToString(bslProductInfo.getProdNumCount()),
 									StringUtil.castToString(prod_weight),
 									jedisClient.get("prodLevel:"+bslProductInfo.getProdLevel())
@@ -406,11 +405,11 @@ public class PrintPdfController {
 				List<PDFCell> footList = new ArrayList<>();
 				footList.add(new PDFCell("合计", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 1, true));
 				if(prodNumSum == 0 && prodWeightTotal == 0f) {
-					for (int i = 0; i < 9; i++) {
+					for (int i = 0; i < 8; i++) {
 						footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
 					}
 				} else {
-					for (int i = 0; i < 6; i++) {
+					for (int i = 0; i < 5; i++) {
 						footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
 					}
 					footList.add(new PDFCell(StringUtil.castToString(prodNumSum), CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
@@ -418,18 +417,18 @@ public class PrintPdfController {
 					footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
 				}
 				footList.add(new PDFCell("备   注：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
-				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 8, true));
+				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 7, true));
 				footList.add(new PDFCell("收货签名：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
 				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
 				footList.add(new PDFCell("签收日期：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
-				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
+				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 2, true));
 				footList.add(new PDFCell("第一联：留底联（白色）   第二联：客户联（粉红）    第三联：回单联    第四联：财务联    第五联：门卫联", CreatePdfUtil.keyfont, Element.ALIGN_LEFT, 10, true));
 				footList.add(new PDFCell("制单：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 1, true));
 				footList.add(new PDFCell(queryExample.getLoginUserId(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 2, true));
 				footList.add(new PDFCell("复核：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 1, true));
 				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 2, true));
 				footList.add(new PDFCell("审批：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 1, true));
-				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
+				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 2, true));
 				String pdfName = "销售调度通知单.pdf";
 				String savePath = Thread.currentThread().getContextClassLoader().getResource("pdf/").getPath() + pdfName;
 				new CreatePdfUtil().generatePDFs(headList, fields, titles, inList, footList, savePath);
@@ -472,12 +471,12 @@ public class PrintPdfController {
 				}
 				//表头
 				List<PDFCell> headList = new ArrayList<>();
-				headList.add(new PDFCell("销售出库单", CreatePdfUtil.headfont, Element.ALIGN_CENTER, 10, true));
-				headList.add(new PDFCell("制单日期："+DateUtil.getFormatText(new Date(),"yyyy-MM-dd HH:mm:ss"), CreatePdfUtil.keyfont, Element.ALIGN_RIGHT, 10, true));
+				headList.add(new PDFCell("销售出库单", CreatePdfUtil.headfont, Element.ALIGN_CENTER, 9, true));
+				headList.add(new PDFCell("制单日期："+DateUtil.getFormatText(new Date(),"yyyy-MM-dd HH:mm:ss"), CreatePdfUtil.keyfont, Element.ALIGN_RIGHT, 9, true));
 				headList.add(new PDFCell("供应商：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
-				headList.add(new PDFCell(bslBsPlanInfo.getBsShipper(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 8, true));
+				headList.add(new PDFCell(bslBsPlanInfo.getBsShipper(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 7, true));
 				headList.add(new PDFCell("订单客户：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
-				headList.add(new PDFCell(bslBsPlanInfo.getBsCustomer(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 8, true));
+				headList.add(new PDFCell(bslBsPlanInfo.getBsCustomer(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 7, true));
 				headList.add(new PDFCell("出库单号：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
 				headList.add(new PDFCell(!StringUtils.isBlank(queryExample.getPlanDetailId()) ? StringUtil.castToString(bslBsPlanInfo.getBsId())+"/"+queryExample.getPlanDetailId() : StringUtil.castToString(bslBsPlanInfo.getBsId()), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
 				Date updateDate = bslBsPlanInfo.getUpdDate();
@@ -486,14 +485,14 @@ public class PrintPdfController {
 					updateDate = bslSaleInfoDetail.getUpdDate();
 				}
 				headList.add(new PDFCell("出库日期：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
-				headList.add(new PDFCell(DateUtil.getFormatText(updateDate,"yyyy-MM-dd"), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
+				headList.add(new PDFCell(DateUtil.getFormatText(updateDate,"yyyy-MM-dd"), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 2, true));
 				headList.add(new PDFCell("仓   库：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
 				headList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
 				headList.add(new PDFCell("出库类别：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
-				headList.add(new PDFCell(jedisClient.get("bsFlagS:"+bsFlag), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
+				headList.add(new PDFCell(jedisClient.get("bsFlagS:"+bsFlag), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 2, true));
 				
-				String [] fields = {"prodPlanNo","prodName","prodNorm","prodMaterial","prodLength","prodLuno","prodNum","prodWeight","prodLevel"};
-				String [] titles = {"生产批号","物料名称","规格", "钢种", "定尺(米)", "炉号","数量(卷/支)", "重量(吨)","质量等级"};
+				String [] fields = {"prodPlanNo","prodName","prodNorm","prodMaterial","prodLength","prodNum","prodWeight","prodLevel"};
+				String [] titles = {"生产批号","物料名称","规格", "钢种", "定尺(米)","数量(卷/支)", "重量(吨)","质量等级"};
 				List inList = new ArrayList<>();
 				
 				Integer prodNumSum = 0;
@@ -512,7 +511,6 @@ public class PrintPdfController {
 									bslProductInfo.getProdNorm(),
 									jedisClient.get("prodMaterial:"+bslProductInfo.getProdMaterial()),
 									StringUtil.castToString(bslProductInfo.getProdLength()),
-									bslProductInfo.getProdLuno(),
 									StringUtil.castToString(bslProductInfo.getProdNumCount()),
 									StringUtil.castToString(prod_weight),
 									jedisClient.get("prodLevel:"+bslProductInfo.getProdLevel())
@@ -525,11 +523,11 @@ public class PrintPdfController {
 				List<PDFCell> footList = new ArrayList<>();
 				footList.add(new PDFCell("合计", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 1, true));
 				if(prodNumSum == 0 && prodWeightTotal == 0f) {
-					for (int i = 0; i < 9; i++) {
+					for (int i = 0; i < 8; i++) {
 						footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
 					}
 				} else {
-					for (int i = 0; i < 6; i++) {
+					for (int i = 0; i < 5; i++) {
 						footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
 					}
 					footList.add(new PDFCell(StringUtil.castToString(prodNumSum), CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
@@ -537,18 +535,18 @@ public class PrintPdfController {
 					footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
 				}
 				footList.add(new PDFCell("备   注：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
-				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 8, true));
+				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 7, true));
 				footList.add(new PDFCell("收货签名：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
 				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
 				footList.add(new PDFCell("签收日期：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
-				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
+				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 2, true));
 				footList.add(new PDFCell("第一联：留底联（白色）   第二联：客户联（粉红）    第三联：回单联    第四联：财务联    第五联：门卫联", CreatePdfUtil.keyfont, Element.ALIGN_LEFT, 10, true));
 				footList.add(new PDFCell("制单：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 1, true));
 				footList.add(new PDFCell(queryExample.getLoginUserId(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 2, true));
 				footList.add(new PDFCell("复核：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 1, true));
 				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 2, true));
 				footList.add(new PDFCell("审批：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 1, true));
-				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
+				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 2, true));
 				String pdfName = "销售调度通知单.pdf";
 				String savePath = Thread.currentThread().getContextClassLoader().getResource("pdf/").getPath() + pdfName;
 				new CreatePdfUtil().generatePDFs(headList, fields, titles, inList, footList, savePath);
@@ -1106,14 +1104,14 @@ public class PrintPdfController {
 				}
 				//表头
 				List<PDFCell> headList = new ArrayList<>();
-				headList.add(new PDFCell("销售出库单", CreatePdfUtil.headfont, Element.ALIGN_CENTER, 10, true));
-				headList.add(new PDFCell("制单日期："+DateUtil.getFormatText(new Date(),"yyyy-MM-dd HH:mm:ss"), CreatePdfUtil.keyfont, Element.ALIGN_RIGHT, 10, true));
+				headList.add(new PDFCell("销售出库单", CreatePdfUtil.headfont, Element.ALIGN_CENTER, 9, true));
+				headList.add(new PDFCell("制单日期："+DateUtil.getFormatText(new Date(),"yyyy-MM-dd HH:mm:ss"), CreatePdfUtil.keyfont, Element.ALIGN_RIGHT, 9, true));
 				headList.add(new PDFCell("供应商：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
-				headList.add(new PDFCell(bslBsPlanInfo.getBsShipper(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 8, true));
+				headList.add(new PDFCell(bslBsPlanInfo.getBsShipper(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 7, true));
 				headList.add(new PDFCell("订单客户：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
 				headList.add(new PDFCell(bslBsPlanInfo.getBsCustomer(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
 				headList.add(new PDFCell("出库车次：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
-				headList.add(new PDFCell(prodOutCarno, CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
+				headList.add(new PDFCell(prodOutCarno, CreatePdfUtil.textfont, Element.ALIGN_LEFT, 2, true));
 				headList.add(new PDFCell("出库单号：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
 				headList.add(new PDFCell(!StringUtils.isBlank(queryExample.getPlanDetailId()) ? StringUtil.castToString(bslBsPlanInfo.getBsId())+"/"+queryExample.getPlanDetailId() : StringUtil.castToString(bslBsPlanInfo.getBsId()), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
 				Date updateDate = bslBsPlanInfo.getUpdDate();
@@ -1122,14 +1120,14 @@ public class PrintPdfController {
 					updateDate = bslSaleInfoDetail.getUpdDate();
 				}
 				headList.add(new PDFCell("出库日期：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
-				headList.add(new PDFCell(DateUtil.getFormatText(updateDate,"yyyy-MM-dd"), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
+				headList.add(new PDFCell(DateUtil.getFormatText(updateDate,"yyyy-MM-dd"), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 2, true));
 				headList.add(new PDFCell("出库仓库：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
 				headList.add(new PDFCell(prodRuc, CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
 				headList.add(new PDFCell("出库类别：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
-				headList.add(new PDFCell(jedisClient.get("bsFlagS:"+bslBsPlanInfo.getBsFlag()), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
+				headList.add(new PDFCell(jedisClient.get("bsFlagS:"+bslBsPlanInfo.getBsFlag()), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 2, true));
 				
-				String [] fields = {"prodPlanNo","prodName","prodNorm","prodMaterial","prodLength","prodLuno","prodNum","prodWeight","prodLevel"};
-				String [] titles = {"生产批号","物料名称","规格", "钢种", "定尺(米)", "炉号","数量(卷/支)", "重量(吨)","质量等级"};
+				String [] fields = {"prodPlanNo","prodName","prodNorm","prodMaterial","prodLength","prodNum","prodWeight","prodLevel"};
+				String [] titles = {"生产批号","物料名称","规格", "钢种", "定尺(米)","数量(卷/支)", "重量(吨)","质量等级"};
 				List inList = new ArrayList<>();
 				
 				Integer prodNumSum = 0;
@@ -1148,7 +1146,6 @@ public class PrintPdfController {
 									bslProductInfo.getProdNorm(),
 									jedisClient.get("prodMaterial:"+bslProductInfo.getProdMaterial()),
 									StringUtil.castToString(bslProductInfo.getProdLength()),
-									bslProductInfo.getProdLuno(),
 									StringUtil.castToString(bslProductInfo.getProdNumCount()),
 									StringUtil.castToString(prod_weight),
 									jedisClient.get("prodLevel:"+bslProductInfo.getProdLevel())
@@ -1161,11 +1158,11 @@ public class PrintPdfController {
 				List<PDFCell> footList = new ArrayList<>();
 				footList.add(new PDFCell("合计", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 1, true));
 				if(prodNumSum == 0 && prodWeightTotal == 0f) {
-					for (int i = 0; i < 9; i++) {
+					for (int i = 0; i < 8; i++) {
 						footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
 					}
 				} else {
-					for (int i = 0; i < 6; i++) {
+					for (int i = 0; i < 5; i++) {
 						footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
 					}
 					footList.add(new PDFCell(StringUtil.castToString(prodNumSum), CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
@@ -1173,18 +1170,18 @@ public class PrintPdfController {
 					footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
 				}
 				footList.add(new PDFCell("备   注：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
-				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 8, true));
+				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 7, true));
 				footList.add(new PDFCell("收货签名：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
 				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
 				footList.add(new PDFCell("签收日期：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
-				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
+				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 2, true));
 				footList.add(new PDFCell("第一联：留底联（白色）   第二联：客户联（粉红）    第三联：回单联    第四联：财务联    第五联：门卫联", CreatePdfUtil.keyfont, Element.ALIGN_LEFT, 10, true));
 				footList.add(new PDFCell("制单：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 1, true));
 				footList.add(new PDFCell(queryExample.getLoginUserId(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 2, true));
 				footList.add(new PDFCell("复核：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 1, true));
 				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 2, true));
 				footList.add(new PDFCell("审批：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 1, true));
-				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
+				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 2, true));
 				String pdfName = "销售调度通知单.pdf";
 				String savePath = Thread.currentThread().getContextClassLoader().getResource("pdf/").getPath() + pdfName;
 				new CreatePdfUtil().generatePDFs(headList, fields, titles, inList, footList, savePath);
