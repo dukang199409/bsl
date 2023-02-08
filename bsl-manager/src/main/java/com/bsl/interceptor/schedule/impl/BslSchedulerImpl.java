@@ -76,7 +76,7 @@ public class BslSchedulerImpl implements BslSchedulerService{
 	@Autowired	 
 	BslStockChangeDetailHMapper bslStockChangeDetailHMapper;
 	
-    @Scheduled(cron="0 52 23 * * ? ")   //每天凌晨0点5分跑批
+    @Scheduled(cron="0 5 0 * * ? ")   //每天凌晨0点5分跑批
     @Override
     public void addBslScheduler(){
     	 DictItemOperation.log.info("===========批量开始："+new Date());
@@ -86,13 +86,28 @@ public class BslSchedulerImpl implements BslSchedulerService{
     	 
     	 System.out.println("批量开始 ");
     	 
-    	
+    	 //1.重置序列id
+         resetId();
          
-         //7.产成品库存报表
+         //2.插入库存日照
+         insertProductPhoto();
+         
+         //3.删除一年之前的库存日照
+         deleteProductPhoto();
+         
+         //4.插入库存变动重量日汇总
+         insertBslStockChangeInfo();
+         
+         //5.将一年前的库存变动数据历史化
+         insertHistoryStockChangeInfo();
+         
+         //6.原材料进库报表
+         //insertRawInfoReport(yesDay);   
+         insertRawInfoReportNew(yesDay);
+         
+         //7.产品进库报表
          insertProdReport(yesDay);
-         
-         
-         
+
          //6.成型机组生产日报表
          //insertProdMakeInfoReport(yesDay);
          
