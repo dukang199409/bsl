@@ -105,8 +105,14 @@ public class ProdReportServiceImpl implements ProdReportService {
 		if(StringUtils.isBlank(queryCriteria.getEndDate())){
 			throw new BSLException(ErrorCodeInfo.错误类型_查询无记录,"结束日期不能为空");
 		}
-		queryCriteria.setStartDate(queryCriteria.getStartDate().replace("-", ""));
-		queryCriteria.setEndDate(queryCriteria.getEndDate().replace("-", ""));
+		String startDateS = queryCriteria.getStartDate().replace("-", "");
+		String endDateS = queryCriteria.getEndDate().replace("-", "");
+		queryCriteria.setStartDate(startDateS);
+		queryCriteria.setEndDate(endDateS);
+		String dateNow = DictItemOperation.日期转换实例yyyyMMdd.format(new Date());
+		if(Integer.parseInt(endDateS) >= Integer.parseInt(dateNow)){
+			throw new BSLException(ErrorCodeInfo.错误类型_查询无记录,"结束日期不能大于前一日");
+		}
 		//分页处理
 		PageHelper.startPage(Integer.parseInt(queryCriteria.getPage()), Integer.parseInt(queryCriteria.getRows()));
 		
