@@ -76,7 +76,7 @@ public class BslSchedulerImpl implements BslSchedulerService{
 	@Autowired	 
 	BslStockChangeDetailHMapper bslStockChangeDetailHMapper;
 	
-    @Scheduled(cron="0 5 0 * * ? ")   //每天凌晨0点5分跑批
+    @Scheduled(cron="0 10 0 * * ? ")   //每天凌晨0点5分跑批
     @Override
     public void addBslScheduler(){
     	 DictItemOperation.log.info("===========批量开始："+new Date());
