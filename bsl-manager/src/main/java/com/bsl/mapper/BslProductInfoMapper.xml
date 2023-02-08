@@ -1533,7 +1533,7 @@
 			t0.prod_company,
 			t0.prod_customer,
 			'' remark,
-			now()
+			#{dateString,jdbcType=VARCHAR}
 		from
 		(select distinct prod_norm,
 			prod_material,
