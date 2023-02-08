@@ -165,7 +165,7 @@
 				mapParam.set("titles",titles);
 				mapParam.set("className",className);
 				mapParam.set("methodName",methodName);
-				mapParam.set("excelName","产成品库存报表");
+				mapParam.set("excelName","产成品库存报表-日报");
 				mapParam.set("loginUserId",$("#user_id").html());
 				mapParam.set("rows","5000");
 				mapParam.set("page","1");

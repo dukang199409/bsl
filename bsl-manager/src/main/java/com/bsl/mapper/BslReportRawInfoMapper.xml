@@ -324,8 +324,8 @@
 		) t2
 		on t1.prod_norm = t2.prod_norm
 		and t1.prod_material = t2.prod_material
-		and t1.prod_company = t2.prod_company
-		and t1.prod_customer = t2.prod_customer
+		and COALESCE(t1.prod_company,'') = COALESCE(t2.prod_company,'')
+		and COALESCE(t1.prod_customer,'') = COALESCE(t2.prod_customer,'')
   </select>
   
   <resultMap id="RawReportInfoHJMap" type="com.bsl.reportbean.BslRawReportHJInfo" >
@@ -399,8 +399,8 @@
 		) t2
 		on t1.prod_norm = t2.prod_norm
 		and t1.prod_material = t2.prod_material
-		and t1.prod_company = t2.prod_company
-		and t1.prod_customer = t2.prod_customer) t
+		and COALESCE(t1.prod_company,'') = COALESCE(t2.prod_company,'')
+		and COALESCE(t1.prod_customer,'') = COALESCE(t2.prod_customer,'')) t
   </select>
   <!-- 规格数量统计 -->
   <select id="countNormRawReportInfoHJ" resultType="java.lang.Integer" parameterType="com.bsl.select.QueryCriteria">

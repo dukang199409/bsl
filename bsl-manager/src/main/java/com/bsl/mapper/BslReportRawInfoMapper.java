@@ -22,8 +22,9 @@ public interface BslReportRawInfoMapper {
 
     int updateByExample(@Param("record") BslReportRawInfo record, @Param("example") BslReportRawInfoExample example);
 
+    //原料进项报表统计
     List<BslReportRawInfo> selectRawReportInfoTH(QueryCriteria queryCriteria);
-    
+    //原料进项报表合计
     List<BslRawReportHJInfo> selectRawReportInfoHJ(QueryCriteria queryCriteria);
     
     int countNormRawReportInfoHJ(QueryCriteria queryCriteria);

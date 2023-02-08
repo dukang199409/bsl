@@ -76,7 +76,7 @@ public class BslSchedulerImpl implements BslSchedulerService{
 	@Autowired	 
 	BslStockChangeDetailHMapper bslStockChangeDetailHMapper;
 	
-    @Scheduled(cron="0 5 0 * * ? ")   //每天凌晨0点5分跑批
+    @Scheduled(cron="0 52 23 * * ? ")   //每天凌晨0点5分跑批
     @Override
     public void addBslScheduler(){
     	 DictItemOperation.log.info("===========批量开始："+new Date());
@@ -86,20 +86,12 @@ public class BslSchedulerImpl implements BslSchedulerService{
     	 
     	 System.out.println("批量开始 ");
     	 
-    	 //1.重置序列id
-         resetId();
+    	
          
-         //2.插入库存日照
-         insertProductPhoto();
+         //7.产成品库存报表
+         insertProdReport(yesDay);
          
-         //3.删除一年之前的库存日照
-         deleteProductPhoto();
          
-         //4.插入库存变动重量日汇总
-         insertBslStockChangeInfo();
-         
-         //5.将一年前的库存变动数据历史化
-         insertHistoryStockChangeInfo();
          
          //6.成型机组生产日报表
          //insertProdMakeInfoReport(yesDay);
@@ -112,11 +104,6 @@ public class BslSchedulerImpl implements BslSchedulerService{
          
          //9.半成品销售报表
          //insertHalfProdSaleInfoReport(yesDay);
-         
-         //10.原材料进库报表
-         //insertRawInfoReport(yesDay);   
-         insertRawInfoReportNew(yesDay);
-         
 
          //插入单炉库存重量日照（每天生成最新的数据）
          //insertBslLuStockInfo();
@@ -595,6 +582,20 @@ public class BslSchedulerImpl implements BslSchedulerService{
 		}
 		
     	DictItemOperation.log.info("===========生成原材料进库报表新结束");
+    }
+    
+    /**
+     * 产成品库存报表20230208
+     */
+    public void  insertProdReport(Date yesDate){
+    	DictItemOperation.log.info("===========生成产成品库存报表开始");
+    	String dateString = DictItemOperation.日期转换实例yyyyMMdd.format(yesDate);
+    	int result = bslProductInfoMapper.insertProdInfoReport(dateString);
+		if(result<0){
+		     throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
+		}
+		
+    	DictItemOperation.log.info("===========生成产成品库存报表结束");
     }
     
     

@@ -2,24 +2,32 @@ package com.bsl.reportbean;
 
 //产品库存报表合计信息
 public class BslProdReportHJInfo {
-    
-    private String prodHJ;
+
+	private String prodHJ;
     
     private int prodNormHJ;
 
-    private Float prodRuWeightHJ;
+    private Float prodRuZnum;
 
-    private Float prodRuNumHJ;
+    private Float prodRuBnum;
 
-    private Float prodOutWeightHJ;
+    private Float prodRuWeight;
 
-    private Float prodOutNumHJ;
+    private Float prodOutZnum;
 
-    private Float prodAtWeightHJ;
+    private Float prodOutBnum;
 
-    private Float prodAtNumHJ;
+    private Float prodOutWeight;
     
-	public String getProdHJ() {
+    private Float prodAtZnum;
+
+    private Float prodAtBnum;
+
+    private Float prodAtWeight;
+    
+
+    
+    public String getProdHJ() {
 		return prodHJ;
 	}
 
@@ -35,52 +43,76 @@ public class BslProdReportHJInfo {
 		this.prodNormHJ = prodNormHJ;
 	}
 
-	public Float getProdRuWeightHJ() {
-		return prodRuWeightHJ;
+	public Float getProdRuZnum() {
+		return prodRuZnum;
 	}
 
-	public void setProdRuWeightHJ(Float prodRuWeightHJ) {
-		this.prodRuWeightHJ = prodRuWeightHJ;
+	public void setProdRuZnum(Float prodRuZnum) {
+		this.prodRuZnum = prodRuZnum;
 	}
 
-	public Float getProdRuNumHJ() {
-		return prodRuNumHJ;
+	public Float getProdRuBnum() {
+		return prodRuBnum;
 	}
 
-	public void setProdRuNumHJ(Float prodRuNumHJ) {
-		this.prodRuNumHJ = prodRuNumHJ;
+	public void setProdRuBnum(Float prodRuBnum) {
+		this.prodRuBnum = prodRuBnum;
 	}
 
-	public Float getProdOutWeightHJ() {
-		return prodOutWeightHJ;
+	public Float getProdRuWeight() {
+		return prodRuWeight;
 	}
 
-	public void setProdOutWeightHJ(Float prodOutWeightHJ) {
-		this.prodOutWeightHJ = prodOutWeightHJ;
+	public void setProdRuWeight(Float prodRuWeight) {
+		this.prodRuWeight = prodRuWeight;
 	}
 
-	public Float getProdOutNumHJ() {
-		return prodOutNumHJ;
+	public Float getProdOutZnum() {
+		return prodOutZnum;
 	}
 
-	public void setProdOutNumHJ(Float prodOutNumHJ) {
-		this.prodOutNumHJ = prodOutNumHJ;
+	public void setProdOutZnum(Float prodOutZnum) {
+		this.prodOutZnum = prodOutZnum;
 	}
 
-	public Float getProdAtWeightHJ() {
-		return prodAtWeightHJ;
+	public Float getProdOutBnum() {
+		return prodOutBnum;
 	}
 
-	public void setProdAtWeightHJ(Float prodAtWeightHJ) {
-		this.prodAtWeightHJ = prodAtWeightHJ;
+	public void setProdOutBnum(Float prodOutBnum) {
+		this.prodOutBnum = prodOutBnum;
 	}
 
-	public Float getProdAtNumHJ() {
-		return prodAtNumHJ;
+	public Float getProdOutWeight() {
+		return prodOutWeight;
 	}
 
-	public void setProdAtNumHJ(Float prodAtNumHJ) {
-		this.prodAtNumHJ = prodAtNumHJ;
+	public void setProdOutWeight(Float prodOutWeight) {
+		this.prodOutWeight = prodOutWeight;
 	}
-    
+
+	public Float getProdAtZnum() {
+		return prodAtZnum;
+	}
+
+	public void setProdAtZnum(Float prodAtZnum) {
+		this.prodAtZnum = prodAtZnum;
+	}
+
+	public Float getProdAtBnum() {
+		return prodAtBnum;
+	}
+
+	public void setProdAtBnum(Float prodAtBnum) {
+		this.prodAtBnum = prodAtBnum;
+	}
+
+	public Float getProdAtWeight() {
+		return prodAtWeight;
+	}
+
+	public void setProdAtWeight(Float prodAtWeight) {
+		this.prodAtWeight = prodAtWeight;
+	}
+	
 }

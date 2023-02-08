@@ -71,7 +71,10 @@ public interface BslProductInfoMapper {
     int insertProdSaleInfoReport(String dateString);
     int insertHalfProdSaleInfoReport(String dateString);
     int insertRawInfoReport(String dateString);
+    //原材料进库报表（新）
     int insertRawInfoReportNew(String dateString);
+    //产成品库存报表
+    int insertProdInfoReport(String dateString);
     
     int insertProdMakeInfoReportBT(QueryCriteria queryCriteria);
     int insertHalfProdMakeInfoReportBT(QueryCriteria queryCriteria);

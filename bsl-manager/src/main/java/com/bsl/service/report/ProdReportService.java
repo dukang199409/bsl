@@ -12,5 +12,10 @@ public interface ProdReportService {
 	//根据条件查询产成品库存报表日报
 	BSLResult getM7106Report(QueryCriteria queryCriteria);
 	
+	//根据条件查询产成品库存报表统计
+	BSLResult getM7106sReport(QueryCriteria queryCriteria);
+	
+	//根据条件查询产成品库存报表合计
+	BSLResult getM7106sHJReport(QueryCriteria queryCriteria);
 	
 }

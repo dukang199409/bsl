@@ -201,6 +201,57 @@ public class ReportController {
 		return result;
 	}
 	
+
+	/**
+	 * 产品库存报表统计
+	 * @param 
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping("/listM7106s")
+	@ResponseBody
+	public BSLResult getM7106sReport(QueryCriteria queryCriteria){
+		BSLResult result = null;
+		if(StringUtils.isBlank(queryCriteria.getPage())) {
+			result =  BSLResult.build(400, "页码不能为空");
+		}else if(StringUtils.isBlank(queryCriteria.getRows())) {
+			result =  BSLResult.build(400, "每页记录数不能为空");
+		}else{
+			try {
+				return prodReportService.getM7106sReport(queryCriteria);
+			} catch (Exception e) {
+				DictItemOperation.log.info("===========异常:"+e.getMessage());
+				return BSLResult.build(ErrorCodeInfo.错误类型_交易异常,e.getMessage());
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * 产品库存报表合计
+	 * @param 
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping("/listM7106sHJ")
+	@ResponseBody
+	public BSLResult getM7106sHJReport(QueryCriteria queryCriteria){
+		BSLResult result = null;
+		if(StringUtils.isBlank(queryCriteria.getPage())) {
+			result =  BSLResult.build(400, "页码不能为空");
+		}else if(StringUtils.isBlank(queryCriteria.getRows())) {
+			result =  BSLResult.build(400, "每页记录数不能为空");
+		}else{
+			try {
+				return prodReportService.getM7106sHJReport(queryCriteria);
+			} catch (Exception e) {
+				DictItemOperation.log.info("===========异常:"+e.getMessage());
+				return BSLResult.build(ErrorCodeInfo.错误类型_交易异常,e.getMessage());
+			}
+		}
+		return result;
+	}
+	
 	/**
 	 * 查询库存日照信息
 	 * @param page

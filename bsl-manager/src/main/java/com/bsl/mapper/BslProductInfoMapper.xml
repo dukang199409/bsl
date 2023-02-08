@@ -1517,7 +1517,7 @@
 		where b.bs_type = '0'
    </insert>
    
-   <!-- 修改报表样式20230126 -->
+   <!-- 修改报表样式20230126 原料进项报表 -->
    <insert id="insertRawInfoReportNew" parameterType="java.lang.String">
    		insert into bsl_report_raw_info 
    		select 
@@ -1563,8 +1563,8 @@
 			prod_customer) t1
 		on t0.prod_norm = t1.prod_norm
 		and t0.prod_material = t1.prod_material
-		and t0.prod_company = t1.prod_company
-		and t0.prod_customer = t1.prod_customer
+		and COALESCE(t0.prod_company,'') = COALESCE(t1.prod_company,'')
+		and COALESCE(t0.prod_customer,'') = COALESCE(t1.prod_customer,'')
 		
 		left join 
 		(select 
@@ -1583,8 +1583,8 @@
 			prod_customer) t2
 		on t0.prod_norm = t2.prod_norm
 		and t0.prod_material = t2.prod_material
-		and t0.prod_company = t2.prod_company
-		and t0.prod_customer = t2.prod_customer
+		and COALESCE(t0.prod_company,'') = COALESCE(t2.prod_company,'')
+		and COALESCE(t0.prod_customer,'') = COALESCE(t2.prod_customer,'')
 		
 		left join 
 		(select 
@@ -1603,8 +1603,111 @@
 			prod_customer) t3
 		on t0.prod_norm = t3.prod_norm
 		and t0.prod_material = t3.prod_material
-		and t0.prod_company = t3.prod_company
-		and t0.prod_customer = t3.prod_customer
+		and COALESCE(t0.prod_company,'') = COALESCE(t3.prod_company,'')
+		and COALESCE(t0.prod_customer,'') = COALESCE(t3.prod_customer,'')
+   </insert>
+   
+    <!-- 产成品库存报 -->
+   <insert id="insertProdInfoReport" parameterType="java.lang.String">
+   		insert into bsl_report_prod_info
+		select 
+			#{dateString,jdbcType=VARCHAR},
+			t0.prod_norm,
+			t0.prod_length,
+			t0.prod_material,
+			ifnull(t1.prod_ru_zs,0) prod_ru_zs,
+			ifnull(t1.prod_ru_num,0) prod_ru_num,
+			ifnull(t1.prod_ru_weight,0) prod_ru_weight,
+			ifnull(t2.prod_out_zs,0) prod_out_zs,
+			ifnull(t2.prod_out_num,0) prod_out_num,
+			ifnull(t2.prod_out_weight,0) prod_out_weight,
+			ifnull(t3.prod_at_zs,0) prod_at_zs,
+			ifnull(t3.prod_at_num,0) prod_at_num,
+			ifnull(t3.prod_at_weight,0) prod_at_weight,
+			t0.prod_customer,
+			'' remark,
+			#{dateString,jdbcType=VARCHAR}
+		from
+		
+		(select distinct prod_norm,
+			prod_length,
+			prod_material,
+			prod_customer
+		from bsl_product_info 
+		where prod_type = '2'
+		and prod_dcl_flag = '0'
+		and (
+			date_format(crt_date,'%Y%m%d') = #{dateString,jdbcType=VARCHAR}
+			or date_format(prod_out_date,'%Y%m%d') = #{dateString,jdbcType=VARCHAR}
+			or prod_status= '1'
+		)) t0
+		
+		left join 
+		(select 
+			prod_norm,
+			prod_length,
+			prod_material,
+			prod_customer,
+			count(1) prod_ru_num,
+			sum(prod_num) prod_ru_zs,
+			sum(prod_rel_weight) prod_ru_weight
+		from bsl_product_info 
+		where prod_type = '2'
+		and prod_dcl_flag = '0'
+		and date_format(crt_date,'%Y%m%d') = #{dateString,jdbcType=VARCHAR}
+		group by prod_norm,
+			prod_length,
+			prod_material,
+			prod_customer) t1
+		on t0.prod_norm = t1.prod_norm
+		and t0.prod_length = t1.prod_length
+		and t0.prod_material = t1.prod_material
+		and COALESCE(t0.prod_customer,'') = COALESCE(t1.prod_customer,'')
+		
+		left join 
+		(select 
+			prod_norm,
+			prod_length,
+			prod_material,
+			prod_customer,
+			count(1) prod_out_num,
+			sum(prod_num) prod_out_zs,
+			sum(prod_rel_weight) prod_out_weight
+		from bsl_product_info 
+		where prod_type = '2'
+		and prod_dcl_flag = '0'
+		and date_format(prod_out_date,'%Y%m%d') = #{dateString,jdbcType=VARCHAR}
+		group by prod_norm,
+			prod_material,
+			prod_length,
+			prod_customer) t2
+		on t0.prod_norm = t2.prod_norm
+		and t0.prod_length = t2.prod_length
+		and t0.prod_material = t2.prod_material
+		and COALESCE(t0.prod_customer,'') = COALESCE(t2.prod_customer,'')
+		
+		left join 
+		(select 
+			prod_norm,
+			prod_length,
+			prod_material,
+			prod_customer,
+			count(1) prod_at_num,
+			sum(prod_num) prod_at_zs,
+			sum(prod_rel_weight) prod_at_weight
+		from bsl_product_info 
+		where prod_type = '2'
+		and prod_dcl_flag = '0'
+		and prod_status= '1'
+		group by prod_norm,
+			prod_material,
+			prod_length,
+			prod_customer) t3
+		on t0.prod_norm = t3.prod_norm
+		and t0.prod_length = t3.prod_length
+		and t0.prod_material = t3.prod_material
+		and COALESCE(t0.prod_customer,'') = COALESCE(t3.prod_customer,'')
+
    </insert>
    
    <!-- 月报和年报脚本 -->

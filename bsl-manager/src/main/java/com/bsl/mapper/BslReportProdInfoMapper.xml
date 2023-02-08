@@ -303,4 +303,169 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+  
+   <!-- 产品库存报表统计 -->
+  <select id="selectProdReportInfoTJ" resultMap="BaseResultMap" parameterType="com.bsl.select.QueryCriteria">
+	  	select 
+			t1.prod_norm,
+			t1.prod_length,
+			t1.prod_material,
+			t1.prod_ru_znum,
+			t1.prod_ru_bnum,
+			t1.prod_ru_weight,
+			t1.prod_out_znum,
+			t1.prod_out_bnum,
+			t1.prod_out_weight,
+			ifnull(t2.prod_at_znum,0) prod_at_znum,
+			ifnull(t2.prod_at_bnum,0) prod_at_bnum,
+			ifnull(t2.prod_at_weight,0) prod_at_weight,
+			t1.prod_customer
+		from	
+		(select 
+			'' data_date,
+			t0.prod_norm,
+			t0.prod_length,
+			t0.prod_material,
+			sum(t0.prod_ru_znum) prod_ru_znum,
+			sum(t0.prod_ru_bnum) prod_ru_bnum,
+			sum(t0.prod_ru_weight) prod_ru_weight,
+			sum(t0.prod_out_znum) prod_out_znum,
+			sum(t0.prod_out_bnum) prod_out_bnum,
+			sum(t0.prod_out_weight) prod_out_weight,
+			t0.prod_customer
+		from bsl_report_prod_info t0
+		where t0.data_date between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+			<if test="prodNorm != null" >
+		        and t0.prod_norm like #{prodNorm,jdbcType=VARCHAR} 
+		    </if>
+		    <if test="prodMaterial != null" >
+		        and t0.prod_material = #{prodMaterial,jdbcType=VARCHAR} 
+		    </if>
+		    <if test="prodCustomer != null" >
+		        and t0.prod_customer like #{prodCustomer,jdbcType=VARCHAR} 
+		    </if>
+		group by 
+			t0.prod_norm,
+			t0.prod_length,
+			t0.prod_material,
+			t0.prod_customer) t1
+		left join 
+		(select 
+			prod_norm,
+			prod_length,
+			prod_material,
+			prod_at_znum,
+			prod_at_bnum,
+			prod_at_weight,
+			prod_customer
+		from bsl_report_prod_info
+		where data_date = #{endDate,jdbcType=VARCHAR}
+		) t2
+		on t1.prod_norm = t2.prod_norm
+		and t1.prod_length = t2.prod_length
+		and t1.prod_material = t2.prod_material
+		and COALESCE(t1.prod_customer,'') = COALESCE(t2.prod_customer,'')
+  </select>
+    <resultMap id="ProdReportInfoHJMap" type="com.bsl.reportbean.BslProdReportHJInfo" >
+    <result column="prod_ru_znum" property="prodRuZnum" jdbcType="REAL" />
+    <result column="prod_ru_bnum" property="prodRuBnum" jdbcType="REAL" />
+    <result column="prod_ru_weight" property="prodRuWeight" jdbcType="REAL" />
+    <result column="prod_out_znum" property="prodOutZnum" jdbcType="REAL" />
+    <result column="prod_out_bnum" property="prodOutBnum" jdbcType="REAL" />
+    <result column="prod_out_weight" property="prodOutWeight" jdbcType="REAL" />
+    <result column="prod_at_znum" property="prodAtZnum" jdbcType="REAL" />
+    <result column="prod_at_bnum" property="prodAtBnum" jdbcType="REAL" />
+    <result column="prod_at_weight" property="prodAtWeight" jdbcType="REAL" />
+  </resultMap>
+   <!-- 产品库存报表合计 -->
+  <select id="selectProdReportInfoHJ" resultMap="ProdReportInfoHJMap" parameterType="com.bsl.select.QueryCriteria">
+	  	select 
+	  		sum(t.prod_ru_znum) prod_ru_znum,
+	  		sum(t.prod_ru_bnum) prod_ru_bnum,
+	  		sum(t.prod_ru_weight) prod_ru_weight,
+	  		sum(t.prod_out_znum) prod_out_znum,
+	  		sum(t.prod_out_bnum) prod_out_bnum,
+	  		sum(t.prod_out_weight) prod_out_weight,
+	  		sum(t.prod_at_znum) prod_at_znum,
+	  		sum(t.prod_at_bnum) prod_at_bnum,
+	  		sum(t.prod_at_weight) prod_at_weight
+	  	from (select 
+	  		t1.prod_norm,
+	  		t1.prod_length,
+	  		t1.prod_material,
+			t1.prod_ru_znum,
+			t1.prod_ru_bnum,
+			t1.prod_ru_weight,
+			t1.prod_out_znum,
+			t1.prod_out_bnum,
+			t1.prod_out_weight,
+			ifnull(t2.prod_at_znum,0) prod_at_znum,
+			ifnull(t2.prod_at_bnum,0) prod_at_bnum,
+			ifnull(t2.prod_at_weight,0) prod_at_weight,
+			t1.prod_customer
+		from	
+		(select 
+			t0.prod_norm,
+	  		t0.prod_length,
+	  		t0.prod_material,
+			sum(t0.prod_ru_znum) prod_ru_znum,
+			sum(t0.prod_ru_bnum) prod_ru_bnum,
+			sum(t0.prod_ru_weight) prod_ru_weight,
+			sum(t0.prod_out_znum) prod_out_znum,
+			sum(t0.prod_out_bnum) prod_out_bnum,
+			sum(t0.prod_out_weight) prod_out_weight,
+			t0.prod_customer
+		from bsl_report_prod_info t0
+		where t0.data_date between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+			<if test="prodNorm != null" >
+		        and t0.prod_norm like #{prodNorm,jdbcType=VARCHAR} 
+		    </if>
+		    <if test="prodMaterial != null" >
+		        and t0.prod_material = #{prodMaterial,jdbcType=VARCHAR} 
+		    </if>
+		    <if test="prodCustomer != null" >
+		        and t0.prod_customer like #{prodCustomer,jdbcType=VARCHAR} 
+		    </if>
+		group by 
+			t0.prod_norm,
+			t0.prod_length,
+			t0.prod_material,
+			t0.prod_customer) t1
+		left join 
+		(select 
+			prod_norm,
+			prod_length,
+			prod_material,
+			prod_at_znum,
+			prod_at_bnum,
+			prod_at_weight,
+			prod_customer
+		from bsl_report_prod_info
+		where data_date = #{endDate,jdbcType=VARCHAR}
+		) t2
+		on t1.prod_norm = t2.prod_norm
+		and t1.prod_length = t2.prod_length
+		and t1.prod_material = t2.prod_material
+		and COALESCE(t1.prod_customer,'') = COALESCE(t2.prod_customer,'')) t
+  </select>
+  <!-- 规格数量统计 -->
+  <select id="countNormProdReportInfoHJ" resultType="java.lang.Integer" parameterType="com.bsl.select.QueryCriteria">
+	  	select count(1) from 
+	  	(select 
+	  		distinct t0.prod_norm,t0.prod_material
+		from bsl_report_prod_info t0
+		where t0.data_date between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+			<if test="prodNorm != null" >
+		        and t0.prod_norm like #{prodNorm,jdbcType=VARCHAR} 
+		    </if>
+		    <if test="prodMaterial != null" >
+		        and t0.prod_material = #{prodMaterial,jdbcType=VARCHAR} 
+		    </if>
+		    <if test="prodCustomer != null" >
+		        and t0.prod_customer like #{prodCustomer,jdbcType=VARCHAR} 
+		    </if>
+		 ) t
+  </select>
+  
+  
 </mapper>
