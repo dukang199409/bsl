@@ -1552,7 +1552,7 @@
 			prod_material,
 			prod_company,
 			prod_customer,
-			sum(prod_rel_weight) prod_ru_weight,
+			sum(prod_print_weight) prod_ru_weight,
 			count(1) prod_ru_num
 		from bsl_product_info 
 		where prod_type = '0'
@@ -1572,7 +1572,7 @@
 			prod_material,
 			prod_company,
 			prod_customer,
-			sum(prod_rel_weight) prod_out_weight,
+			sum(prod_print_weight) prod_out_weight,
 			count(1) prod_out_num
 		from bsl_product_info 
 		where prod_type = '0'
@@ -1592,7 +1592,7 @@
 			prod_material,
 			prod_company,
 			prod_customer,
-			sum(prod_rel_weight) prod_at_weight,
+			sum(prod_print_weight) prod_at_weight,
 			count(1) prod_at_num
 		from bsl_product_info 
 		where prod_type = '0'
