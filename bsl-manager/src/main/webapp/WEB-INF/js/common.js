@@ -620,6 +620,10 @@ var TT = BSL = {
         	return 'Qste500TM';
         } else if(val == 'N'){
         	return 'Q460C';
+        } else if(val == 'P'){
+        	return '510L';
+        } else if(val == 'Q'){
+        	return '610L';
         } else {
         	return val;
         }
