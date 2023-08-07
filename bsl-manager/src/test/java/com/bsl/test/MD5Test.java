@@ -3,7 +3,6 @@ package com.bsl.test;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.junit.Test;
 import org.springframework.util.DigestUtils;
 
 public class MD5Test {
