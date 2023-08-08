@@ -625,7 +625,7 @@ var TT = BSL = {
         } else if(val == 'Q'){
         	return '610L';
         } else {
-        	return val;
+        	return val; 
         }
     },
     //格式化质量等级
