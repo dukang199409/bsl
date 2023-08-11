@@ -43,10 +43,10 @@ public class CreatePdfUtil{
             bfChinese = BaseFont.createFont(fontPath, BaseFont.IDENTITY_H,//UtilPath.getRootPath() +
 					BaseFont.EMBEDDED);
             headfont = new Font(bfChinese, 12, Font.BOLD);// 设置字体大小
-            keyfont = new Font(bfChinese, 10, Font.BOLD);// 设置字体大小
-            keyfont1 = new Font(bfChinese, 8, Font.BOLD);// 设置字体大小
-            keyfont2 = new Font(bfChinese, 8, Font.BOLD);// 设置字体大小
-            textfont = new Font(bfChinese, 10, Font.BOLD);// 设置字体大小
+            keyfont = new Font(bfChinese, 10, Font.NORMAL);// 设置字体大小
+            keyfont1 = new Font(bfChinese, 8, Font.NORMAL);// 设置字体大小
+            keyfont2 = new Font(bfChinese, 8, Font.NORMAL);// 设置字体大小
+            textfont = new Font(bfChinese, 10, Font.NORMAL);// 设置字体大小
             textfont2 = new Font(bfChinese, 8, Font.NORMAL);// 设置A3字体大小
         }catch (Exception e){
             e.printStackTrace();
