@@ -14,6 +14,7 @@ import com.bsl.reportbean.BslProductQualityInfo;
 import com.bsl.reportbean.BslSaleCarInfo;
 import com.bsl.select.QueryCriteria;
 import com.bsl.select.QueryExample;
+import com.bsl.service.handle.impl.UseCompanyModule;
 
 public interface BslProductInfoMapper {
     int countByExample(BslProductInfoExample example);
@@ -81,5 +82,8 @@ public interface BslProductInfoMapper {
     int insertProdSaleInfoReportBT(QueryCriteria queryCriteria);
     int insertHalfProdSaleInfoReportBT(QueryCriteria queryCriteria);
     int insertRawInfoReportBT(QueryCriteria queryCriteria);
+    
+    //根据excel数据修改使用单位
+    int updateUseCompanyByExcel(UseCompanyModule record);
     
 }

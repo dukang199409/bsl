@@ -2041,5 +2041,10 @@
 		on t.prod_plan_no = b.bs_id
 		where b.bs_type = '0'
    </insert>
+   
+   <update id="updateUseCompanyByExcel" parameterType="com.bsl.service.handle.impl.UseCompanyModule">
+   		update bsl_product_info set prod_use_company = #{useCompany,jdbcType=VARCHAR}
+   		where prod_id = #{prodId,jdbcType=VARCHAR}
+   </update>
   
 </mapper>
