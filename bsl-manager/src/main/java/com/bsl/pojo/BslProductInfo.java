@@ -57,6 +57,8 @@ public class BslProductInfo {
 
     private String prodCompany;
 
+    private String prodUseCompany;
+
     private String prodCustomer;
 
     private String prodBc;
@@ -291,6 +293,14 @@ public class BslProductInfo {
 
     public void setProdCompany(String prodCompany) {
         this.prodCompany = prodCompany == null ? null : prodCompany.trim();
+    }
+
+    public String getProdUseCompany() {
+        return prodUseCompany;
+    }
+
+    public void setProdUseCompany(String prodUseCompany) {
+        this.prodUseCompany = prodUseCompany == null ? null : prodUseCompany.trim();
     }
 
     public String getProdCustomer() {

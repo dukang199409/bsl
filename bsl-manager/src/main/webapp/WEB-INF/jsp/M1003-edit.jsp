@@ -74,7 +74,7 @@
 	            <td width="210" align="right">
 	            	<input name="prodPrintWeight" id="prodPrintWeightM1003Edit" class="easyui-numberbox" type="text" data-options="required:true,min:0,precision:3,validType:'length[0,10]'"  style="width:200px;"></input>
 	            </td>  
-	        	<td width="120" align="right">厂家:</td>
+	        	<td width="120" align="right">钢厂:</td>
 	            <td width="210" align="right">
 	            	<input name="prodCompany" class="easyui-textbox" type="text" data-options="required:false,validType:'length[0,120]'" style="width:200px;" maxLength="10"></input>
 	            </td>        
@@ -90,6 +90,10 @@
 	            </td>
 	        </tr>
 	        <tr>
+	        	<td width="120" align="right">使用单位:</td>
+	            <td width="210" align="right">
+	            	<input name="prodUseCompany" class="easyui-textbox" type="text" data-options="required:true,validType:'length[0,120]'" style="width:200px;" maxLength="10"></input>
+	            </td> 
 	           <td width="120" align="right">质量等级:</td>
 	            <td width="210" align="right">
 	            	<select name="prodLevel" class="easyui-combobox" panelHeight="auto" data-options="editable:true" style="width:200px;">
@@ -99,12 +103,12 @@
 			          		</c:forEach>
 					</select>
 	            </td>  
+	        </tr>
+	        <tr>	 
 	            <td width="120" align="right">入库日期:</td>
 	            <td width="210" align="right">
 	            	<input id="crtDateM1003Edit" name="crtDateM1003Edit" class="easyui-datebox" type="text" panelHeight="225px" data-options="required:false" style="width:200px;"></input>
 	            </td> 
-	        </tr>
-	        <tr>	 
 	        	<td width="120" align="right">入库仓库/区:</td>
 	            <td width="210" align="right">
 	            	<select name="prodRuc" class="easyui-combobox" panelHeight="auto" data-options="required:true,editable:true" style="width:200px;">
@@ -113,7 +117,9 @@
 			          	   	<option value="${a.enumKey}">${a.enumValue}</option>
 			          </c:forEach>
 					</select>
-	            </td> 
+	            </td>  
+	        </tr>
+	        <tr>	 
 	        	<td width="120" align="right">备注:</td>
 	            <td width="210" align="right">
 	            	<input name="remark" class="easyui-textbox" type="text" data-options="required:false,validType:'length[0,120]'" style="width:200px;" maxLength="10"></input>

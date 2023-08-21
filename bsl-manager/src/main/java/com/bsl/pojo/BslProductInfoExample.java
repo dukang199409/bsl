@@ -1952,6 +1952,76 @@ public class BslProductInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andProdUseCompanyIsNull() {
+            addCriterion("prod_use_company is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProdUseCompanyIsNotNull() {
+            addCriterion("prod_use_company is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProdUseCompanyEqualTo(String value) {
+            addCriterion("prod_use_company =", value, "prodUseCompany");
+            return (Criteria) this;
+        }
+
+        public Criteria andProdUseCompanyNotEqualTo(String value) {
+            addCriterion("prod_use_company <>", value, "prodUseCompany");
+            return (Criteria) this;
+        }
+
+        public Criteria andProdUseCompanyGreaterThan(String value) {
+            addCriterion("prod_use_company >", value, "prodUseCompany");
+            return (Criteria) this;
+        }
+
+        public Criteria andProdUseCompanyGreaterThanOrEqualTo(String value) {
+            addCriterion("prod_use_company >=", value, "prodUseCompany");
+            return (Criteria) this;
+        }
+
+        public Criteria andProdUseCompanyLessThan(String value) {
+            addCriterion("prod_use_company <", value, "prodUseCompany");
+            return (Criteria) this;
+        }
+
+        public Criteria andProdUseCompanyLessThanOrEqualTo(String value) {
+            addCriterion("prod_use_company <=", value, "prodUseCompany");
+            return (Criteria) this;
+        }
+
+        public Criteria andProdUseCompanyLike(String value) {
+            addCriterion("prod_use_company like", value, "prodUseCompany");
+            return (Criteria) this;
+        }
+
+        public Criteria andProdUseCompanyNotLike(String value) {
+            addCriterion("prod_use_company not like", value, "prodUseCompany");
+            return (Criteria) this;
+        }
+
+        public Criteria andProdUseCompanyIn(List<String> values) {
+            addCriterion("prod_use_company in", values, "prodUseCompany");
+            return (Criteria) this;
+        }
+
+        public Criteria andProdUseCompanyNotIn(List<String> values) {
+            addCriterion("prod_use_company not in", values, "prodUseCompany");
+            return (Criteria) this;
+        }
+
+        public Criteria andProdUseCompanyBetween(String value1, String value2) {
+            addCriterion("prod_use_company between", value1, value2, "prodUseCompany");
+            return (Criteria) this;
+        }
+
+        public Criteria andProdUseCompanyNotBetween(String value1, String value2) {
+            addCriterion("prod_use_company not between", value1, value2, "prodUseCompany");
+            return (Criteria) this;
+        }
+
         public Criteria andProdCustomerIsNull() {
             addCriterion("prod_customer is null");
             return (Criteria) this;

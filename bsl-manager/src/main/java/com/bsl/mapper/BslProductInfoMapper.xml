@@ -1,64 +1,65 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.bsl.mapper.BslProductInfoMapper" >
-  <resultMap id="BaseResultMap" type="com.bsl.pojo.BslProductInfo" >
-    <id column="prod_id" property="prodId" jdbcType="VARCHAR" />
-    <result column="prod_name" property="prodName" jdbcType="VARCHAR" />
-    <result column="prod_type" property="prodType" jdbcType="CHAR" />
-    <result column="prod_norm" property="prodNorm" jdbcType="VARCHAR" />
-    <result column="prod_material" property="prodMaterial" jdbcType="CHAR" />
-    <result column="prod_length" property="prodLength" jdbcType="REAL" />
-    <result column="prod_level" property="prodLevel" jdbcType="CHAR" />
-    <result column="prod_num" property="prodNum" jdbcType="INTEGER" />
-    <result column="prod_record_weight" property="prodRecordWeight" jdbcType="REAL" />
-    <result column="prod_rel_weight" property="prodRelWeight" jdbcType="REAL" />
-    <result column="prod_print_weight" property="prodPrintWeight" jdbcType="REAL" />
-    <result column="prod_out_weight" property="prodOutWeight" jdbcType="REAL" />
-    <result column="prod_source_company" property="prodSourceCompany" jdbcType="VARCHAR" />
-    <result column="prod_status" property="prodStatus" jdbcType="CHAR" />
-    <result column="prod_user_type" property="prodUserType" jdbcType="CHAR" />
-    <result column="prod_source" property="prodSource" jdbcType="CHAR" />
-    <result column="prod_luno" property="prodLuno" jdbcType="VARCHAR" />
-    <result column="prod_dcl_flag" property="prodDclFlag" jdbcType="CHAR" />
-    <result column="prod_plan_no" property="prodPlanNo" jdbcType="VARCHAR" />
-    <result column="prod_make_jz" property="prodMakeJz" jdbcType="CHAR" />
-    <result column="prod_ori_id" property="prodOriId" jdbcType="VARCHAR" />
-    <result column="prod_parent_no" property="prodParentNo" jdbcType="VARCHAR" />
-    <result column="prod_out_plan" property="prodOutPlan" jdbcType="VARCHAR" />
-    <result column="prod_sale_serno" property="prodSaleSerno" jdbcType="VARCHAR" />
-    <result column="prod_out_carno" property="prodOutCarno" jdbcType="VARCHAR" />
-    <result column="prod_out_date" property="prodOutDate" jdbcType="TIMESTAMP" />
-    <result column="prod_company" property="prodCompany" jdbcType="VARCHAR" />
-    <result column="prod_customer" property="prodCustomer" jdbcType="VARCHAR" />
-    <result column="prod_bc" property="prodBc" jdbcType="CHAR" />
-    <result column="prod_fhck" property="prodFhck" jdbcType="VARCHAR" />
-    <result column="prod_ruc" property="prodRuc" jdbcType="CHAR" />
-    <result column="prod_wccply" property="prodWccply" jdbcType="CHAR" />
-    <result column="prod_inputuser" property="prodInputuser" jdbcType="VARCHAR" />
-    <result column="prod_checkuser" property="prodCheckuser" jdbcType="VARCHAR" />
-    <result column="crt_date" property="crtDate" jdbcType="TIMESTAMP" />
-    <result column="upd_date" property="updDate" jdbcType="TIMESTAMP" />
-    <result column="remark" property="remark" jdbcType="VARCHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bsl.mapper.BslProductInfoMapper">
+  <resultMap id="BaseResultMap" type="com.bsl.pojo.BslProductInfo">
+    <id column="prod_id" jdbcType="VARCHAR" property="prodId" />
+    <result column="prod_name" jdbcType="VARCHAR" property="prodName" />
+    <result column="prod_type" jdbcType="CHAR" property="prodType" />
+    <result column="prod_norm" jdbcType="VARCHAR" property="prodNorm" />
+    <result column="prod_material" jdbcType="CHAR" property="prodMaterial" />
+    <result column="prod_length" jdbcType="REAL" property="prodLength" />
+    <result column="prod_level" jdbcType="CHAR" property="prodLevel" />
+    <result column="prod_num" jdbcType="INTEGER" property="prodNum" />
+    <result column="prod_record_weight" jdbcType="REAL" property="prodRecordWeight" />
+    <result column="prod_rel_weight" jdbcType="REAL" property="prodRelWeight" />
+    <result column="prod_print_weight" jdbcType="REAL" property="prodPrintWeight" />
+    <result column="prod_out_weight" jdbcType="REAL" property="prodOutWeight" />
+    <result column="prod_source_company" jdbcType="VARCHAR" property="prodSourceCompany" />
+    <result column="prod_status" jdbcType="CHAR" property="prodStatus" />
+    <result column="prod_user_type" jdbcType="CHAR" property="prodUserType" />
+    <result column="prod_source" jdbcType="CHAR" property="prodSource" />
+    <result column="prod_luno" jdbcType="VARCHAR" property="prodLuno" />
+    <result column="prod_dcl_flag" jdbcType="CHAR" property="prodDclFlag" />
+    <result column="prod_plan_no" jdbcType="VARCHAR" property="prodPlanNo" />
+    <result column="prod_make_jz" jdbcType="CHAR" property="prodMakeJz" />
+    <result column="prod_ori_id" jdbcType="VARCHAR" property="prodOriId" />
+    <result column="prod_parent_no" jdbcType="VARCHAR" property="prodParentNo" />
+    <result column="prod_out_plan" jdbcType="VARCHAR" property="prodOutPlan" />
+    <result column="prod_sale_serno" jdbcType="VARCHAR" property="prodSaleSerno" />
+    <result column="prod_out_carno" jdbcType="VARCHAR" property="prodOutCarno" />
+    <result column="prod_out_date" jdbcType="TIMESTAMP" property="prodOutDate" />
+    <result column="prod_company" jdbcType="VARCHAR" property="prodCompany" />
+    <result column="prod_use_company" jdbcType="VARCHAR" property="prodUseCompany" />
+    <result column="prod_customer" jdbcType="VARCHAR" property="prodCustomer" />
+    <result column="prod_bc" jdbcType="CHAR" property="prodBc" />
+    <result column="prod_fhck" jdbcType="VARCHAR" property="prodFhck" />
+    <result column="prod_ruc" jdbcType="CHAR" property="prodRuc" />
+    <result column="prod_wccply" jdbcType="CHAR" property="prodWccply" />
+    <result column="prod_inputuser" jdbcType="VARCHAR" property="prodInputuser" />
+    <result column="prod_checkuser" jdbcType="VARCHAR" property="prodCheckuser" />
+    <result column="crt_date" jdbcType="TIMESTAMP" property="crtDate" />
+    <result column="upd_date" jdbcType="TIMESTAMP" property="updDate" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -69,25 +70,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -98,45 +99,46 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     prod_id, prod_name, prod_type, prod_norm, prod_material, prod_length, prod_level, 
     prod_num, prod_record_weight, prod_rel_weight, prod_print_weight, prod_out_weight, 
     prod_source_company, prod_status, prod_user_type, prod_source, prod_luno, prod_dcl_flag, 
     prod_plan_no, prod_make_jz, prod_ori_id, prod_parent_no, prod_out_plan, prod_sale_serno, 
-    prod_out_carno, prod_out_date, prod_company, prod_customer, prod_bc, prod_fhck, prod_ruc, 
-    prod_wccply, prod_inputuser, prod_checkuser, crt_date, upd_date, remark
+    prod_out_carno, prod_out_date, prod_company, prod_use_company, prod_customer, prod_bc, 
+    prod_fhck, prod_ruc, prod_wccply, prod_inputuser, prod_checkuser, crt_date, upd_date, 
+    remark
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bsl.pojo.BslProductInfoExample" >
+  <select id="selectByExample" parameterType="com.bsl.pojo.BslProductInfoExample" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from bsl_product_info
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from bsl_product_info
     where prod_id = #{prodId,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from bsl_product_info
     where prod_id = #{prodId,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.bsl.pojo.BslProductInfoExample" >
+  <delete id="deleteByExample" parameterType="com.bsl.pojo.BslProductInfoExample">
     delete from bsl_product_info
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.bsl.pojo.BslProductInfo" >
+  <insert id="insert" parameterType="com.bsl.pojo.BslProductInfo">
     insert into bsl_product_info (prod_id, prod_name, prod_type, 
       prod_norm, prod_material, prod_length, 
       prod_level, prod_num, prod_record_weight, 
@@ -146,10 +148,10 @@
       prod_plan_no, prod_make_jz, prod_ori_id, 
       prod_parent_no, prod_out_plan, prod_sale_serno, 
       prod_out_carno, prod_out_date, prod_company, 
-      prod_customer, prod_bc, prod_fhck, 
-      prod_ruc, prod_wccply, prod_inputuser, 
-      prod_checkuser, crt_date, upd_date, 
-      remark)
+      prod_use_company, prod_customer, prod_bc, 
+      prod_fhck, prod_ruc, prod_wccply, 
+      prod_inputuser, prod_checkuser, crt_date, 
+      upd_date, remark)
     values (#{prodId,jdbcType=VARCHAR}, #{prodName,jdbcType=VARCHAR}, #{prodType,jdbcType=CHAR}, 
       #{prodNorm,jdbcType=VARCHAR}, #{prodMaterial,jdbcType=CHAR}, #{prodLength,jdbcType=REAL}, 
       #{prodLevel,jdbcType=CHAR}, #{prodNum,jdbcType=INTEGER}, #{prodRecordWeight,jdbcType=REAL}, 
@@ -159,10 +161,10 @@
       #{prodPlanNo,jdbcType=VARCHAR}, #{prodMakeJz,jdbcType=CHAR}, #{prodOriId,jdbcType=VARCHAR}, 
       #{prodParentNo,jdbcType=VARCHAR}, #{prodOutPlan,jdbcType=VARCHAR}, #{prodSaleSerno,jdbcType=VARCHAR}, 
       #{prodOutCarno,jdbcType=VARCHAR}, #{prodOutDate,jdbcType=TIMESTAMP}, #{prodCompany,jdbcType=VARCHAR}, 
-      #{prodCustomer,jdbcType=VARCHAR}, #{prodBc,jdbcType=CHAR}, #{prodFhck,jdbcType=VARCHAR}, 
-      #{prodRuc,jdbcType=CHAR}, #{prodWccply,jdbcType=CHAR}, #{prodInputuser,jdbcType=VARCHAR}, 
-      #{prodCheckuser,jdbcType=VARCHAR}, #{crtDate,jdbcType=TIMESTAMP}, #{updDate,jdbcType=TIMESTAMP}, 
-      #{remark,jdbcType=VARCHAR})
+      #{prodUseCompany,jdbcType=VARCHAR}, #{prodCustomer,jdbcType=VARCHAR}, #{prodBc,jdbcType=CHAR}, 
+      #{prodFhck,jdbcType=VARCHAR}, #{prodRuc,jdbcType=CHAR}, #{prodWccply,jdbcType=CHAR}, 
+      #{prodInputuser,jdbcType=VARCHAR}, #{prodCheckuser,jdbcType=VARCHAR}, #{crtDate,jdbcType=TIMESTAMP}, 
+      #{updDate,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.bsl.pojo.BslProductInfo" >
     insert into bsl_product_info
@@ -248,7 +250,10 @@
       <if test="prodCompany != null" >
         prod_company,
       </if>
-      <if test="prodCustomer != null" >
+      <if test="prodUseCompany != null">
+        prod_use_company,
+      </if>
+      <if test="prodCustomer != null">
         prod_customer,
       </if>
       <if test="prodBc != null" >
@@ -361,7 +366,10 @@
       <if test="prodCompany != null" >
         #{prodCompany,jdbcType=VARCHAR},
       </if>
-      <if test="prodCustomer != null" >
+      <if test="prodUseCompany != null">
+        #{prodUseCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="prodCustomer != null">
         #{prodCustomer,jdbcType=VARCHAR},
       </if>
       <if test="prodBc != null" >
@@ -385,15 +393,15 @@
       <if test="crtDate != null" >
         #{crtDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="updDate != null" >
+      <if test="updDate != null">
         #{updDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="remark != null" >
+      <if test="remark != null">
         #{remark,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.bsl.pojo.BslProductInfoExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.bsl.pojo.BslProductInfoExample" resultType="java.lang.Integer">
     select count(*) from bsl_product_info
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -483,6 +491,9 @@
       <if test="record.prodCompany != null" >
         prod_company = #{record.prodCompany,jdbcType=VARCHAR},
       </if>
+      <if test="record.prodUseCompany != null">
+        prod_use_company = #{record.prodUseCompany,jdbcType=VARCHAR},
+      </if>
       <if test="record.prodCustomer != null" >
         prod_customer = #{record.prodCustomer,jdbcType=VARCHAR},
       </if>
@@ -547,6 +558,7 @@
       prod_out_carno = #{record.prodOutCarno,jdbcType=VARCHAR},
       prod_out_date = #{record.prodOutDate,jdbcType=TIMESTAMP},
       prod_company = #{record.prodCompany,jdbcType=VARCHAR},
+      prod_use_company = #{record.prodUseCompany,jdbcType=VARCHAR},
       prod_customer = #{record.prodCustomer,jdbcType=VARCHAR},
       prod_bc = #{record.prodBc,jdbcType=CHAR},
       prod_fhck = #{record.prodFhck,jdbcType=VARCHAR},
@@ -642,7 +654,10 @@
       <if test="prodCompany != null" >
         prod_company = #{prodCompany,jdbcType=VARCHAR},
       </if>
-      <if test="prodCustomer != null" >
+      <if test="prodUseCompany != null">
+        prod_use_company = #{prodUseCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="prodCustomer != null">
         prod_customer = #{prodCustomer,jdbcType=VARCHAR},
       </if>
       <if test="prodBc != null" >
@@ -703,6 +718,7 @@
       prod_out_carno = #{prodOutCarno,jdbcType=VARCHAR},
       prod_out_date = #{prodOutDate,jdbcType=TIMESTAMP},
       prod_company = #{prodCompany,jdbcType=VARCHAR},
+      prod_use_company = #{prodUseCompany,jdbcType=VARCHAR},
       prod_customer = #{prodCustomer,jdbcType=VARCHAR},
       prod_bc = #{prodBc,jdbcType=CHAR},
       prod_fhck = #{prodFhck,jdbcType=VARCHAR},
