@@ -118,7 +118,7 @@ public class RawController {
 			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "产品批次不能为空");
 		}
 		if(StringUtils.isBlank(bslProductInfo.getProdLuno()) && StringUtils.isBlank(bslProductInfo.getProdOriId())){
-			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "炉号和厂家钢卷号不能同时为空");
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "炉号和钢厂钢卷号不能同时为空");
 		}
 		if(StringUtils.isBlank(bslProductInfo.getProdCheckuser())){
 			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "录入人不能为空");
@@ -169,7 +169,7 @@ public class RawController {
 			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "产品批次不能为空");
 		}
 		if(StringUtils.isBlank(bslProductInfo.getProdLuno()) && StringUtils.isBlank(bslProductInfo.getProdOriId())){
-			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "炉号和厂家钢卷号不能同时为空");
+			return BSLResult.build(ErrorCodeInfo.错误类型_参数为空, "炉号和钢厂钢卷号不能同时为空");
 		}
 		try {
 			return rawService.updateRawInfo(bslProductInfo);

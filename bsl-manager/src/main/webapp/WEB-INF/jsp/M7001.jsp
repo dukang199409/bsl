@@ -161,7 +161,8 @@
 	        	<th data-options="field:'prodLength',width:80,sortable:true">定尺/米</th>
 	        	<th data-options="field:'prodNum',width:80,sortable:true">支数</th>
 	        	<th data-options="field:'prodDclFlag',width:130,formatter:BSL.formatProdDclFlag,sortable:true">外协厂标志</th>
-	        	<th data-options="field:'prodCompany',width:100,sortable:true">厂家</th>
+	        	<th data-options="field:'prodCompany',width:100,sortable:true">钢厂</th>
+	        	<th data-options="field:'prodUseCompany',width:100,sortable:true">使用单位</th>
 	            <th data-options="field:'prodLevel',width:90,formatter:BSL.formatProdLevel,sortable:true">质量等级</th>
 	            <th data-options="field:'prodSource',width:90,formatter:BSL.formatProdSource,sortable:true">产品来源</th>
 	            <th data-options="field:'prodUserType',width:90,formatter:BSL.formatMakeType,sortable:true">纵剪带用途</th>

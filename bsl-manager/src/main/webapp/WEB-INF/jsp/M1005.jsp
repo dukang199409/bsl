@@ -10,7 +10,7 @@
 		            <td width="210" align="right">
 		            	<input name="luId" id="luIdM1005" class="easyui-textbox" type="text" data-options="required:false,validType:'length[0,32]'" style="width:200px;"></input>
 		            </td>
-		            <td width="120" align="right">厂家:</td>
+		            <td width="120" align="right">钢厂:</td>
 		            <td width="210" align="right">
 		            	<input name="luCompany" id="luCompanyM1005"  class="easyui-textbox" type="text" data-options="required:false,validType:'length[0,100]'" style="width:200px;"></input>
 		            </td>
@@ -69,7 +69,7 @@
 	        <tr>
 	        	<th data-options="field:'ck',checkbox:true"></th>
 	        	<th data-options="field:'luId',width:100,sortable:true">炉(批)号</th>
-	        	<th data-options="field:'luCompany',width:100,sortable:true">厂家</th>
+	        	<th data-options="field:'luCompany',width:100,sortable:true">钢厂</th>
 	        	<th data-options="field:'chemicalC',width:100">化学成份C(x100)</th>
 	        	<th data-options="field:'chemicalSi',width:100">化学成份Si(x100)</th>
 	        	<th data-options="field:'chemicalMn',width:100">化学成份Mn(x100)</th>

@@ -403,6 +403,7 @@ public class RawServiceImpl implements RawService {
 		bslProductInfo.setProdDclFlag(DictItemOperation.产品外协厂标志_本厂);
 		bslProductInfo.setProdPlanNo(oldBslProductInfo.getProdPlanNo());//对应原料通知单号同原卷板
 		bslProductInfo.setProdCompany(oldBslProductInfo.getProdCompany());//厂家同原来一致
+		bslProductInfo.setProdUseCompany(oldBslProductInfo.getProdUseCompany());//使用单位同原来一致
 		bslProductInfo.setProdCustomer(oldBslProductInfo.getProdCustomer());//客户同原来一致
 		bslProductInfo.setProdParentNo(oldBslProductInfo.getProdParentNo());//对应来源同原卷板
 		//开始插入

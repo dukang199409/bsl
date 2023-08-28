@@ -25,7 +25,7 @@
 		            <td width="210" align="right">
 		            	<input name="prodCustomer" id="prodCustomerM7105" class="easyui-textbox" type="text" data-options="required:false,validType:'length[0,120]'" style="width:200px;" maxLength="10"></input>
 		            </td>
-		        	<td width="120" align="right">厂家:</td>
+		        	<td width="120" align="right">钢厂:</td>
 		            <td width="210" align="right">
 		            	<input name="prodCompany" id="prodCompanyM7105" class="easyui-textbox" type="text" data-options="required:false,validType:'length[0,120]'" style="width:200px;" maxLength="10"></input>
 		            </td>  
@@ -82,7 +82,7 @@
 	            <th data-options="field:'prodOutNum',width:100">出库件数</th>
 	            <th data-options="field:'prodAtWeight',width:125">原料库存重量/吨</th>
 	            <th data-options="field:'prodAtNum',width:100">库存件数</th>
-	            <th data-options="field:'prodCompany',width:125">厂家</th>
+	            <th data-options="field:'prodCompany',width:125">钢厂</th>
 	            <th data-options="field:'prodCustomer',width:125">客户</th>
 	            <th data-options="field:'remark',width:125">备注</th>
 	            <th data-options="field:'crtDate',width:125,formatter:BSL.formatDateTime,sortable:true">创建日期</th>

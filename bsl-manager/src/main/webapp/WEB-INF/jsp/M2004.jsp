@@ -89,7 +89,8 @@
 		            <th data-options="field:'prodPrintWeight',width:125,sortable:true">原料入库重量/吨</th>
 		            <th data-options="field:'prodSource',width:120,formatter:BSL.formatProdSource,sortable:true">产品来源</th> 
 		            <th data-options="field:'prodRuc',width:100,sortable:true,formatter:BSL.formatProdRuc">入库仓库/区</th>
-		            <th data-options="field:'prodCompany',width:100,sortable:true">厂家</th>
+		            <th data-options="field:'prodCompany',width:100,sortable:true">钢厂</th>
+		            <th data-options="field:'prodUseCompany',width:100,sortable:true">使用单位</th>
 		            <th data-options="field:'prodInputuser',width:70,sortable:true">制单人</th>
 		            <th data-options="field:'crtDate',width:150,formatter:BSL.formatFullDateTime,sortable:true">入库日期</th>
 		            <th data-options="field:'updDate',width:150,formatter:BSL.formatFullDateTime,sortable:true">修改日期</th>

@@ -94,7 +94,8 @@
 				<th data-options="field:'prodOutWeight',width:120">销售复磅重量/吨</th>
 	            <th data-options="field:'prodStatus',formatter:BSL.formatProdStatus,width:80">状态</th>
 	        	<th data-options="field:'prodLuno',width:100">炉(批)号</th>
-	        	<th data-options="field:'prodCompany',width:120">厂家</th>
+	        	<th data-options="field:'prodCompany',width:120">钢厂</th>
+	        	<th data-options="field:'prodUseCompany',width:100,sortable:true">使用单位</th>
 	            <th data-options="field:'prodLevel',formatter:BSL.formatProdLevel,width:100">质量等级</th>
 	            <th data-options="field:'crtDate',formatter:BSL.formatDateTime,width:80">入库日期</th>
 	            <th data-options="field:'updDate',formatter:BSL.formatDateTime,width:80">修改日期</th>

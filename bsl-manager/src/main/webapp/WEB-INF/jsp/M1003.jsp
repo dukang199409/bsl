@@ -61,7 +61,7 @@
 		            </td>
 		        </tr>
 		        <tr>
-		        	<td width="120" align="right">厂家钢卷号:</td>
+		        	<td width="120" align="right">钢厂钢卷号:</td>
 		            <td width="210" align="right">
 		            	<input name="prodOriId" id="prodOriIdM1003"  class="easyui-textbox" type="text" data-options="required:false,validType:'length[0,20]'" style="width:200px;"></input>
 		            </td>

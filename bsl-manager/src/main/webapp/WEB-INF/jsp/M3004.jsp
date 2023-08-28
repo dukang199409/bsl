@@ -81,7 +81,7 @@
 	            <th data-options="field:'prodRelWeight',width:125,sortable:true">来料复磅重量/吨</th>
 	            <th data-options="field:'prodPrintWeight',width:125,sortable:true">原料入库重量/吨</th>
 	            <th data-options="field:'prodRuc',width:100,sortable:true,formatter:BSL.formatProdRuc">入库仓库/区</th>
-	            <th data-options="field:'prodCompany',width:100,sortable:true">厂家</th>
+	            <th data-options="field:'prodCompany',width:100,sortable:true">钢厂</th>
 	            <th data-options="field:'prodInputuser',width:70,sortable:true">入库人</th>
 	            <th data-options="field:'prodCheckuser',width:70,sortable:true">修改人</th>
 	            <th data-options="field:'crtDate',width:150,formatter:BSL.formatFullDateTime,sortable:true">入库日期</th>

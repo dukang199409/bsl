@@ -188,6 +188,7 @@ public class SemiFinishedProdServiceImpl implements SemiFinishedProdService {
 			bslProductInfo.setProdLuno(rawExe.getProdLuno());//炉号等于父级产品炉号
 			bslProductInfo.setProdNum(1);
 			bslProductInfo.setProdCompany(rawExe.getProdCompany());
+			bslProductInfo.setProdUseCompany(rawExe.getProdUseCompany());
 			bslProductInfo.setProdCustomer(rawExe.getProdCustomer());
 			bslProductInfo.setProdPrintWeight(bslProductInfo.getProdRelWeight());//打印重量为实际重量
 			bslProductInfo.setProdUserType(makePlanInfoExe.getMakeType());//用途为指令指定的用途
@@ -414,6 +415,7 @@ public class SemiFinishedProdServiceImpl implements SemiFinishedProdService {
 		bslProductInfo.setProdPlanNo(oldBslProductInfo.getProdPlanNo());//对应纵剪带生产指令同原半成品
 		bslProductInfo.setProdParentNo(oldBslProductInfo.getProdParentNo());//对应来源同原半成品
 		bslProductInfo.setProdCompany(oldBslProductInfo.getProdCompany());//厂家同原来一致
+		bslProductInfo.setProdUseCompany(oldBslProductInfo.getProdUseCompany());//使用单位同原来一致
 		bslProductInfo.setProdCustomer(oldBslProductInfo.getProdCustomer());
 		bslProductInfo.setProdDclFlag(DictItemOperation.产品外协厂标志_本厂);
 		bslProductInfo.setCrtDate(new Date());//日期当天

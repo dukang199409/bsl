@@ -309,6 +309,7 @@ public class ProdServiceImpl implements ProdService {
 				bslProductInfo.setProdDclFlag(DictItemOperation.产品外协厂标志_本厂);
 				bslProductInfo.setProdStatus(DictItemOperation.产品状态_已入库);
 				bslProductInfo.setProdCompany(parentProd1.getProdCompany());//厂家同原来一致
+				bslProductInfo.setProdUseCompany(parentProd1.getProdUseCompany());//使用单位同原来一致
 				bslProductInfo.setProdCustomer(parentProd1.getProdCustomer());
 				int result = bslProductInfoMapper.insert(bslProductInfo);
 				if(result<0){
@@ -362,6 +363,7 @@ public class ProdServiceImpl implements ProdService {
 				bslProductInfo.setProdDclFlag(DictItemOperation.产品外协厂标志_本厂);
 				bslProductInfo.setProdStatus(DictItemOperation.产品状态_已入库);
 				bslProductInfo.setProdCompany(parentProd1.getProdCompany());//厂家同原来一致
+				bslProductInfo.setProdUseCompany(parentProd1.getProdUseCompany());//使用单位同原来一致
 				bslProductInfo.setProdCustomer(parentProd1.getProdCustomer());
 				int result = bslProductInfoMapper.insert(bslProductInfo);
 				if(result<0){
@@ -426,6 +428,7 @@ public class ProdServiceImpl implements ProdService {
 			bslProductInfo.setProdDclFlag(DictItemOperation.产品外协厂标志_本厂);
 			bslProductInfo.setProdStatus(DictItemOperation.产品状态_已入库);
 			bslProductInfo.setProdCompany(bslProdUse.getProdCompany());//厂家同原来一致
+			bslProductInfo.setProdUseCompany(bslProdUse.getProdUseCompany());//使用单位同原来一致
 			bslProductInfo.setProdCustomer(bslProdUse.getProdCustomer());
 			int resultHH = bslProductInfoMapper.insert(bslProductInfo);
 			if(resultHH<0){
@@ -486,6 +489,7 @@ public class ProdServiceImpl implements ProdService {
 				bslProductInfo.setProdDclFlag(DictItemOperation.产品外协厂标志_本厂);
 				bslProductInfo.setProdStatus(DictItemOperation.产品状态_已入库);
 				bslProductInfo.setProdCompany(parentProd2.getProdCompany());//厂家同原来一致
+				bslProductInfo.setProdUseCompany(parentProd2.getProdUseCompany());//使用单位同原来一致
 				bslProductInfo.setProdCustomer(parentProd2.getProdCustomer());
 				int result = bslProductInfoMapper.insert(bslProductInfo);
 				if(result<0){
@@ -694,6 +698,7 @@ public class ProdServiceImpl implements ProdService {
 			bslProductInfo.setProdDclFlag(DictItemOperation.产品外协厂标志_本厂);
 			bslProductInfo.setProdLuno(parentProd.getProdLuno());//炉号为父级炉号
 			bslProductInfo.setProdCompany(parentProd.getProdCompany());//厂家同原来一致
+			bslProductInfo.setProdUseCompany(parentProd.getProdUseCompany());//使用单位同原来一致
 			bslProductInfo.setProdCustomer(parentProd.getProdCustomer());
 			bslProductInfo.setProdParentNo(parentProdId);//父级盘号
 			
@@ -1132,6 +1137,7 @@ public class ProdServiceImpl implements ProdService {
 		//获取待处理品信息
 		String prodCompany = "";
 		String prodCustomer = "";
+		String prodUseCompany = "";
 		BslProductInfo bslProductInfoDcl = bslProductInfoMapper.selectByPrimaryKey(bslProductInfo.getProdOriId());
 		if(bslProductInfoDcl != null){
 			//校验炉号
@@ -1148,6 +1154,7 @@ public class ProdServiceImpl implements ProdService {
 			}*/
 			prodCompany = bslProductInfoDcl.getProdCompany();
 			prodCustomer = bslProductInfoDcl.getProdCustomer();
+			prodUseCompany = bslProductInfoDcl.getProdUseCompany();
 		}
 		
 		//判断入库盘数,平分重量
@@ -1170,6 +1177,7 @@ public class ProdServiceImpl implements ProdService {
 			bslProductInfo.setProdStatus(DictItemOperation.产品状态_已入库);
 			bslProductInfo.setProdDclFlag(DictItemOperation.产品外协厂标志_本厂);
 			bslProductInfo.setProdCompany(prodCompany);//厂家同原来一致
+			bslProductInfo.setProdUseCompany(prodUseCompany);
 			bslProductInfo.setProdCustomer(prodCustomer);
 			
 			int result = bslProductInfoMapper.insert(bslProductInfo);
@@ -1214,6 +1222,7 @@ public class ProdServiceImpl implements ProdService {
 		//获取待处理品信息
 		String prodCompany = "";
 		String prodCustomer = "";
+		String prodUseCompany = "";
 		BslProductInfo bslProductInfoDcl = bslProductInfoMapper.selectByPrimaryKey(bslProductInfo.getProdOriId());
 		if(bslProductInfoDcl != null){
 			//校验炉号
@@ -1229,6 +1238,7 @@ public class ProdServiceImpl implements ProdService {
 				throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "产品规格必须是生产指令指定规格");
 			}*/
 			prodCompany = bslProductInfoDcl.getProdCompany();
+			prodUseCompany = bslProductInfoDcl.getProdUseCompany();
 			prodCustomer = bslProductInfoDcl.getProdCustomer();
 		}
 		
@@ -1252,6 +1262,7 @@ public class ProdServiceImpl implements ProdService {
 			bslProductInfo.setProdStatus(DictItemOperation.产品状态_已入库);
 			bslProductInfo.setProdDclFlag(DictItemOperation.产品外协厂标志_加工);
 			bslProductInfo.setProdCompany(prodCompany);//厂家同原来一致
+			bslProductInfo.setProdUseCompany(prodUseCompany);//使用单位同原来一致
 			bslProductInfo.setProdCustomer(prodCustomer);
 			
 			int result = bslProductInfoMapper.insert(bslProductInfo);
@@ -1504,6 +1515,7 @@ public class ProdServiceImpl implements ProdService {
 		//获取待处理品信息
 		String prodCompany = "";
 		String prodCustomer = "";
+		String ProdUseCompany = "";
 		Float relOriWeight = 0f;
 		BslProductInfo bslProductInfoOriProd = bslProductInfoMapper.selectByPrimaryKey(bslProductInfo.getProdOriId());
 		if(bslProductInfoOriProd != null){
@@ -1520,6 +1532,7 @@ public class ProdServiceImpl implements ProdService {
 				throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "产品规格必须与父级产品规格一致");
 			}
 			prodCompany = bslProductInfoOriProd.getProdCompany();
+			ProdUseCompany = bslProductInfoOriProd.getProdUseCompany();
 			prodCustomer = bslProductInfoOriProd.getProdCustomer();
 			relOriWeight = bslProductInfoOriProd.getProdRelWeight();
 			if(relOriWeight<bslProductInfo.getProdRelWeight()){
@@ -1547,6 +1560,7 @@ public class ProdServiceImpl implements ProdService {
 			bslProductInfo.setProdStatus(DictItemOperation.产品状态_已入库);
 			bslProductInfo.setProdDclFlag(DictItemOperation.产品外协厂标志_加工);
 			bslProductInfo.setProdCompany(prodCompany);//厂家同原来一致
+			bslProductInfo.setProdUseCompany(ProdUseCompany);
 			bslProductInfo.setProdCustomer(prodCustomer);
 			
 			int result = bslProductInfoMapper.insert(bslProductInfo);
@@ -1634,6 +1648,7 @@ public class ProdServiceImpl implements ProdService {
 		//获取待处理品信息
 		String prodCompany = "";
 		String prodCustomer = "";
+		String prodUseCompany = "";
 		Float relOriWeight = 0f;
 		BslProductInfo bslProductInfoOriProd = bslProductInfoMapper.selectByPrimaryKey(bslProductInfo.getProdOriId());
 		if(bslProductInfoOriProd != null){
@@ -1650,6 +1665,7 @@ public class ProdServiceImpl implements ProdService {
 				throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "产品规格必须与父级产品规格一致");
 			}
 			prodCompany = bslProductInfoOriProd.getProdCompany();
+			prodUseCompany = bslProductInfoOriProd.getProdUseCompany();
 			prodCustomer = bslProductInfoOriProd.getProdCustomer();
 			relOriWeight = bslProductInfoOriProd.getProdRelWeight();
 			if(relOriWeight<bslProductInfo.getProdRelWeight()){
@@ -1670,6 +1686,7 @@ public class ProdServiceImpl implements ProdService {
 		bslProductInfo.setProdStatus(DictItemOperation.产品状态_已入库);
 		bslProductInfo.setProdDclFlag(DictItemOperation.产品外协厂标志_加工);
 		bslProductInfo.setProdCompany(prodCompany);//厂家同原来一致
+		bslProductInfo.setProdUseCompany(prodUseCompany);
 		bslProductInfo.setProdCustomer(prodCustomer);
 		
 		int result = bslProductInfoMapper.insert(bslProductInfo);

@@ -102,7 +102,7 @@
 	            <th data-options="field:'prodLevel',width:90,formatter:BSL.formatProdLevel,sortable:true">质量等级</th>
 	            <th data-options="field:'prodRecordWeight',width:125,sortable:true">原料来料重量/吨</th>
 	            <th data-options="field:'prodRuc',width:100,sortable:true,formatter:BSL.formatProdRuc">入库仓库/区</th>
-	            <th data-options="field:'prodCompany',width:100,sortable:true">厂家</th>
+	            <th data-options="field:'prodCompany',width:100,sortable:true">钢厂</th>
 	            <th data-options="field:'prodStatus',width:100,formatter:BSL.formatProdStatus,sortable:true">状态</th>
 	        </tr>
 	    </thead>

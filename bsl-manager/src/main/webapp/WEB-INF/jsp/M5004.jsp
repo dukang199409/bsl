@@ -97,7 +97,8 @@
 	        	<th data-options="field:'prodLuno',width:120,sortable:true">炉(批)号</th>
 	            <th data-options="field:'prodOutPlan',width:100,sortable:true">销售出库单号</th>
 	            <th data-options="field:'prodSaleSerno',width:100,sortable:true">销售计划流水</th>
-	        	<th data-options="field:'prodCompany',width:100,sortable:true">厂家</th>
+	        	<th data-options="field:'prodCompany',width:100,sortable:true">钢厂</th>
+	        	<th data-options="field:'prodUseCompany',width:100,sortable:true">使用单位</th>
 	            <th data-options="field:'prodLevel',width:90,formatter:BSL.formatProdLevel,sortable:true">质量等级</th>
 	            <th data-options="field:'prodRuc',width:100,sortable:true,formatter:BSL.formatProdRuc">入库仓库/区</th>
 	            <th data-options="field:'crtDate',width:100,formatter:BSL.formatDateTime,sortable:true">入库日期</th>
@@ -125,7 +126,7 @@
 	        	<th data-options="field:'prodLuno',width:120,sortable:true">炉(批)号</th>
 	            <th data-options="field:'prodOutPlan',width:100,sortable:true">销售出库单号</th>
 	            <th data-options="field:'prodSaleSerno',width:100,sortable:true">销售计划流水</th>
-	        	<th data-options="field:'prodCompany',width:100,sortable:true">厂家</th>
+	        	<th data-options="field:'prodCompany',width:100,sortable:true">钢厂</th>
 	            <th data-options="field:'prodLevel',width:90,formatter:BSL.formatProdLevel,sortable:true">质量等级</th>
 	            <th data-options="field:'prodRuc',width:100,sortable:true,formatter:BSL.formatProdRuc">入库仓库/区</th>
 	            <th data-options="field:'crtDate',width:100,formatter:BSL.formatDateTime,sortable:true">创建日期</th>

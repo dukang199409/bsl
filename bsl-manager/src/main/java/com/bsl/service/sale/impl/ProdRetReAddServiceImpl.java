@@ -99,6 +99,7 @@ public class ProdRetReAddServiceImpl implements ProdRetReAddService {
 			prod.setProdLuno(reAddProd.getProdLuno());
 			prod.setProdOriId(prodId);
 			prod.setProdCompany(reAddProd.getProdCompany());
+			prod.setProdUseCompany(reAddProd.getProdUseCompany());
 			if(DictItemOperation.产品类型_成品.equals(prodType)){
 				prod.setProdLength(reAddProd.getProdLength());
 				prod.setProdNum(bslProductInfo.getProdNum());

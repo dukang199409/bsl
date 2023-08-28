@@ -119,7 +119,7 @@
 	            <th data-options="field:'prodDclFlag',width:130,formatter:BSL.formatProdDclFlag,sortable:true">产成品外协厂标志</th>
 	            <th data-options="field:'prodRuc',width:100,sortable:true,formatter:BSL.formatProdRuc">入库仓库/区</th>
 	            <th data-options="field:'prodOutCarno',width:120,sortable:true">发货车次流水</th>
-	            <th data-options="field:'prodCompany',width:100,sortable:true">厂家</th>
+	            <th data-options="field:'prodCompany',width:100,sortable:true">钢厂</th>
 	            <th data-options="field:'prodCustomer',width:100,sortable:true">客户</th>
 	            <th data-options="field:'prodInputuser',width:100,sortable:true">录入人</th>
 	            <th data-options="field:'crtDate',width:140,formatter:BSL.formatFullDateTime,sortable:true">入库日期</th>

@@ -834,7 +834,7 @@ public class PrintPdfController {
 				headList.add(new PDFCell(bslBsPlanInfo.getRemark(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 12, true));
 				
 				String [] fields = {"makeName","prodNorm","prodMaterial","prodLevel","prodNum","unit","planOutputVolume","prodWeight","planFinistDate","collectedUnits","makeProdNorm","remark"};
-				String [] titles = {"原料编号","原料名称","炉号","规格","钢种","记载重量/吨","复磅重量/吨","入库重量/吨","状态","质量等级","发货仓库", "厂家", "备注"};
+				String [] titles = {"原料编号","原料名称","炉号","规格","钢种","记载重量/吨","复磅重量/吨","入库重量/吨","状态","质量等级","发货仓库", "钢厂", "备注"};
 				List inList = new ArrayList<>();
 				for (BslProductInfo bslProductInfo : prodList) {
 					inList.add(

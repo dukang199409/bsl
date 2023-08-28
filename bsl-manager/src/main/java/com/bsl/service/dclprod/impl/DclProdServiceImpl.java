@@ -194,6 +194,7 @@ public class DclProdServiceImpl implements DclProdService {
 			bslDclProductInfo.setProdStatus(DictItemOperation.产品状态_已入库);
 			bslDclProductInfo.setProdType(DictItemOperation.产品类型_待处理品);
 			bslDclProductInfo.setProdCompany(parentProd.getProdCompany());//厂家同原来一致
+			bslDclProductInfo.setProdUseCompany(parentProd.getProdUseCompany());//使用单位同原来一致
 			bslDclProductInfo.setProdCustomer(parentProd.getProdCustomer());
 			bslDclProductInfo.setProdDclFlag(DictItemOperation.产品外协厂标志_本厂);
 			int result = bslProductInfoMapper.insert(bslDclProductInfo);
@@ -277,6 +278,7 @@ public class DclProdServiceImpl implements DclProdService {
 			bslDclProductInfo.setProdType(DictItemOperation.产品类型_待处理品);
 			bslDclProductInfo.setProdDclFlag(DictItemOperation.产品外协厂标志_本厂);
 			bslDclProductInfo.setProdCompany(parentProd.getProdCompany());//厂家同原来一致
+			bslDclProductInfo.setProdUseCompany(parentProd.getProdUseCompany());//使用单位同原来一致
 			bslDclProductInfo.setProdCustomer(parentProd.getProdCustomer());
 			int result = bslProductInfoMapper.insert(bslDclProductInfo);
 			if(result<0){
