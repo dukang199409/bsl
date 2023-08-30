@@ -420,50 +420,6 @@ public class ReportServiceImpl implements ReportService {
 		return BSLResult.ok(bslReportProdMakeInfos,"reportServiceImpl","getM7101Report",pageInfo.getTotal(),bslReportProdMakeInfos);
 	}
 
-	//根据条件查询纵剪机组生产报表
-	@Override
-	public BSLResult getM7102Report(QueryCriteria queryCriteria) {
-		BslReportProdMakeInfoExample bslReportProdMakeInfoExample = new BslReportProdMakeInfoExample();
-		com.bsl.pojo.BslReportProdMakeInfoExample.Criteria criteria = bslReportProdMakeInfoExample.createCriteria();
-		criteria.andProdTypeEqualTo(DictItemOperation.产品类型_半成品);
-		if(!StringUtils.isBlank(queryCriteria.getDataType())){
-			criteria.andDataTypeEqualTo(queryCriteria.getDataType());
-		}
-		//开始日期结束日期
-		Date dateStart = new Date();
-		Date dateEnd = new Date();
-		if(!StringUtils.isBlank(queryCriteria.getStartDate())){
-			try {
-				dateStart = DictItemOperation.日期转换实例.parse(queryCriteria.getStartDate());
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-		}else{
-			try {
-				dateStart = DictItemOperation.日期转换实例.parse("2018-01-01");
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-		}
-		if(!StringUtils.isBlank(queryCriteria.getEndDate())){
-			try {
-				dateEnd = DictItemOperation.日期转换实例.parse(queryCriteria.getEndDate());
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-		}else{
-			dateEnd = new Date();
-		}
-		criteria.andCrtDateBetween(dateStart,dateEnd);
-		//分页处理
-		PageHelper.startPage(Integer.parseInt(queryCriteria.getPage()), Integer.parseInt(queryCriteria.getRows()));
-		bslReportProdMakeInfoExample.setOrderByClause("`crt_date` desc");
-		
-		List<BslReportProdMakeInfo> bslReportProdMakeInfos = bslReportProdMakeInfoMapper.selectByExample(bslReportProdMakeInfoExample);
-		PageInfo<BslReportProdMakeInfo> pageInfo = new PageInfo<BslReportProdMakeInfo>(bslReportProdMakeInfos);
-		return BSLResult.ok(bslReportProdMakeInfos,"reportServiceImpl","getM7102Report",pageInfo.getTotal(),bslReportProdMakeInfos);
-	}
-
 	//根据条件查询产成品销售报表
 	@Override
 	public BSLResult getM7103Report(QueryCriteria queryCriteria) {

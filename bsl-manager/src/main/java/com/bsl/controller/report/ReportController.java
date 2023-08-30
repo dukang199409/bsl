@@ -56,26 +56,6 @@ public class ReportController {
 	}
 	
 	/**
-	 * 纵剪机组生产报表
-	 * @param 
-	 * @param 
-	 * @return
-	 */
-	@RequestMapping("/listByCriteriaM7102")
-	@ResponseBody
-	public BSLResult getM7102Report(QueryCriteria queryCriteria){
-		BSLResult result = null;
-		if(StringUtils.isBlank(queryCriteria.getPage())) {
-			result =  BSLResult.build(400, "页码不能为空");
-		}else if(StringUtils.isBlank(queryCriteria.getRows())) {
-			result =  BSLResult.build(400, "每页记录数不能为空");
-		}else{
-			result = reportService.getM7102Report(queryCriteria);
-		}
-		return result;
-	}
-	
-	/**
 	 * 产成品销售报表
 	 * @param 
 	 * @param 
@@ -116,7 +96,7 @@ public class ReportController {
 	}
 	
 	/**
-	 * 原材料进库报表日报
+	 * 原材料进库报表
 	 * @param 
 	 * @param 
 	 * @return
