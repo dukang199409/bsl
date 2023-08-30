@@ -13,6 +13,7 @@ import com.bsl.select.QueryCriteria;
 import com.bsl.service.report.ProdReportService;
 import com.bsl.service.report.RawReportService;
 import com.bsl.service.report.ReportService;
+import com.bsl.service.report.SemiReportService;
 
 /**
  * @author 杜康
@@ -30,6 +31,9 @@ public class ReportController {
 	
 	@Autowired
 	private ProdReportService prodReportService;
+	
+	@Autowired
+	private SemiReportService semiReportService;
 	
 	/**
 	 * 成型机组生产报表
@@ -251,6 +255,28 @@ public class ReportController {
 		}
 		return result;
 	}
+	
+	/**
+	 * 纵剪机组生产报表-日报
+	 * @param 
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping("/listM7107")
+	@ResponseBody
+	public BSLResult getM7107Report(QueryCriteria queryCriteria){
+		BSLResult result = null;
+		if(StringUtils.isBlank(queryCriteria.getPage())) {
+			result =  BSLResult.build(400, "页码不能为空");
+		}else if(StringUtils.isBlank(queryCriteria.getRows())) {
+			result =  BSLResult.build(400, "每页记录数不能为空");
+		}else{
+			result = semiReportService.getM7107Report(queryCriteria);
+		}
+		return result;
+	}
+	
+	
 	
 	/**
 	 * 查询库存日照信息

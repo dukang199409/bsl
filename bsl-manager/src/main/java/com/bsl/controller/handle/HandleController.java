@@ -38,7 +38,7 @@ public class HandleController {
 	}
 	
 	/**
-	 * 原料库存报表手工跑数
+	 * 手工跑数
 	 * @throws ParseException 
 	 */
 	@RequestMapping("/rawReportImport")
@@ -51,7 +51,7 @@ public class HandleController {
 		c.setTime(DictItemOperation.日期转换实例yyyyMMdd.parse(startDate));
 		while(true) {
 			todayString = DictItemOperation.日期转换实例yyyyMMdd.format(c.getTime());
-			bslProductInfoMapper.insertRawInfoReportNew(todayString);
+			bslProductInfoMapper.insertSemiMakeInfoReport(todayString);
 			c.add(Calendar.DATE, 1);
 			if(Integer.valueOf(todayString) > Integer.valueOf(endDate)) {
 				break;

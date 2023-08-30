@@ -67,21 +67,19 @@ public interface BslProductInfoMapper {
     //获取可以出库的半成品信息
     List<BslProductInfo> getProdCanOutProds(QueryCriteria queryExample);
     
-    int insertProdMakeInfoReport(String dateString);
-    int insertHalfProdMakeInfoReport(String dateString);
-    int insertProdSaleInfoReport(String dateString);
-    int insertHalfProdSaleInfoReport(String dateString);
-    int insertRawInfoReport(String dateString);
-    //原材料进库报表（新）
+    //2023新增报表
+    //原材料进库报表
     int insertRawInfoReportNew(String dateString);
     //产成品库存报表
     int insertProdInfoReport(String dateString);
+    //纵剪机组生产报表
+    int insertSemiMakeInfoReport(String dateString);
     
-    int insertProdMakeInfoReportBT(QueryCriteria queryCriteria);
-    int insertHalfProdMakeInfoReportBT(QueryCriteria queryCriteria);
+    //销售报表
+    int insertProdSaleInfoReport(String dateString);
+    int insertHalfProdSaleInfoReport(String dateString);
     int insertProdSaleInfoReportBT(QueryCriteria queryCriteria);
     int insertHalfProdSaleInfoReportBT(QueryCriteria queryCriteria);
-    int insertRawInfoReportBT(QueryCriteria queryCriteria);
     
     //根据excel数据修改使用单位
     int updateUseCompanyByExcel(UseCompanyModule record);

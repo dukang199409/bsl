@@ -102,17 +102,13 @@ public class BslSchedulerImpl implements BslSchedulerService{
          insertHistoryStockChangeInfo();
          
          //6.原材料进库报表
-         //insertRawInfoReport(yesDay);   
          insertRawInfoReportNew(yesDay);
          
          //7.产品进库报表
          insertProdReport(yesDay);
-
-         //6.成型机组生产日报表
-         //insertProdMakeInfoReport(yesDay);
          
-         //7.纵剪机组生产日报表
-         //insertHalfProdMakeInfoReport(yesDay);
+         //8.纵剪机组生产报表
+         insertSemiMakeReport(yesDay);
          
          //8.产成品销售报表
          //insertProdSaleInfoReport(yesDay);
@@ -282,127 +278,6 @@ public class BslSchedulerImpl implements BslSchedulerService{
     }
     
     /**
-     * 成型机组生产日报表
-     */
-    public void  insertProdMakeInfoReport(Date yesDate){
-    	DictItemOperation.log.info("===========生成成型机组生产日报表开始");
-        String dateString = DictItemOperation.日期转换实例yyyyMMdd.format(yesDate);
-    	int result = bslProductInfoMapper.insertProdMakeInfoReport(dateString);
-		if(result<0){
-		     throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
-		}
-		//如果是月底，则生成月报
-		if(DictItemOperation.isEndOfMonth(yesDate)){
-			//获取当月第一天和最后一天
-			QueryCriteria queryCriteria = new QueryCriteria();
-			Date dateFirst = DictItemOperation.getFirstOfMonth(yesDate);
-			String startDate = DictItemOperation.日期转换实例yyyyMMdd.format(dateFirst);
-			String endDate = dateString;
-			queryCriteria.setDataType(DictItemOperation.报表类型_月报);
-			queryCriteria.setStartDate(startDate);
-			queryCriteria.setEndDate(endDate);
-			int resultYB = bslProductInfoMapper.insertProdMakeInfoReportBT(queryCriteria);
-			if(resultYB<0){
-			     throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
-			}
-		}
-		//如果是6月底，则生成半年报
-		if(dateString.substring(4).equals("0630")){
-			String yearS = dateString.substring(0,3);
-			//获取当月第一天和最后一天
-			QueryCriteria queryCriteria = new QueryCriteria();
-			String startDate = yearS + "0101";
-			String endDate = dateString;
-			queryCriteria.setDataType(DictItemOperation.报表类型_半年报);
-			queryCriteria.setStartDate(startDate);
-			queryCriteria.setEndDate(endDate);
-			int resultYB = bslProductInfoMapper.insertProdMakeInfoReportBT(queryCriteria);
-			if(resultYB<0){
-			     throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
-			}
-		}
-		
-		//如果是12月底，则生成年报
-		if(dateString.substring(4).equals("1231")){
-			String yearS = dateString.substring(0,3);
-			//获取当月第一天和最后一天
-			QueryCriteria queryCriteria = new QueryCriteria();
-			String startDate = yearS + "0101";
-			String endDate = dateString;
-			queryCriteria.setDataType(DictItemOperation.报表类型_年报);
-			queryCriteria.setStartDate(startDate);
-			queryCriteria.setEndDate(endDate);
-			int resultYB = bslProductInfoMapper.insertProdMakeInfoReportBT(queryCriteria);
-			if(resultYB<0){
-			     throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
-			}
-		}
-		
-    	DictItemOperation.log.info("===========生成成型机组生产日报表结束");
-    }
-    
-    /**
-     * 纵剪机组生产日报表
-     */
-    public void  insertHalfProdMakeInfoReport(Date yesDate){
-    	DictItemOperation.log.info("===========生成纵剪机组生产日报表开始");
-    	String dateString = DictItemOperation.日期转换实例yyyyMMdd.format(yesDate);
-    	int result = bslProductInfoMapper.insertHalfProdMakeInfoReport(dateString);
-		if(result<0){
-		     throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
-		}
-		
-		//如果是月底，则生成月报
-		if(DictItemOperation.isEndOfMonth(yesDate)){
-			//获取当月第一天和最后一天
-			QueryCriteria queryCriteria = new QueryCriteria();
-			Date dateFirst = DictItemOperation.getFirstOfMonth(yesDate);
-			String startDate = DictItemOperation.日期转换实例yyyyMMdd.format(dateFirst);
-			String endDate = dateString;
-			queryCriteria.setDataType(DictItemOperation.报表类型_月报);
-			queryCriteria.setStartDate(startDate);
-			queryCriteria.setEndDate(endDate);
-			int resultYB = bslProductInfoMapper.insertHalfProdMakeInfoReportBT(queryCriteria);
-			if(resultYB<0){
-			     throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
-			}
-		}
-		//如果是6月底，则生成半年报
-		if(dateString.substring(4).equals("0630")){
-			String yearS = dateString.substring(0,3);
-			//获取当月第一天和最后一天
-			QueryCriteria queryCriteria = new QueryCriteria();
-			String startDate = yearS + "0101";
-			String endDate = dateString;
-			queryCriteria.setDataType(DictItemOperation.报表类型_半年报);
-			queryCriteria.setStartDate(startDate);
-			queryCriteria.setEndDate(endDate);
-			int resultYB = bslProductInfoMapper.insertHalfProdMakeInfoReportBT(queryCriteria);
-			if(resultYB<0){
-			     throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
-			}
-		}
-		
-		//如果是12月底，则生成年报
-		if(dateString.substring(4).equals("1231")){
-			String yearS = dateString.substring(0,3);
-			//获取当月第一天和最后一天
-			QueryCriteria queryCriteria = new QueryCriteria();
-			String startDate = yearS + "0101";
-			String endDate = dateString;
-			queryCriteria.setDataType(DictItemOperation.报表类型_年报);
-			queryCriteria.setStartDate(startDate);
-			queryCriteria.setEndDate(endDate);
-			int resultYB = bslProductInfoMapper.insertHalfProdMakeInfoReportBT(queryCriteria);
-			if(resultYB<0){
-			     throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
-			}
-		}
-				
-    	DictItemOperation.log.info("===========生成纵剪机组生产日报表结束");
-    }
-    
-    /**
      * 产成品销售报表
      */
     public void  insertProdSaleInfoReport(Date yesDate){
@@ -525,67 +400,6 @@ public class BslSchedulerImpl implements BslSchedulerService{
     }
     
     /**
-     * 原材料进库报表（弃用）
-     */
-    public void  insertRawInfoReport(Date yesDate){
-    	DictItemOperation.log.info("===========生成原材料进库报表开始");
-    	String dateString = DictItemOperation.日期转换实例yyyyMMdd.format(yesDate);
-    	int result = bslProductInfoMapper.insertRawInfoReport(dateString);
-		if(result<0){
-		     throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
-		}
-		
-		//如果是月底，则生成月报
-		if(DictItemOperation.isEndOfMonth(yesDate)){
-			//获取当月第一天和最后一天
-			QueryCriteria queryCriteria = new QueryCriteria();
-			Date dateFirst = DictItemOperation.getFirstOfMonth(yesDate);
-			String startDate = DictItemOperation.日期转换实例yyyyMMdd.format(dateFirst);
-			String endDate = dateString;
-			queryCriteria.setDataType(DictItemOperation.报表类型_月报);
-			queryCriteria.setStartDate(startDate);
-			queryCriteria.setEndDate(endDate);
-			int resultYB = bslProductInfoMapper.insertRawInfoReportBT(queryCriteria);
-			if(resultYB<0){
-			     throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
-			}
-		}
-		//如果是6月底，则生成半年报
-		if(dateString.substring(4).equals("0630")){
-			String yearS = dateString.substring(0,3);
-			//获取当月第一天和最后一天
-			QueryCriteria queryCriteria = new QueryCriteria();
-			String startDate = yearS + "0101";
-			String endDate = dateString;
-			queryCriteria.setDataType(DictItemOperation.报表类型_半年报);
-			queryCriteria.setStartDate(startDate);
-			queryCriteria.setEndDate(endDate);
-			int resultYB = bslProductInfoMapper.insertRawInfoReportBT(queryCriteria);
-			if(resultYB<0){
-			     throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
-			}
-		}
-		
-		//如果是12月底，则生成年报
-		if(dateString.substring(4).equals("1231")){
-			String yearS = dateString.substring(0,3);
-			//获取当月第一天和最后一天
-			QueryCriteria queryCriteria = new QueryCriteria();
-			String startDate = yearS + "0101";
-			String endDate = dateString;
-			queryCriteria.setDataType(DictItemOperation.报表类型_年报);
-			queryCriteria.setStartDate(startDate);
-			queryCriteria.setEndDate(endDate);
-			int resultYB = bslProductInfoMapper.insertRawInfoReportBT(queryCriteria);
-			if(resultYB<0){
-			     throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
-			}
-		}
-		
-    	DictItemOperation.log.info("===========生成原材料进库报表结束");
-    }
-    
-    /**
      * 原材料进库报表（新）
      */
     public void  insertRawInfoReportNew(Date yesDate){
@@ -611,6 +425,20 @@ public class BslSchedulerImpl implements BslSchedulerService{
 		}
 		
     	DictItemOperation.log.info("===========生成产成品库存报表结束");
+    }
+    
+    /**
+     * 纵剪机组生产报表20230830
+     */
+    public void  insertSemiMakeReport(Date yesDate){
+    	DictItemOperation.log.info("===========生成纵剪机组生产报表开始");
+    	String dateString = DictItemOperation.日期转换实例yyyyMMdd.format(yesDate);
+    	int result = bslProductInfoMapper.insertSemiMakeInfoReport(dateString);
+		if(result<0){
+		     throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
+		}
+		
+    	DictItemOperation.log.info("===========生成纵剪机组生产报表结束");
     }
     
     
