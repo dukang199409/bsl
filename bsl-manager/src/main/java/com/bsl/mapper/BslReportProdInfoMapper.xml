@@ -366,7 +366,7 @@
 		and t1.prod_material = t2.prod_material
 		and COALESCE(t1.prod_customer,'') = COALESCE(t2.prod_customer,'')
   </select>
-    <resultMap id="ProdReportInfoHJMap" type="com.bsl.reportbean.BslProdReportHJInfo" >
+  <resultMap id="ProdReportInfoHJMap" type="com.bsl.reportbean.BslProdReportHJInfo" >
     <result column="prod_ru_znum" property="prodRuZnum" jdbcType="REAL" />
     <result column="prod_ru_bnum" property="prodRuBnum" jdbcType="REAL" />
     <result column="prod_ru_weight" property="prodRuWeight" jdbcType="REAL" />

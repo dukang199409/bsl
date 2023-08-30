@@ -278,4 +278,117 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+  
+    <!-- 纵剪机组生产报表统计 -->
+  <select id="selectSemiReportInfoTJ" resultMap="BaseResultMap" parameterType="com.bsl.select.QueryCriteria">
+	  	select 
+			t1.prod_norm,
+			t1.prod_material,
+			t1.prod_bc,
+			t1.prod_make_jz,
+			t1.prod_ru_weight,
+			t1.prod_ru_num,
+			t1.prod_tou_weight,
+			t1.prod_tou_num,
+			concat(round(t1.prod_ru_weight/t1.prod_tou_weight*100,2),'%') ccrate,
+			t1.prod_out_weight,
+			t1.prod_out_num
+		from	
+		(select 
+			'' data_date,
+			t0.prod_norm,
+			t0.prod_material,
+			t0.prod_bc,
+			t0.prod_make_jz,
+			sum(t0.prod_ru_weight) prod_ru_weight,
+			sum(t0.prod_ru_num) prod_ru_num,
+			sum(t0.prod_tou_weight) prod_tou_weight,
+			sum(t0.prod_tou_num) prod_tou_num,
+			sum(t0.prod_out_weight) prod_out_weight,
+			sum(t0.prod_out_num) prod_out_num
+		from bsl_report_semi_info t0
+		where t0.data_date between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+			<if test="prodNorm != null" >
+				and t0.prod_norm like #{prodNorm,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodMaterial != null" >
+				and t0.prod_material = #{prodMaterial,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodBc != null" >
+				and t0.prod_bc like #{prodBc,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodMakeJz != null" >
+				and t0.prod_make_jz like #{prodMakeJz,jdbcType=VARCHAR} 
+			</if>
+		group by 
+			t0.prod_norm,
+			t0.prod_material,
+			t0.prod_bc,
+			t0.prod_make_jz) t1
+  </select>
+  
+  <resultMap id="SemiReportInfoHJMap" type="com.bsl.reportbean.BslSemiReportHJInfo" >
+    <result column="prod_ru_num" property="prodRuNum" jdbcType="REAL" />
+    <result column="prod_ru_weight" property="prodRuWeight" jdbcType="REAL" />
+    <result column="prod_tou_num" property="prodTouNum" jdbcType="REAL" />
+    <result column="prod_tou_weight" property="prodTouWeight" jdbcType="REAL" />
+    <result column="ccrate" property="ccrate" jdbcType="VARCHAR" />
+    <result column="prod_out_num" property="prodOutNum" jdbcType="REAL" />
+    <result column="prod_out_weight" property="prodOutWeight" jdbcType="REAL" />
+  </resultMap>
+   <!-- 纵剪机组生产报表合计 -->
+  <select id="selectSemiReportInfoHJ" resultMap="SemiReportInfoHJMap" parameterType="com.bsl.select.QueryCriteria">
+	  	select 
+			t1.prod_ru_weight,
+			t1.prod_ru_num,
+			t1.prod_tou_weight,
+			t1.prod_tou_num,
+			concat(round(t1.prod_ru_weight/t1.prod_tou_weight*100,2),'%') ccrate,
+			t1.prod_out_weight,
+			t1.prod_out_num
+		from	
+		(select 
+			sum(t0.prod_ru_weight) prod_ru_weight,
+			sum(t0.prod_ru_num) prod_ru_num,
+			sum(t0.prod_tou_weight) prod_tou_weight,
+			sum(t0.prod_tou_num) prod_tou_num,
+			sum(t0.prod_out_weight) prod_out_weight,
+			sum(t0.prod_out_num) prod_out_num
+		from bsl_report_semi_info t0
+		where t0.data_date between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+			<if test="prodNorm != null" >
+				and t0.prod_norm like #{prodNorm,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodMaterial != null" >
+				and t0.prod_material = #{prodMaterial,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodBc != null" >
+				and t0.prod_bc like #{prodBc,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodMakeJz != null" >
+				and t0.prod_make_jz like #{prodMakeJz,jdbcType=VARCHAR} 
+			</if> ) t1
+  </select>
+   <!-- 规格数量统计 -->
+  <select id="countNormSemiReportInfoHJ" resultType="java.lang.Integer" parameterType="com.bsl.select.QueryCriteria">
+	  	select count(1) from 
+	  	(select 
+	  		distinct t0.prod_norm,t0.prod_material
+		from bsl_report_semi_info t0
+		where t0.data_date between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+			<if test="prodNorm != null" >
+				and t0.prod_norm like #{prodNorm,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodMaterial != null" >
+				and t0.prod_material = #{prodMaterial,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodBc != null" >
+				and t0.prod_bc like #{prodBc,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodMakeJz != null" >
+				and t0.prod_make_jz like #{prodMakeJz,jdbcType=VARCHAR} 
+			</if> 
+		 ) t
+  </select>
+  
 </mapper>

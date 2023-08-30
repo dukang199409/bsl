@@ -375,8 +375,6 @@ var TT = BSL = {
         	return '480生产2班';
         } else if(val == '6'){
         	return '外协厂';
-        } else if(val == '7'){
-        	return '纵剪班次补录';
         } else {
         	return val;
         }

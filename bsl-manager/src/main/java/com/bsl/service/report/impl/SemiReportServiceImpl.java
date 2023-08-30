@@ -1,16 +1,20 @@
 package com.bsl.service.report.impl;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.bsl.common.pojo.BSLException;
 import com.bsl.common.utils.BSLResult;
 import com.bsl.mapper.BslReportSemiInfoMapper;
 import com.bsl.pojo.BslReportSemiInfo;
 import com.bsl.pojo.BslReportSemiInfoExample;
+import com.bsl.reportbean.BslSemiReportHJInfo;
 import com.bsl.select.DictItemOperation;
+import com.bsl.select.ErrorCodeInfo;
 import com.bsl.select.QueryCriteria;
 import com.bsl.service.report.SemiReportService;
 import com.github.pagehelper.PageHelper;
@@ -83,13 +87,77 @@ public class SemiReportServiceImpl implements SemiReportService {
 	//根据条件查询纵剪机组生产报表统计
 	@Override
 	public BSLResult getM7107sReport(QueryCriteria queryCriteria) {
-		return null;
+		if(StringUtils.isBlank(queryCriteria.getProdMaterial())){
+			queryCriteria.setProdMaterial(null);
+		}
+		if(StringUtils.isBlank(queryCriteria.getProdNorm())){
+			queryCriteria.setProdNorm(null);
+		}else{
+			queryCriteria.setProdNorm("%"+queryCriteria.getProdNorm()+"%");
+		}
+		if(StringUtils.isBlank(queryCriteria.getProdBc())){
+			queryCriteria.setProdBc(null);
+		}
+		if(StringUtils.isBlank(queryCriteria.getProdMakeJz())){
+			queryCriteria.setProdMakeJz(null);
+		}
+		if(StringUtils.isBlank(queryCriteria.getStartDate())){
+			throw new BSLException(ErrorCodeInfo.错误类型_查询无记录,"开始日期不能为空");
+		}
+		if(StringUtils.isBlank(queryCriteria.getEndDate())){
+			throw new BSLException(ErrorCodeInfo.错误类型_查询无记录,"结束日期不能为空");
+		}
+		String startDateS = queryCriteria.getStartDate().replace("-", "");
+		String endDateS = queryCriteria.getEndDate().replace("-", "");
+		queryCriteria.setStartDate(startDateS);
+		queryCriteria.setEndDate(endDateS);
+		String dateNow = DictItemOperation.日期转换实例yyyyMMdd.format(new Date());
+		if(Integer.parseInt(endDateS) >= Integer.parseInt(dateNow)){
+			throw new BSLException(ErrorCodeInfo.错误类型_查询无记录,"结束日期不能大于前一日");
+		}
+		//分页处理
+		PageHelper.startPage(Integer.parseInt(queryCriteria.getPage()), Integer.parseInt(queryCriteria.getRows()));
+		
+		List<BslReportSemiInfo> bslReportSemiInfos = bslReportSemiInfoMapper.selectSemiReportInfoTJ(queryCriteria);
+		PageInfo<BslReportSemiInfo> pageInfo = new PageInfo<BslReportSemiInfo>(bslReportSemiInfos);
+		return BSLResult.ok(bslReportSemiInfos,"semiReportServiceImpl","getM7107sReport",pageInfo.getTotal(),bslReportSemiInfos);
 	}
 	
 	//根据条件查询纵剪机组生产报表合计
 	@Override
 	public BSLResult getM7107sHJReport(QueryCriteria queryCriteria) {
-		return null;
+		if(StringUtils.isBlank(queryCriteria.getProdMaterial())){
+			queryCriteria.setProdMaterial(null);
+		}
+		if(StringUtils.isBlank(queryCriteria.getProdNorm())){
+			queryCriteria.setProdNorm(null);
+		}else{
+			queryCriteria.setProdNorm("%"+queryCriteria.getProdNorm()+"%");
+		}
+		if(StringUtils.isBlank(queryCriteria.getProdBc())){
+			queryCriteria.setProdBc(null);
+		}
+		if(StringUtils.isBlank(queryCriteria.getProdMakeJz())){
+			queryCriteria.setProdMakeJz(null);
+		}
+		
+		String startDateS = queryCriteria.getStartDate().replace("-", "");
+		String endDateS = queryCriteria.getEndDate().replace("-", "");
+		queryCriteria.setStartDate(startDateS);
+		queryCriteria.setEndDate(endDateS);
+		
+		List<BslSemiReportHJInfo> bslSemiReportHJInfos = bslReportSemiInfoMapper.selectSemiReportInfoHJ(queryCriteria);
+		int prodNormHJ = bslReportSemiInfoMapper.countNormSemiReportInfoHJ(queryCriteria);
+		
+		List<BslSemiReportHJInfo> resInfos = new ArrayList<>();
+		BslSemiReportHJInfo bslSemiReportHJInfo = new BslSemiReportHJInfo();
+		if(bslSemiReportHJInfos!=null && bslSemiReportHJInfos.size()>0 && bslSemiReportHJInfos.get(0) != null){
+			bslSemiReportHJInfo = bslSemiReportHJInfos.get(0);
+		}
+		bslSemiReportHJInfo.setProdHJ("合计");
+		bslSemiReportHJInfo.setProdNormHJ(prodNormHJ);
+		resInfos.add(bslSemiReportHJInfo);
+		return BSLResult.ok(resInfos);
 	}
 
 }
