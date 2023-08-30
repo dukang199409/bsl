@@ -1623,7 +1623,7 @@
 		and COALESCE(t0.prod_customer,'') = COALESCE(t3.prod_customer,'')
    </insert>
    
-    <!-- 产成品库存报 -->
+    <!-- 产成品库存报表 -->
    <insert id="insertProdInfoReport" parameterType="java.lang.String">
    		insert into bsl_report_prod_info
 		select 
