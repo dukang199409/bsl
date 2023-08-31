@@ -279,7 +279,7 @@
     </if>
   </update>
   
-    <!-- 纵剪机组生产报表统计 -->
+<!-- 纵剪机组生产报表统计 -->
   <select id="selectSemiReportInfoTJ" resultMap="BaseResultMap" parameterType="com.bsl.select.QueryCriteria">
 	  	select 
 			t1.prod_norm,
@@ -315,10 +315,10 @@
 				and t0.prod_material = #{prodMaterial,jdbcType=VARCHAR} 
 			</if>
 			<if test="prodBc != null" >
-				and t0.prod_bc like #{prodBc,jdbcType=VARCHAR} 
+				and t0.prod_bc = #{prodBc,jdbcType=VARCHAR} 
 			</if>
 			<if test="prodMakeJz != null" >
-				and t0.prod_make_jz like #{prodMakeJz,jdbcType=VARCHAR} 
+				and t0.prod_make_jz = #{prodMakeJz,jdbcType=VARCHAR} 
 			</if>
 		group by 
 			t0.prod_norm,
@@ -363,10 +363,10 @@
 				and t0.prod_material = #{prodMaterial,jdbcType=VARCHAR} 
 			</if>
 			<if test="prodBc != null" >
-				and t0.prod_bc like #{prodBc,jdbcType=VARCHAR} 
+				and t0.prod_bc = #{prodBc,jdbcType=VARCHAR} 
 			</if>
 			<if test="prodMakeJz != null" >
-				and t0.prod_make_jz like #{prodMakeJz,jdbcType=VARCHAR} 
+				and t0.prod_make_jz = #{prodMakeJz,jdbcType=VARCHAR} 
 			</if> ) t1
   </select>
    <!-- 规格数量统计 -->
@@ -383,10 +383,10 @@
 				and t0.prod_material = #{prodMaterial,jdbcType=VARCHAR} 
 			</if>
 			<if test="prodBc != null" >
-				and t0.prod_bc like #{prodBc,jdbcType=VARCHAR} 
+				and t0.prod_bc = #{prodBc,jdbcType=VARCHAR} 
 			</if>
 			<if test="prodMakeJz != null" >
-				and t0.prod_make_jz like #{prodMakeJz,jdbcType=VARCHAR} 
+				and t0.prod_make_jz = #{prodMakeJz,jdbcType=VARCHAR} 
 			</if> 
 		 ) t
   </select>

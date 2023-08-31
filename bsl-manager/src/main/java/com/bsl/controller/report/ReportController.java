@@ -10,6 +10,7 @@ import com.bsl.common.utils.BSLResult;
 import com.bsl.select.DictItemOperation;
 import com.bsl.select.ErrorCodeInfo;
 import com.bsl.select.QueryCriteria;
+import com.bsl.service.report.ProdMakeReportService;
 import com.bsl.service.report.ProdReportService;
 import com.bsl.service.report.RawReportService;
 import com.bsl.service.report.ReportService;
@@ -35,26 +36,10 @@ public class ReportController {
 	@Autowired
 	private SemiReportService semiReportService;
 	
-	/**
-	 * 成型机组生产报表
-	 * @param 
-	 * @param 
-	 * @return
-	 */
-	@RequestMapping("/listByCriteriaM7101")
-	@ResponseBody
-	public BSLResult getM7101Report(QueryCriteria queryCriteria){
-		BSLResult result = null;
-		if(StringUtils.isBlank(queryCriteria.getPage())) {
-			result =  BSLResult.build(400, "页码不能为空");
-		}else if(StringUtils.isBlank(queryCriteria.getRows())) {
-			result =  BSLResult.build(400, "每页记录数不能为空");
-		}else{
-			result = reportService.getM7101Report(queryCriteria);
-		}
-		return result;
-	}
+	@Autowired
+	private ProdMakeReportService prodMakeReportService;
 	
+
 	/**
 	 * 产成品销售报表
 	 * @param 
@@ -228,6 +213,76 @@ public class ReportController {
 		}else{
 			try {
 				return prodReportService.getM7106sHJReport(queryCriteria);
+			} catch (Exception e) {
+				DictItemOperation.log.info("===========异常:"+e.getMessage());
+				return BSLResult.build(ErrorCodeInfo.错误类型_交易异常,e.getMessage());
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * 成型机组生产报表-日报
+	 * @param 
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping("/listM7108")
+	@ResponseBody
+	public BSLResult getM7108Report(QueryCriteria queryCriteria){
+		BSLResult result = null;
+		if(StringUtils.isBlank(queryCriteria.getPage())) {
+			result =  BSLResult.build(400, "页码不能为空");
+		}else if(StringUtils.isBlank(queryCriteria.getRows())) {
+			result =  BSLResult.build(400, "每页记录数不能为空");
+		}else{
+			result = prodMakeReportService.getM7108Report(queryCriteria);
+		}
+		return result;
+	}
+	
+	/**
+	 * 成型机组生产报表统计
+	 * @param 
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping("/listM7108s")
+	@ResponseBody
+	public BSLResult getM7108sReport(QueryCriteria queryCriteria){
+		BSLResult result = null;
+		if(StringUtils.isBlank(queryCriteria.getPage())) {
+			result =  BSLResult.build(400, "页码不能为空");
+		}else if(StringUtils.isBlank(queryCriteria.getRows())) {
+			result =  BSLResult.build(400, "每页记录数不能为空");
+		}else{
+			try {
+				return prodMakeReportService.getM7108sReport(queryCriteria);
+			} catch (Exception e) {
+				DictItemOperation.log.info("===========异常:"+e.getMessage());
+				return BSLResult.build(ErrorCodeInfo.错误类型_交易异常,e.getMessage());
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * 成型机组生产报表合计
+	 * @param 
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping("/listM7108sHJ")
+	@ResponseBody
+	public BSLResult getM7108sHJReport(QueryCriteria queryCriteria){
+		BSLResult result = null;
+		if(StringUtils.isBlank(queryCriteria.getPage())) {
+			result =  BSLResult.build(400, "页码不能为空");
+		}else if(StringUtils.isBlank(queryCriteria.getRows())) {
+			result =  BSLResult.build(400, "每页记录数不能为空");
+		}else{
+			try {
+				return prodMakeReportService.getM7108sHJReport(queryCriteria);
 			} catch (Exception e) {
 				DictItemOperation.log.info("===========异常:"+e.getMessage());
 				return BSLResult.build(ErrorCodeInfo.错误类型_交易异常,e.getMessage());

@@ -1,45 +1,41 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.bsl.mapper.BslReportProdMakeInfoMapper" >
-  <resultMap id="BaseResultMap" type="com.bsl.pojo.BslReportProdMakeInfo" >
-    <result column="data_date" property="dataDate" jdbcType="VARCHAR" />
-    <result column="data_type" property="dataType" jdbcType="CHAR" />
-    <result column="prod_type" property="prodType" jdbcType="CHAR" />
-    <result column="prod_jz" property="prodJz" jdbcType="CHAR" />
-    <result column="prod_plan_no" property="prodPlanNo" jdbcType="VARCHAR" />
-    <result column="prod_norm" property="prodNorm" jdbcType="VARCHAR" />
-    <result column="prod_material" property="prodMaterial" jdbcType="CHAR" />
-    <result column="prod_bs" property="prodBs" jdbcType="REAL" />
-    <result column="prod_zs" property="prodZs" jdbcType="REAL" />
-    <result column="prod_weight" property="prodWeight" jdbcType="REAL" />
-    <result column="prod_use_norm" property="prodUseNorm" jdbcType="VARCHAR" />
-    <result column="prod_use_num" property="prodUseNum" jdbcType="REAL" />
-    <result column="prod_use_weight" property="prodUseWeight" jdbcType="REAL" />
-    <result column="prod_dcl_weight" property="prodDclWeight" jdbcType="REAL" />
-    <result column="prod_fl_weight" property="prodFlWeight" jdbcType="REAL" />
-    <result column="prod_ccl" property="prodCcl" jdbcType="REAL" />
-    <result column="remark" property="remark" jdbcType="VARCHAR" />
-    <result column="crt_date" property="crtDate" jdbcType="DATE" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bsl.mapper.BslReportProdMakeInfoMapper">
+  <resultMap id="BaseResultMap" type="com.bsl.pojo.BslReportProdMakeInfo">
+    <result column="data_date" jdbcType="VARCHAR" property="dataDate" />
+    <result column="prod_make_jz" jdbcType="VARCHAR" property="prodMakeJz" />
+    <result column="prod_bc" jdbcType="VARCHAR" property="prodBc" />
+    <result column="prod_length" jdbcType="REAL" property="prodLength" />
+    <result column="prod_norm" jdbcType="VARCHAR" property="prodNorm" />
+    <result column="prod_material" jdbcType="CHAR" property="prodMaterial" />
+    <result column="prod_ru_znum" jdbcType="REAL" property="prodRuZnum" />
+    <result column="prod_ru_bnum" jdbcType="REAL" property="prodRuBnum" />
+    <result column="prod_ru_weight" jdbcType="REAL" property="prodRuWeight" />
+    <result column="prod_tou_num" jdbcType="REAL" property="prodTouNum" />
+    <result column="prod_tou_weight" jdbcType="REAL" property="prodTouWeight" />
+    <result column="ccrate" jdbcType="VARCHAR" property="ccrate" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="crt_date" jdbcType="DATE" property="crtDate" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -50,25 +46,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -79,250 +75,328 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
-    data_date, data_type, prod_type, prod_jz, prod_plan_no, prod_norm, prod_material, 
-    prod_bs, prod_zs, prod_weight, prod_use_norm, prod_use_num, prod_use_weight, prod_dcl_weight, 
-    prod_fl_weight, prod_ccl, remark, crt_date
+  <sql id="Base_Column_List">
+    data_date, prod_make_jz, prod_bc, prod_length, prod_norm, prod_material, prod_ru_znum, 
+    prod_ru_bnum, prod_ru_weight, prod_tou_num, prod_tou_weight, ccrate, remark, crt_date
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bsl.pojo.BslReportProdMakeInfoExample" >
+  <select id="selectByExample" parameterType="com.bsl.pojo.BslReportProdMakeInfoExample" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from bsl_report_prod_make_info
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <delete id="deleteByExample" parameterType="com.bsl.pojo.BslReportProdMakeInfoExample" >
+  <delete id="deleteByExample" parameterType="com.bsl.pojo.BslReportProdMakeInfoExample">
     delete from bsl_report_prod_make_info
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.bsl.pojo.BslReportProdMakeInfo" >
-    insert into bsl_report_prod_make_info (data_date, data_type, prod_type, 
-      prod_jz, prod_plan_no, prod_norm, 
-      prod_material, prod_bs, prod_zs, 
-      prod_weight, prod_use_norm, prod_use_num, 
-      prod_use_weight, prod_dcl_weight, prod_fl_weight, 
-      prod_ccl, remark, crt_date)
-    values (#{dataDate,jdbcType=VARCHAR}, #{dataType,jdbcType=CHAR}, #{prodType,jdbcType=CHAR}, 
-      #{prodJz,jdbcType=CHAR}, #{prodPlanNo,jdbcType=VARCHAR}, #{prodNorm,jdbcType=VARCHAR}, 
-      #{prodMaterial,jdbcType=CHAR}, #{prodBs,jdbcType=REAL}, #{prodZs,jdbcType=REAL}, 
-      #{prodWeight,jdbcType=REAL}, #{prodUseNorm,jdbcType=VARCHAR}, #{prodUseNum,jdbcType=REAL}, 
-      #{prodUseWeight,jdbcType=REAL}, #{prodDclWeight,jdbcType=REAL}, #{prodFlWeight,jdbcType=REAL}, 
-      #{prodCcl,jdbcType=REAL}, #{remark,jdbcType=VARCHAR}, #{crtDate,jdbcType=DATE})
+  <insert id="insert" parameterType="com.bsl.pojo.BslReportProdMakeInfo">
+    insert into bsl_report_prod_make_info (data_date, prod_make_jz, prod_bc, 
+      prod_length, prod_norm, prod_material, 
+      prod_ru_znum, prod_ru_bnum, prod_ru_weight, 
+      prod_tou_num, prod_tou_weight, ccrate, 
+      remark, crt_date)
+    values (#{dataDate,jdbcType=VARCHAR}, #{prodMakeJz,jdbcType=VARCHAR}, #{prodBc,jdbcType=VARCHAR}, 
+      #{prodLength,jdbcType=REAL}, #{prodNorm,jdbcType=VARCHAR}, #{prodMaterial,jdbcType=CHAR}, 
+      #{prodRuZnum,jdbcType=REAL}, #{prodRuBnum,jdbcType=REAL}, #{prodRuWeight,jdbcType=REAL}, 
+      #{prodTouNum,jdbcType=REAL}, #{prodTouWeight,jdbcType=REAL}, #{ccrate,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{crtDate,jdbcType=DATE})
   </insert>
-  <insert id="insertSelective" parameterType="com.bsl.pojo.BslReportProdMakeInfo" >
+  <insert id="insertSelective" parameterType="com.bsl.pojo.BslReportProdMakeInfo">
     insert into bsl_report_prod_make_info
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="dataDate != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dataDate != null">
         data_date,
       </if>
-      <if test="dataType != null" >
-        data_type,
+      <if test="prodMakeJz != null">
+        prod_make_jz,
       </if>
-      <if test="prodType != null" >
-        prod_type,
+      <if test="prodBc != null">
+        prod_bc,
       </if>
-      <if test="prodJz != null" >
-        prod_jz,
+      <if test="prodLength != null">
+        prod_length,
       </if>
-      <if test="prodPlanNo != null" >
-        prod_plan_no,
-      </if>
-      <if test="prodNorm != null" >
+      <if test="prodNorm != null">
         prod_norm,
       </if>
-      <if test="prodMaterial != null" >
+      <if test="prodMaterial != null">
         prod_material,
       </if>
-      <if test="prodBs != null" >
-        prod_bs,
+      <if test="prodRuZnum != null">
+        prod_ru_znum,
       </if>
-      <if test="prodZs != null" >
-        prod_zs,
+      <if test="prodRuBnum != null">
+        prod_ru_bnum,
       </if>
-      <if test="prodWeight != null" >
-        prod_weight,
+      <if test="prodRuWeight != null">
+        prod_ru_weight,
       </if>
-      <if test="prodUseNorm != null" >
-        prod_use_norm,
+      <if test="prodTouNum != null">
+        prod_tou_num,
       </if>
-      <if test="prodUseNum != null" >
-        prod_use_num,
+      <if test="prodTouWeight != null">
+        prod_tou_weight,
       </if>
-      <if test="prodUseWeight != null" >
-        prod_use_weight,
+      <if test="ccrate != null">
+        ccrate,
       </if>
-      <if test="prodDclWeight != null" >
-        prod_dcl_weight,
-      </if>
-      <if test="prodFlWeight != null" >
-        prod_fl_weight,
-      </if>
-      <if test="prodCcl != null" >
-        prod_ccl,
-      </if>
-      <if test="remark != null" >
+      <if test="remark != null">
         remark,
       </if>
-      <if test="crtDate != null" >
+      <if test="crtDate != null">
         crt_date,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="dataDate != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dataDate != null">
         #{dataDate,jdbcType=VARCHAR},
       </if>
-      <if test="dataType != null" >
-        #{dataType,jdbcType=CHAR},
+      <if test="prodMakeJz != null">
+        #{prodMakeJz,jdbcType=VARCHAR},
       </if>
-      <if test="prodType != null" >
-        #{prodType,jdbcType=CHAR},
+      <if test="prodBc != null">
+        #{prodBc,jdbcType=VARCHAR},
       </if>
-      <if test="prodJz != null" >
-        #{prodJz,jdbcType=CHAR},
+      <if test="prodLength != null">
+        #{prodLength,jdbcType=REAL},
       </if>
-      <if test="prodPlanNo != null" >
-        #{prodPlanNo,jdbcType=VARCHAR},
-      </if>
-      <if test="prodNorm != null" >
+      <if test="prodNorm != null">
         #{prodNorm,jdbcType=VARCHAR},
       </if>
-      <if test="prodMaterial != null" >
+      <if test="prodMaterial != null">
         #{prodMaterial,jdbcType=CHAR},
       </if>
-      <if test="prodBs != null" >
-        #{prodBs,jdbcType=REAL},
+      <if test="prodRuZnum != null">
+        #{prodRuZnum,jdbcType=REAL},
       </if>
-      <if test="prodZs != null" >
-        #{prodZs,jdbcType=REAL},
+      <if test="prodRuBnum != null">
+        #{prodRuBnum,jdbcType=REAL},
       </if>
-      <if test="prodWeight != null" >
-        #{prodWeight,jdbcType=REAL},
+      <if test="prodRuWeight != null">
+        #{prodRuWeight,jdbcType=REAL},
       </if>
-      <if test="prodUseNorm != null" >
-        #{prodUseNorm,jdbcType=VARCHAR},
+      <if test="prodTouNum != null">
+        #{prodTouNum,jdbcType=REAL},
       </if>
-      <if test="prodUseNum != null" >
-        #{prodUseNum,jdbcType=REAL},
+      <if test="prodTouWeight != null">
+        #{prodTouWeight,jdbcType=REAL},
       </if>
-      <if test="prodUseWeight != null" >
-        #{prodUseWeight,jdbcType=REAL},
+      <if test="ccrate != null">
+        #{ccrate,jdbcType=VARCHAR},
       </if>
-      <if test="prodDclWeight != null" >
-        #{prodDclWeight,jdbcType=REAL},
-      </if>
-      <if test="prodFlWeight != null" >
-        #{prodFlWeight,jdbcType=REAL},
-      </if>
-      <if test="prodCcl != null" >
-        #{prodCcl,jdbcType=REAL},
-      </if>
-      <if test="remark != null" >
+      <if test="remark != null">
         #{remark,jdbcType=VARCHAR},
       </if>
-      <if test="crtDate != null" >
+      <if test="crtDate != null">
         #{crtDate,jdbcType=DATE},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.bsl.pojo.BslReportProdMakeInfoExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.bsl.pojo.BslReportProdMakeInfoExample" resultType="java.lang.Long">
     select count(*) from bsl_report_prod_make_info
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update bsl_report_prod_make_info
-    <set >
-      <if test="record.dataDate != null" >
-        data_date = #{record.dataDate,jdbcType=VARCHAR},
+    <set>
+      <if test="row.dataDate != null">
+        data_date = #{row.dataDate,jdbcType=VARCHAR},
       </if>
-      <if test="record.dataType != null" >
-        data_type = #{record.dataType,jdbcType=CHAR},
+      <if test="row.prodMakeJz != null">
+        prod_make_jz = #{row.prodMakeJz,jdbcType=VARCHAR},
       </if>
-      <if test="record.prodType != null" >
-        prod_type = #{record.prodType,jdbcType=CHAR},
+      <if test="row.prodBc != null">
+        prod_bc = #{row.prodBc,jdbcType=VARCHAR},
       </if>
-      <if test="record.prodJz != null" >
-        prod_jz = #{record.prodJz,jdbcType=CHAR},
+      <if test="row.prodLength != null">
+        prod_length = #{row.prodLength,jdbcType=REAL},
       </if>
-      <if test="record.prodPlanNo != null" >
-        prod_plan_no = #{record.prodPlanNo,jdbcType=VARCHAR},
+      <if test="row.prodNorm != null">
+        prod_norm = #{row.prodNorm,jdbcType=VARCHAR},
       </if>
-      <if test="record.prodNorm != null" >
-        prod_norm = #{record.prodNorm,jdbcType=VARCHAR},
+      <if test="row.prodMaterial != null">
+        prod_material = #{row.prodMaterial,jdbcType=CHAR},
       </if>
-      <if test="record.prodMaterial != null" >
-        prod_material = #{record.prodMaterial,jdbcType=CHAR},
+      <if test="row.prodRuZnum != null">
+        prod_ru_znum = #{row.prodRuZnum,jdbcType=REAL},
       </if>
-      <if test="record.prodBs != null" >
-        prod_bs = #{record.prodBs,jdbcType=REAL},
+      <if test="row.prodRuBnum != null">
+        prod_ru_bnum = #{row.prodRuBnum,jdbcType=REAL},
       </if>
-      <if test="record.prodZs != null" >
-        prod_zs = #{record.prodZs,jdbcType=REAL},
+      <if test="row.prodRuWeight != null">
+        prod_ru_weight = #{row.prodRuWeight,jdbcType=REAL},
       </if>
-      <if test="record.prodWeight != null" >
-        prod_weight = #{record.prodWeight,jdbcType=REAL},
+      <if test="row.prodTouNum != null">
+        prod_tou_num = #{row.prodTouNum,jdbcType=REAL},
       </if>
-      <if test="record.prodUseNorm != null" >
-        prod_use_norm = #{record.prodUseNorm,jdbcType=VARCHAR},
+      <if test="row.prodTouWeight != null">
+        prod_tou_weight = #{row.prodTouWeight,jdbcType=REAL},
       </if>
-      <if test="record.prodUseNum != null" >
-        prod_use_num = #{record.prodUseNum,jdbcType=REAL},
+      <if test="row.ccrate != null">
+        ccrate = #{row.ccrate,jdbcType=VARCHAR},
       </if>
-      <if test="record.prodUseWeight != null" >
-        prod_use_weight = #{record.prodUseWeight,jdbcType=REAL},
+      <if test="row.remark != null">
+        remark = #{row.remark,jdbcType=VARCHAR},
       </if>
-      <if test="record.prodDclWeight != null" >
-        prod_dcl_weight = #{record.prodDclWeight,jdbcType=REAL},
-      </if>
-      <if test="record.prodFlWeight != null" >
-        prod_fl_weight = #{record.prodFlWeight,jdbcType=REAL},
-      </if>
-      <if test="record.prodCcl != null" >
-        prod_ccl = #{record.prodCcl,jdbcType=REAL},
-      </if>
-      <if test="record.remark != null" >
-        remark = #{record.remark,jdbcType=VARCHAR},
-      </if>
-      <if test="record.crtDate != null" >
-        crt_date = #{record.crtDate,jdbcType=DATE},
+      <if test="row.crtDate != null">
+        crt_date = #{row.crtDate,jdbcType=DATE},
       </if>
     </set>
-    <if test="_parameter != null" >
+    <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExample" parameterType="map">
     update bsl_report_prod_make_info
-    set data_date = #{record.dataDate,jdbcType=VARCHAR},
-      data_type = #{record.dataType,jdbcType=CHAR},
-      prod_type = #{record.prodType,jdbcType=CHAR},
-      prod_jz = #{record.prodJz,jdbcType=CHAR},
-      prod_plan_no = #{record.prodPlanNo,jdbcType=VARCHAR},
-      prod_norm = #{record.prodNorm,jdbcType=VARCHAR},
-      prod_material = #{record.prodMaterial,jdbcType=CHAR},
-      prod_bs = #{record.prodBs,jdbcType=REAL},
-      prod_zs = #{record.prodZs,jdbcType=REAL},
-      prod_weight = #{record.prodWeight,jdbcType=REAL},
-      prod_use_norm = #{record.prodUseNorm,jdbcType=VARCHAR},
-      prod_use_num = #{record.prodUseNum,jdbcType=REAL},
-      prod_use_weight = #{record.prodUseWeight,jdbcType=REAL},
-      prod_dcl_weight = #{record.prodDclWeight,jdbcType=REAL},
-      prod_fl_weight = #{record.prodFlWeight,jdbcType=REAL},
-      prod_ccl = #{record.prodCcl,jdbcType=REAL},
-      remark = #{record.remark,jdbcType=VARCHAR},
-      crt_date = #{record.crtDate,jdbcType=DATE}
-    <if test="_parameter != null" >
+    set data_date = #{row.dataDate,jdbcType=VARCHAR},
+      prod_make_jz = #{row.prodMakeJz,jdbcType=VARCHAR},
+      prod_bc = #{row.prodBc,jdbcType=VARCHAR},
+      prod_length = #{row.prodLength,jdbcType=REAL},
+      prod_norm = #{row.prodNorm,jdbcType=VARCHAR},
+      prod_material = #{row.prodMaterial,jdbcType=CHAR},
+      prod_ru_znum = #{row.prodRuZnum,jdbcType=REAL},
+      prod_ru_bnum = #{row.prodRuBnum,jdbcType=REAL},
+      prod_ru_weight = #{row.prodRuWeight,jdbcType=REAL},
+      prod_tou_num = #{row.prodTouNum,jdbcType=REAL},
+      prod_tou_weight = #{row.prodTouWeight,jdbcType=REAL},
+      ccrate = #{row.ccrate,jdbcType=VARCHAR},
+      remark = #{row.remark,jdbcType=VARCHAR},
+      crt_date = #{row.crtDate,jdbcType=DATE}
+    <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+  
+  <!-- 成型机组生产报表统计 -->
+  <select id="selectProdMakeReportInfoTJ" resultMap="BaseResultMap" parameterType="com.bsl.select.QueryCriteria">
+	  	select 
+			t1.prod_norm,
+			t1.prod_material,
+			t1.prod_bc,
+			t1.prod_make_jz,
+			t1.prod_length,
+			t1.prod_ru_weight,
+			t1.prod_ru_znum,
+			t1.prod_ru_bnum,
+			t1.prod_tou_weight,
+			t1.prod_tou_num,
+			concat(round(t1.prod_ru_weight/t1.prod_tou_weight*100,2),'%') ccrate
+		from	
+		(select 
+			'' data_date,
+			t0.prod_norm,
+			t0.prod_material,
+			t0.prod_bc,
+			t0.prod_make_jz,
+			t0.prod_length,
+			sum(t0.prod_ru_weight) prod_ru_weight,
+			sum(t0.prod_ru_znum) prod_ru_znum,
+			sum(t0.prod_ru_bnum) prod_ru_bnum,
+			sum(t0.prod_tou_weight) prod_tou_weight,
+			sum(t0.prod_tou_num) prod_tou_num
+		from bsl_report_prod_make_info t0
+		where t0.data_date between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+			<if test="prodNorm != null" >
+				and t0.prod_norm like #{prodNorm,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodMaterial != null" >
+				and t0.prod_material = #{prodMaterial,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodBc != null" >
+				and t0.prod_bc = #{prodBc,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodMakeJz != null" >
+				and t0.prod_make_jz = #{prodMakeJz,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodLength != null" >
+				and t0.prod_length = convert(#{prodLength,jdbcType=VARCHAR},DECIMAL(10,3))
+			</if>
+		group by 
+			t0.prod_norm,
+			t0.prod_material,
+			t0.prod_bc,
+			t0.prod_make_jz,
+			t0.prod_length) t1
+
+  </select>
+  
+  <resultMap id="ProdMakeReportInfoHJMap" type="com.bsl.reportbean.BslProdMakeReportHJInfo" >
+    <result column="prod_ru_znum" property="prodRuZnum" jdbcType="REAL" />
+    <result column="prod_ru_bnum" property="prodRuBnum" jdbcType="REAL" />
+    <result column="prod_ru_weight" property="prodRuWeight" jdbcType="REAL" />
+    <result column="prod_tou_num" property="prodTouNum" jdbcType="REAL" />
+    <result column="prod_tou_weight" property="prodTouWeight" jdbcType="REAL" />
+    <result column="ccrate" property="ccrate" jdbcType="VARCHAR" />
+  </resultMap>
+   <!-- 成型机组生产报表合计 -->
+  <select id="selectProdMakeReportInfoHJ" resultMap="ProdMakeReportInfoHJMap" parameterType="com.bsl.select.QueryCriteria">
+	  	select 
+			t1.prod_ru_weight,
+			t1.prod_ru_znum,
+			t1.prod_ru_bnum,
+			t1.prod_tou_weight,
+			t1.prod_tou_num,
+			concat(round(t1.prod_ru_weight/t1.prod_tou_weight*100,2),'%') ccrate
+		from	
+		(select 
+			sum(t0.prod_ru_weight) prod_ru_weight,
+			sum(t0.prod_ru_znum) prod_ru_znum,
+			sum(t0.prod_ru_bnum) prod_ru_bnum,
+			sum(t0.prod_tou_weight) prod_tou_weight,
+			sum(t0.prod_tou_num) prod_tou_num
+		from bsl_report_prod_make_info t0
+		where t0.data_date between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+			<if test="prodNorm != null" >
+				and t0.prod_norm like #{prodNorm,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodMaterial != null" >
+				and t0.prod_material = #{prodMaterial,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodBc != null" >
+				and t0.prod_bc = #{prodBc,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodMakeJz != null" >
+				and t0.prod_make_jz = #{prodMakeJz,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodLength != null" >
+				and t0.prod_length = convert(#{prodLength,jdbcType=VARCHAR},DECIMAL(10,3))
+			</if> ) t1
+  </select>
+   <!-- 规格数量统计 -->
+  <select id="countNormProdMakeReportInfoHJ" resultType="java.lang.Integer" parameterType="com.bsl.select.QueryCriteria">
+	  	select count(1) from 
+	  	(select 
+	  		distinct t0.prod_norm,t0.prod_material,t0.prod_length
+		from bsl_report_prod_make_info t0
+		where t0.data_date between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+			<if test="prodNorm != null" >
+				and t0.prod_norm like #{prodNorm,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodMaterial != null" >
+				and t0.prod_material = #{prodMaterial,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodBc != null" >
+				and t0.prod_bc like #{prodBc,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodMakeJz != null" >
+				and t0.prod_make_jz like #{prodMakeJz,jdbcType=VARCHAR} 
+			</if> 
+			<if test="prodLength != null" >
+				and t0.prod_length = convert(#{prodLength,jdbcType=VARCHAR},DECIMAL(10,3))
+			</if> 
+		 ) t
+  </select>
+  
 </mapper>

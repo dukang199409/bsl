@@ -82,7 +82,7 @@ public class RawReportServiceImpl implements RawReportService {
 		
 		List<BslReportRawInfo> bslReportRawInfos = bslReportRawInfoMapper.selectByExample(bslReportRawInfoExample);
 		PageInfo<BslReportRawInfo> pageInfo = new PageInfo<BslReportRawInfo>(bslReportRawInfos);
-		return BSLResult.ok(bslReportRawInfos,"reportServiceImpl","getM7105Report",pageInfo.getTotal(),bslReportRawInfos);
+		return BSLResult.ok(bslReportRawInfos,"rawReportServiceImpl","getM7105Report",pageInfo.getTotal(),bslReportRawInfos);
 	}
 	
 	//根据条件查询原材料进库报表统计
@@ -125,7 +125,7 @@ public class RawReportServiceImpl implements RawReportService {
 		
 		List<BslReportRawInfo> bslReportRawInfos = bslReportRawInfoMapper.selectRawReportInfoTH(queryCriteria);
 		PageInfo<BslReportRawInfo> pageInfo = new PageInfo<BslReportRawInfo>(bslReportRawInfos);
-		return BSLResult.ok(bslReportRawInfos,"reportServiceImpl","getM7105sReport",pageInfo.getTotal(),bslReportRawInfos);
+		return BSLResult.ok(bslReportRawInfos,"rawReportServiceImpl","getM7105sReport",pageInfo.getTotal(),bslReportRawInfos);
 	}
 	
 	//根据条件查询原材料进库报表合计

@@ -5,35 +5,27 @@ import java.util.Date;
 public class BslReportProdMakeInfo {
     private String dataDate;
 
-    private String dataType;
+    private String prodMakeJz;
 
-    private String prodType;
+    private String prodBc;
 
-    private String prodJz;
-
-    private String prodPlanNo;
+    private Float prodLength;
 
     private String prodNorm;
 
     private String prodMaterial;
 
-    private Float prodBs;
+    private Float prodRuZnum;
 
-    private Float prodZs;
+    private Float prodRuBnum;
 
-    private Float prodWeight;
+    private Float prodRuWeight;
 
-    private String prodUseNorm;
+    private Float prodTouNum;
 
-    private Float prodUseNum;
+    private Float prodTouWeight;
 
-    private Float prodUseWeight;
-
-    private Float prodDclWeight;
-
-    private Float prodFlWeight;
-
-    private Float prodCcl;
+    private String ccrate;
 
     private String remark;
 
@@ -47,36 +39,28 @@ public class BslReportProdMakeInfo {
         this.dataDate = dataDate == null ? null : dataDate.trim();
     }
 
-    public String getDataType() {
-        return dataType;
+    public String getProdMakeJz() {
+        return prodMakeJz;
     }
 
-    public void setDataType(String dataType) {
-        this.dataType = dataType == null ? null : dataType.trim();
+    public void setProdMakeJz(String prodMakeJz) {
+        this.prodMakeJz = prodMakeJz == null ? null : prodMakeJz.trim();
     }
 
-    public String getProdType() {
-        return prodType;
+    public String getProdBc() {
+        return prodBc;
     }
 
-    public void setProdType(String prodType) {
-        this.prodType = prodType == null ? null : prodType.trim();
+    public void setProdBc(String prodBc) {
+        this.prodBc = prodBc == null ? null : prodBc.trim();
     }
 
-    public String getProdJz() {
-        return prodJz;
+    public Float getProdLength() {
+        return prodLength;
     }
 
-    public void setProdJz(String prodJz) {
-        this.prodJz = prodJz == null ? null : prodJz.trim();
-    }
-
-    public String getProdPlanNo() {
-        return prodPlanNo;
-    }
-
-    public void setProdPlanNo(String prodPlanNo) {
-        this.prodPlanNo = prodPlanNo == null ? null : prodPlanNo.trim();
+    public void setProdLength(Float prodLength) {
+        this.prodLength = prodLength;
     }
 
     public String getProdNorm() {
@@ -95,76 +79,52 @@ public class BslReportProdMakeInfo {
         this.prodMaterial = prodMaterial == null ? null : prodMaterial.trim();
     }
 
-    public Float getProdBs() {
-        return prodBs;
+    public Float getProdRuZnum() {
+        return prodRuZnum;
     }
 
-    public void setProdBs(Float prodBs) {
-        this.prodBs = prodBs;
+    public void setProdRuZnum(Float prodRuZnum) {
+        this.prodRuZnum = prodRuZnum;
     }
 
-    public Float getProdZs() {
-        return prodZs;
+    public Float getProdRuBnum() {
+        return prodRuBnum;
     }
 
-    public void setProdZs(Float prodZs) {
-        this.prodZs = prodZs;
+    public void setProdRuBnum(Float prodRuBnum) {
+        this.prodRuBnum = prodRuBnum;
     }
 
-    public Float getProdWeight() {
-        return prodWeight;
+    public Float getProdRuWeight() {
+        return prodRuWeight;
     }
 
-    public void setProdWeight(Float prodWeight) {
-        this.prodWeight = prodWeight;
+    public void setProdRuWeight(Float prodRuWeight) {
+        this.prodRuWeight = prodRuWeight;
     }
 
-    public String getProdUseNorm() {
-        return prodUseNorm;
+    public Float getProdTouNum() {
+        return prodTouNum;
     }
 
-    public void setProdUseNorm(String prodUseNorm) {
-        this.prodUseNorm = prodUseNorm == null ? null : prodUseNorm.trim();
+    public void setProdTouNum(Float prodTouNum) {
+        this.prodTouNum = prodTouNum;
     }
 
-    public Float getProdUseNum() {
-        return prodUseNum;
+    public Float getProdTouWeight() {
+        return prodTouWeight;
     }
 
-    public void setProdUseNum(Float prodUseNum) {
-        this.prodUseNum = prodUseNum;
+    public void setProdTouWeight(Float prodTouWeight) {
+        this.prodTouWeight = prodTouWeight;
     }
 
-    public Float getProdUseWeight() {
-        return prodUseWeight;
+    public String getCcrate() {
+        return ccrate;
     }
 
-    public void setProdUseWeight(Float prodUseWeight) {
-        this.prodUseWeight = prodUseWeight;
-    }
-
-    public Float getProdDclWeight() {
-        return prodDclWeight;
-    }
-
-    public void setProdDclWeight(Float prodDclWeight) {
-        this.prodDclWeight = prodDclWeight;
-    }
-
-    public Float getProdFlWeight() {
-        return prodFlWeight;
-    }
-
-    public void setProdFlWeight(Float prodFlWeight) {
-        this.prodFlWeight = prodFlWeight;
-    }
-
-    public Float getProdCcl() {
-        return prodCcl;
-    }
-
-    public void setProdCcl(Float prodCcl) {
-        this.prodCcl = prodCcl;
+    public void setCcrate(String ccrate) {
+        this.ccrate = ccrate == null ? null : ccrate.trim();
     }
 
     public String getRemark() {
