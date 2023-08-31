@@ -8,7 +8,7 @@
 		   		 <tr>
 		            <td width="120" align="right">产品规格:</td>
 		            <td width="210" align="right">
-	            		<input name="prodNorm" id="prodNormM7108s" class="easyui-textbox" type="text" data-options="required:false,validType:'length[0,40]'" style="width:200px;"></input>
+	            		<input name="prodNorm" id="prodNormM7108s" class="easyui-textbox" type="text" data-options="required:false" style="width:200px;"></input>
 	            	</td>
 		            <td width="120" align="right">钢种:</td>
 		            <td width="210" align="right">
@@ -128,7 +128,7 @@
 		queryParams.prodMaterial = $('#prodMaterialM7108s').combobox("getValue");
 		queryParams.prodBc = $('#prodBcM7108s').combobox("getValue");
 		queryParams.prodMakeJz = $('#prodMakeJzM7108s').combobox("getValue");
-		queryParams.prodLength = $('#prodLengthM7108').numberbox("getValue");
+		queryParams.prodLength = $('#prodLengthM7108s').numberbox("getValue");
 		queryParams.startDate = $('#startDateM7108s').datebox("getValue");
 		queryParams.endDate = $('#endDateM7108s').datebox("getValue");
 	}
@@ -215,7 +215,7 @@
 				mapParam.set("prodMaterial",$('#prodMaterialM7108s').combobox("getValue"));
 				mapParam.set("prodBc",$('#prodBcM7108s').combobox("getValue"));
 				mapParam.set("prodMakeJz",$('#prodMakeJzM7108s').combobox("getValue"));
-				mapParam.set("prodLength", $('#prodLengthM7108').numberbox("getValue"));
+				mapParam.set("prodLength", $('#prodLengthM7108s').numberbox("getValue"));
 				mapParam.set("startDate",$('#startDateM7108s').datebox("getValue"));
 				mapParam.set("endDate",$('#endDateM7108s').datebox("getValue"));
 				BSL.toExcel(mapParam);
