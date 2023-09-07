@@ -1679,7 +1679,7 @@
 			sum(tt1.prod_parent_out_weight) prod_tou_weight,
 			concat(round(sum(tt1.prod_ru_weight)/sum(tt1.prod_parent_out_weight)*100,2),'%') ccrate,
 			'' remark,
-			now()
+			#{dateString,jdbcType=VARCHAR}
 		from
 		(select
 			d1.prod_make_jz,
