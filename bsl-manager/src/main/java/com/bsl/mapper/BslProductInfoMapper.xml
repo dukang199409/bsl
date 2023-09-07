@@ -1253,71 +1253,6 @@
 		    </if>
 		    order by prod_status desc,prod_out_date
   </select>
-  
-   <insert id="insertProdMakeInfoReport" parameterType="java.lang.String">
-   		insert into bsl_report_prod_make_info
-   		select 
-   			#{dateString,jdbcType=VARCHAR},
-   			'1',
-   			'2',
-			t1.prod_make_jz,
-			t1.prod_plan_no,
-			t1.prod_norm,
-			t1.prod_material,
-			t1.prod_bs,
-			t1.prod_zs,
-			ifnull(t1.prod_weight,0) prod_weight,
-			t2.prod_norm prod_norm_zjd,
-			t2.prod_tl_bs,
-			ifnull(t2.prod_use_weight,0) prod_use_weight,
-			ifnull(t3.prod_dcl_weight,0) prod_dcl_weight,
-			case when 0 > (ifnull(t2.prod_use_weight,0) - ifnull(t1.prod_weight,0) - ifnull(t3.prod_dcl_weight,0)) then 0
-			else ifnull(t2.prod_use_weight,0) - ifnull(t1.prod_weight,0) - ifnull(t3.prod_dcl_weight,0) end waste_weight,
-			case when ifnull(t2.prod_use_weight,0) =0 then 0
-			else round(ifnull(t1.prod_weight,0)/ifnull(t2.prod_use_weight,0),3)
-			end prod_ccl,
-			'' remark,
-			now()
-		from
-		
-		(select 
-			prod_make_jz,
-			prod_plan_no,
-			prod_norm,
-			prod_material,
-			count(1) as prod_bs,
-			sum(prod_num) as prod_zs,
-			sum(prod_rel_weight) as prod_weight
-		from bsl_product_info
-		where date_format(crt_date,'%Y%m%d') = #{dateString,jdbcType=VARCHAR}
-		and prod_type = '2'
-		group by prod_make_jz,prod_plan_no,prod_norm,prod_material) t1
-
-		left join 
-		
-		(select 
-			prod_out_plan,
-			prod_norm,
-			prod_material,
-			count(1) as prod_tl_bs,
-			sum(prod_rel_weight) as prod_use_weight
-		from bsl_product_info
-		where date_format(prod_out_date,'%Y%m%d') = #{dateString,jdbcType=VARCHAR}
-		and prod_type = '1'
-		group by prod_out_plan,prod_norm,prod_material) t2
-		on t1.prod_plan_no = t2.prod_out_plan
-		
-		left join 
-		(select 
-			prod_plan_no,
-			sum(prod_rel_weight) as prod_dcl_weight
-		from bsl_product_info
-		where date_format(crt_date,'%Y%m%d') = #{dateString,jdbcType=VARCHAR}
-		and prod_type = '4'
-		group by prod_plan_no) t3
-		on t1.prod_plan_no = t3.prod_plan_no
-   		
-   </insert>
    
     <insert id="insertHalfProdSaleInfoReport" parameterType="java.lang.String">
    		insert into bsl_report_sale_info
@@ -1724,6 +1659,104 @@
 			and tt0.prod_bc = tt2.prod_bc
 			and tt0.prod_make_jz = tt2.prod_make_jz
 			
+   </insert>
+   
+    <!-- 成型机组生产报表 -->
+   <insert id="insertProdMakeInfoReport" parameterType="java.lang.String">
+   		
+   		insert into bsl_report_prod_make_info
+		select 
+			#{dateString,jdbcType=VARCHAR},
+			tt1.prod_make_jz,
+			tt1.prod_bc,
+			tt1.prod_length,
+			tt1.prod_norm,
+			tt1.prod_material,
+			sum(tt1.prod_ru_znum) prod_ru_znum,
+			sum(tt1.prod_ru_bnum) prod_ru_bnum,
+			sum(tt1.prod_ru_weight) prod_ru_weight,
+			count(1) prod_tou_num,
+			sum(tt1.prod_parent_out_weight) prod_tou_weight,
+			concat(round(sum(tt1.prod_ru_weight)/sum(tt1.prod_parent_out_weight)*100,2),'%') ccrate,
+			'' remark,
+			now()
+		from
+		(select
+			d1.prod_make_jz,
+			d1.prod_bc,
+			d1.prod_norm,
+			d1.prod_length,
+			d1.prod_material,
+			d1.prod_parent_no,
+			d1.prod_ru_bnum,
+			d1.prod_ru_znum,
+			d1.prod_ru_weight,
+			d1.prod_ru_weight/d2.crate prod_parent_out_weight
+		FROM
+			
+		(select 
+			t1.prod_make_jz,
+			t1.prod_bc,
+			t1.prod_norm,
+			t1.prod_length,
+			t1.prod_material,
+			t1.prod_parent_no,
+			count(1) prod_ru_bnum,
+			sum(t1.prod_num) prod_ru_znum,
+			sum(t1.prod_rel_weight) prod_ru_weight
+		from
+		(select 
+			t.prod_make_jz,
+			t.prod_bc,
+			t.prod_norm,
+			t.prod_length,
+			t.prod_material,
+			t.prod_parent_no,
+			t.prod_num,
+			t.prod_rel_weight
+		from bsl_product_info t
+		where t.prod_type = '2'
+		and date_format(t.crt_date,'%Y%m%d') = #{dateString,jdbcType=VARCHAR}
+		and t.prod_make_jz is not null
+		and t.prod_bc is not null
+		and t.prod_parent_no is not null) t1
+		group by 
+			t1.prod_make_jz,
+			t1.prod_bc,
+			t1.prod_norm,
+			t1.prod_length,
+			t1.prod_material,
+			t1.prod_parent_no) d1
+			
+		left join 
+			
+		(select t2.prod_parent_no,
+			t2.prod_sun_weight/t2.prod_parent_weight crate
+		from
+		(select 
+			t1.prod_parent_no,
+			(select prod_rel_weight from bsl_product_info where prod_id = t1.prod_parent_no) prod_parent_weight,
+			sum(t1.prod_rel_weight) prod_sun_weight
+		from
+		(select 
+			t.prod_parent_no,
+			t.prod_rel_weight
+		from bsl_product_info t
+		where t.prod_type = '2'
+		and date_format(t.crt_date,'%Y%m%d') = #{dateString,jdbcType=VARCHAR}
+		and t.prod_make_jz is not null
+		and t.prod_bc is not null
+		and t.prod_parent_no is not null) t1
+		group by 
+			t1.prod_parent_no) t2 ) d2
+		on d1.prod_parent_no = d2.prod_parent_no) tt1
+		group by tt1.prod_make_jz,
+			tt1.prod_bc,
+			tt1.prod_norm,
+			tt1.prod_length,
+			tt1.prod_material,
+			tt1.prod_parent_no
+   		
    </insert>
    
     <insert id="insertProdSaleInfoReportBT" parameterType="com.bsl.select.QueryCriteria">

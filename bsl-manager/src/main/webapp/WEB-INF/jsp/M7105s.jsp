@@ -127,7 +127,7 @@
 		//ajax的post方式提交表单
 		//$("#receiptSearchForm").serialize()将表单序列号为key-value形式的字符串
 		$.post("/report/listM7105s",$("#M7105sForm").serialize(), function(data){
-			if(data.status == 200){				
+			if(data.status == 200){
 	            $('#M7105sList').datagrid('loadData',  {"total":data.total,"rows":data.rows});
 	            $("#classNameM7105s").textbox('setValue',data.className);
 				$("#methodNameM7105s").textbox('setValue',data.methodName);

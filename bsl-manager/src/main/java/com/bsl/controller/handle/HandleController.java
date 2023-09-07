@@ -45,13 +45,13 @@ public class HandleController {
 	@ResponseBody
 	public BSLResult rawReportImport() throws ParseException {
 		String startDate = "20190701";
-		String endDate = "20230829";
+		String endDate = "20230906";
 		String todayString = "20190701";
 		Calendar c = Calendar.getInstance();
 		c.setTime(DictItemOperation.日期转换实例yyyyMMdd.parse(startDate));
 		while(true) {
 			todayString = DictItemOperation.日期转换实例yyyyMMdd.format(c.getTime());
-			bslProductInfoMapper.insertSemiMakeInfoReport(todayString);
+			bslProductInfoMapper.insertProdMakeInfoReport(todayString);
 			c.add(Calendar.DATE, 1);
 			if(Integer.valueOf(todayString) > Integer.valueOf(endDate)) {
 				break;

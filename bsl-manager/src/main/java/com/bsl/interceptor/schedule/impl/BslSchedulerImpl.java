@@ -110,6 +110,9 @@ public class BslSchedulerImpl implements BslSchedulerService{
          //8.纵剪机组生产报表
          insertSemiMakeReport(yesDay);
          
+         //8.成型机组生产报表
+         insertProdMakeReport(yesDay);
+         
          //8.产成品销售报表
          //insertProdSaleInfoReport(yesDay);
          
@@ -125,7 +128,7 @@ public class BslSchedulerImpl implements BslSchedulerService{
     }
     
     /**
-     * 重置序列
+     * 1.重置序列
      */
     public void resetId(){
     	DictItemOperation.log.info("===========重置序列id开始");
@@ -172,7 +175,7 @@ public class BslSchedulerImpl implements BslSchedulerService{
     }
     
     /**
-     * 插入库存日照
+     * 2.插入库存日照
      */
     public void insertProductPhoto(){
     	 DictItemOperation.log.info("===========插入库存日照开始");
@@ -184,7 +187,7 @@ public class BslSchedulerImpl implements BslSchedulerService{
     }
     
     /**
-     * 插入单炉库存重量日照
+     * 弃用--插入单炉库存重量日照
      */
     public void insertBslLuStockInfo(){
     	 DictItemOperation.log.info("===========清空昨日单炉库存重量日照开始");
@@ -206,7 +209,16 @@ public class BslSchedulerImpl implements BslSchedulerService{
     }
     
     /**
-     * 插入库存变动重量日汇总
+     * 3.删除一年之前的库存日照
+     */
+    public void deleteProductPhoto(){
+    	 DictItemOperation.log.info("===========删除一年之前的库存日照开始");
+    	 bslProductPhotoInfoMapper.deleteProductPhotoInfoOnyears();
+    	 DictItemOperation.log.info("===========删除一年之前的库存日照结束");
+    }
+    
+    /**
+     * 4.插入库存变动重量日汇总
      */
     public void insertBslStockChangeInfo(){
     	 DictItemOperation.log.info("===========插入库存变动重量日汇总开始");
@@ -225,16 +237,7 @@ public class BslSchedulerImpl implements BslSchedulerService{
     }
     
     /**
-     * 删除一年之前的库存日照
-     */
-    public void deleteProductPhoto(){
-    	 DictItemOperation.log.info("===========删除一年之前的库存日照开始");
-    	 bslProductPhotoInfoMapper.deleteProductPhotoInfoOnyears();
-    	 DictItemOperation.log.info("===========删除一年之前的库存日照结束");
-    }
-    
-    /**
-     * 将一年前的已分剪、已发货、处理完成的数据历史化
+     * 弃用--将一年前的已分剪、已发货、处理完成的数据历史化
      */
     public void insertHistoryProductInfo(){
 		 DictItemOperation.log.info("===========历史化一年前的产品数据开始");
@@ -256,7 +259,7 @@ public class BslSchedulerImpl implements BslSchedulerService{
     }
     
     /**
-     * 将一年前的库存变动数据数据历史化
+     * 5.将一年前的库存变动数据数据历史化
      */
     public void insertHistoryStockChangeInfo(){
 		 DictItemOperation.log.info("===========历史化一年前的库存变动数据开始");
@@ -400,7 +403,7 @@ public class BslSchedulerImpl implements BslSchedulerService{
     }
     
     /**
-     * 原材料进库报表（新）
+     * 6.原材料进库报表（新）
      */
     public void  insertRawInfoReportNew(Date yesDate){
     	DictItemOperation.log.info("===========生成原材料进库报表新开始");
@@ -414,7 +417,7 @@ public class BslSchedulerImpl implements BslSchedulerService{
     }
     
     /**
-     * 产成品库存报表20230208
+     * 6.产成品库存报表20230208
      */
     public void  insertProdReport(Date yesDate){
     	DictItemOperation.log.info("===========生成产成品库存报表开始");
@@ -428,7 +431,7 @@ public class BslSchedulerImpl implements BslSchedulerService{
     }
     
     /**
-     * 纵剪机组生产报表20230830
+     * 7.纵剪机组生产报表20230830
      */
     public void  insertSemiMakeReport(Date yesDate){
     	DictItemOperation.log.info("===========生成纵剪机组生产报表开始");
@@ -439,6 +442,20 @@ public class BslSchedulerImpl implements BslSchedulerService{
 		}
 		
     	DictItemOperation.log.info("===========生成纵剪机组生产报表结束");
+    }
+    
+    /**
+     * 8.成型机组生产报表20230907
+     */
+    public void  insertProdMakeReport(Date yesDate){
+    	DictItemOperation.log.info("===========生成成型机组生产报表开始");
+    	String dateString = DictItemOperation.日期转换实例yyyyMMdd.format(yesDate);
+    	int result = bslProductInfoMapper.insertProdMakeInfoReport(dateString);
+		if(result<0){
+		     throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
+		}
+		
+    	DictItemOperation.log.info("===========生成成型机组生产报表结束");
     }
     
     

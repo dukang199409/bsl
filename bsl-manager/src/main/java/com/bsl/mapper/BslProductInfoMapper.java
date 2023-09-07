@@ -74,6 +74,8 @@ public interface BslProductInfoMapper {
     int insertProdInfoReport(String dateString);
     //纵剪机组生产报表
     int insertSemiMakeInfoReport(String dateString);
+    //成型机组生产报表
+    int insertProdMakeInfoReport(String dateString);
     
     //销售报表
     int insertProdSaleInfoReport(String dateString);
