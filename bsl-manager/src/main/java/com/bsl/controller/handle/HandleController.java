@@ -53,7 +53,7 @@ public class HandleController {
 			todayString = DictItemOperation.日期转换实例yyyyMMdd.format(c.getTime());
 			bslProductInfoMapper.insertProdMakeInfoReport(todayString);
 			c.add(Calendar.DATE, 1);
-			if(Integer.valueOf(todayString) > Integer.valueOf(endDate)) {
+			if(Integer.valueOf(todayString) >= Integer.valueOf(endDate)) {
 				break;
 			}
 		}
