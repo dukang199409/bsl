@@ -1716,6 +1716,7 @@
 			t.prod_rel_weight
 		from bsl_product_info t
 		where t.prod_type = '2'
+		and prod_dcl_flag = '0'
 		and date_format(t.crt_date,'%Y%m%d') = #{dateString,jdbcType=VARCHAR}
 		and t.prod_make_jz is not null
 		and t.prod_bc is not null
@@ -1743,6 +1744,7 @@
 			t.prod_rel_weight
 		from bsl_product_info t
 		where t.prod_type = '2'
+		and prod_dcl_flag = '0'
 		and date_format(t.crt_date,'%Y%m%d') = #{dateString,jdbcType=VARCHAR}
 		and t.prod_make_jz is not null
 		and t.prod_bc is not null
