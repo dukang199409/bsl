@@ -1756,8 +1756,7 @@
 			tt1.prod_bc,
 			tt1.prod_norm,
 			tt1.prod_length,
-			tt1.prod_material,
-			tt1.prod_parent_no
+			tt1.prod_material
    		
    </insert>
    
