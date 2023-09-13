@@ -707,6 +707,16 @@ var TT = BSL = {
         	return val;
         }
     },
+    //格式化合同类型
+    formatContractType : function(val,row){
+        if (val == '1'){
+            return '加工';
+        } else if(val == '2'){
+        	return '购销';
+        } else {
+        	return val;
+        }
+    },
     init : function(data){
     	// 初始化图片上传组件
     	this.initPicUpload(data);

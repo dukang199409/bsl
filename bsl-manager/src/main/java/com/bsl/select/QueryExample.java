@@ -14,69 +14,42 @@ public class QueryExample {
 	private String bsId;
 	private String page;
 	private String rows;
-	//登陆用户id
 	private String loginUserId;
-	//用户编号
 	private String userId;
-	//用户姓名
 	private String userName;
-	//用户类型
 	private String userType;
-	//半成品生产批号
 	private String planId;
-	//半成品生产批号详细计划
 	private String planDetailId;
 	private String prodBc;
 	private String bsFlag;
-	//生产部门
 	private String planDepartment;
-	//指令状态
 	private String planStatus;
-	//规格
 	private String norm;
-	//产品钢种
 	private String prodMaterial;
-	//卷号
 	private String prodOriId;
-	//产品状态
 	private String prodStatus;
-	//半成品对应半成品生产批号
 	private String prodPlanNo;
-	//产品规格
 	private String prodNorm;
-	//卷板操作标志
 	private String prodFlag;
-	//产品编号
 	private String prodId;
-	//录入人
 	private String prodInputuser;
-	//是否查询已完成的记录
 	private boolean isFlag;
-	//类名
 	private String className;
-	//方法名
 	private String methodName;
-	//属性名
 	private String fields;
-	//中文名
 	private String titles;
-	//excel表格名
 	private String excelName;
 	private String sort;
 	private String order;
-	//炉号
 	private String prodLuno;
 	private String planLuno;
 	private String planInfoDetailId;
 	private String makeName;
 	private String prodParentNo;
 	private String isReAdd;	
-	//交易类型
 	private String tradeType;
-	//销售订单
 	private String prodOrder;
 	private String prodUserType;
-	//车号信息
 	private String prodOutCarno;
 	private String prodSourceCompany;
 	private String planFlag;
@@ -90,7 +63,22 @@ public class QueryExample {
 	private String prodMakeJz;
 	private String prodCustomer;
 	private String prodCompany;
+	private String contractType;
+	private String prodName;
 	
+	public String getProdName() {
+		return prodName;
+	}
+	public void setProdName(String prodName) {
+		this.prodName = prodName;
+	}
+	
+	public String getContractType() {
+		return contractType;
+	}
+	public void setContractType(String contractType) {
+		this.contractType = contractType;
+	}
 	public String getProdCustomer() {
 		return prodCustomer;
 	}

@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bsl.mapper.BslReportSaleSemiInfoMapper">
+  <resultMap id="BaseResultMap" type="com.bsl.pojo.BslReportSaleSemiInfo">
+    <result column="data_date" jdbcType="VARCHAR" property="dataDate" />
+    <result column="contract_type" jdbcType="VARCHAR" property="contractType" />
+    <result column="prod_customer" jdbcType="VARCHAR" property="prodCustomer" />
+    <result column="prod_name" jdbcType="VARCHAR" property="prodName" />
+    <result column="prod_norm" jdbcType="VARCHAR" property="prodNorm" />
+    <result column="prod_material" jdbcType="CHAR" property="prodMaterial" />
+    <result column="prod_out_num" jdbcType="REAL" property="prodOutNum" />
+    <result column="prod_out_weight" jdbcType="REAL" property="prodOutWeight" />
+    <result column="prod_cha_weight" jdbcType="REAL" property="prodChaWeight" />
+    <result column="prod_ret_weight" jdbcType="REAL" property="prodRetWeight" />
+    <result column="sale_price" jdbcType="REAL" property="salePrice" />
+    <result column="sale_amt" jdbcType="REAL" property="saleAmt" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="crt_date" jdbcType="DATE" property="crtDate" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    data_date, contract_type, prod_customer, prod_name, prod_norm, prod_material, prod_out_num, 
+    prod_out_weight, prod_cha_weight, prod_ret_weight, sale_price, sale_amt, remark, 
+    crt_date
+  </sql>
+  <select id="selectByExample" parameterType="com.bsl.pojo.BslReportSaleSemiInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bsl_report_sale_semi_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.bsl.pojo.BslReportSaleSemiInfoExample">
+    delete from bsl_report_sale_semi_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bsl.pojo.BslReportSaleSemiInfo">
+    insert into bsl_report_sale_semi_info (data_date, contract_type, prod_customer, 
+      prod_name, prod_norm, prod_material, 
+      prod_out_num, prod_out_weight, prod_cha_weight, 
+      prod_ret_weight, sale_price, sale_amt, 
+      remark, crt_date)
+    values (#{dataDate,jdbcType=VARCHAR}, #{contractType,jdbcType=VARCHAR}, #{prodCustomer,jdbcType=VARCHAR}, 
+      #{prodName,jdbcType=VARCHAR}, #{prodNorm,jdbcType=VARCHAR}, #{prodMaterial,jdbcType=CHAR}, 
+      #{prodOutNum,jdbcType=REAL}, #{prodOutWeight,jdbcType=REAL}, #{prodChaWeight,jdbcType=REAL}, 
+      #{prodRetWeight,jdbcType=REAL}, #{salePrice,jdbcType=REAL}, #{saleAmt,jdbcType=REAL}, 
+      #{remark,jdbcType=VARCHAR}, #{crtDate,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bsl.pojo.BslReportSaleSemiInfo">
+    insert into bsl_report_sale_semi_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dataDate != null">
+        data_date,
+      </if>
+      <if test="contractType != null">
+        contract_type,
+      </if>
+      <if test="prodCustomer != null">
+        prod_customer,
+      </if>
+      <if test="prodName != null">
+        prod_name,
+      </if>
+      <if test="prodNorm != null">
+        prod_norm,
+      </if>
+      <if test="prodMaterial != null">
+        prod_material,
+      </if>
+      <if test="prodOutNum != null">
+        prod_out_num,
+      </if>
+      <if test="prodOutWeight != null">
+        prod_out_weight,
+      </if>
+      <if test="prodChaWeight != null">
+        prod_cha_weight,
+      </if>
+      <if test="prodRetWeight != null">
+        prod_ret_weight,
+      </if>
+      <if test="salePrice != null">
+        sale_price,
+      </if>
+      <if test="saleAmt != null">
+        sale_amt,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="crtDate != null">
+        crt_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dataDate != null">
+        #{dataDate,jdbcType=VARCHAR},
+      </if>
+      <if test="contractType != null">
+        #{contractType,jdbcType=VARCHAR},
+      </if>
+      <if test="prodCustomer != null">
+        #{prodCustomer,jdbcType=VARCHAR},
+      </if>
+      <if test="prodName != null">
+        #{prodName,jdbcType=VARCHAR},
+      </if>
+      <if test="prodNorm != null">
+        #{prodNorm,jdbcType=VARCHAR},
+      </if>
+      <if test="prodMaterial != null">
+        #{prodMaterial,jdbcType=CHAR},
+      </if>
+      <if test="prodOutNum != null">
+        #{prodOutNum,jdbcType=REAL},
+      </if>
+      <if test="prodOutWeight != null">
+        #{prodOutWeight,jdbcType=REAL},
+      </if>
+      <if test="prodChaWeight != null">
+        #{prodChaWeight,jdbcType=REAL},
+      </if>
+      <if test="prodRetWeight != null">
+        #{prodRetWeight,jdbcType=REAL},
+      </if>
+      <if test="salePrice != null">
+        #{salePrice,jdbcType=REAL},
+      </if>
+      <if test="saleAmt != null">
+        #{saleAmt,jdbcType=REAL},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="crtDate != null">
+        #{crtDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bsl.pojo.BslReportSaleSemiInfoExample" resultType="java.lang.Long">
+    select count(*) from bsl_report_sale_semi_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update bsl_report_sale_semi_info
+    <set>
+      <if test="row.dataDate != null">
+        data_date = #{row.dataDate,jdbcType=VARCHAR},
+      </if>
+      <if test="row.contractType != null">
+        contract_type = #{row.contractType,jdbcType=VARCHAR},
+      </if>
+      <if test="row.prodCustomer != null">
+        prod_customer = #{row.prodCustomer,jdbcType=VARCHAR},
+      </if>
+      <if test="row.prodName != null">
+        prod_name = #{row.prodName,jdbcType=VARCHAR},
+      </if>
+      <if test="row.prodNorm != null">
+        prod_norm = #{row.prodNorm,jdbcType=VARCHAR},
+      </if>
+      <if test="row.prodMaterial != null">
+        prod_material = #{row.prodMaterial,jdbcType=CHAR},
+      </if>
+      <if test="row.prodOutNum != null">
+        prod_out_num = #{row.prodOutNum,jdbcType=REAL},
+      </if>
+      <if test="row.prodOutWeight != null">
+        prod_out_weight = #{row.prodOutWeight,jdbcType=REAL},
+      </if>
+      <if test="row.prodChaWeight != null">
+        prod_cha_weight = #{row.prodChaWeight,jdbcType=REAL},
+      </if>
+      <if test="row.prodRetWeight != null">
+        prod_ret_weight = #{row.prodRetWeight,jdbcType=REAL},
+      </if>
+      <if test="row.salePrice != null">
+        sale_price = #{row.salePrice,jdbcType=REAL},
+      </if>
+      <if test="row.saleAmt != null">
+        sale_amt = #{row.saleAmt,jdbcType=REAL},
+      </if>
+      <if test="row.remark != null">
+        remark = #{row.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="row.crtDate != null">
+        crt_date = #{row.crtDate,jdbcType=DATE},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update bsl_report_sale_semi_info
+    set data_date = #{row.dataDate,jdbcType=VARCHAR},
+      contract_type = #{row.contractType,jdbcType=VARCHAR},
+      prod_customer = #{row.prodCustomer,jdbcType=VARCHAR},
+      prod_name = #{row.prodName,jdbcType=VARCHAR},
+      prod_norm = #{row.prodNorm,jdbcType=VARCHAR},
+      prod_material = #{row.prodMaterial,jdbcType=CHAR},
+      prod_out_num = #{row.prodOutNum,jdbcType=REAL},
+      prod_out_weight = #{row.prodOutWeight,jdbcType=REAL},
+      prod_cha_weight = #{row.prodChaWeight,jdbcType=REAL},
+      prod_ret_weight = #{row.prodRetWeight,jdbcType=REAL},
+      sale_price = #{row.salePrice,jdbcType=REAL},
+      sale_amt = #{row.saleAmt,jdbcType=REAL},
+      remark = #{row.remark,jdbcType=VARCHAR},
+      crt_date = #{row.crtDate,jdbcType=DATE}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  <!-- 半成品销售出库报表统计 -->
+  <select id="selectSemiSaleReportInfoTJ" resultMap="BaseResultMap" parameterType="com.bsl.select.QueryCriteria">
+	  	select 
+			t0.contract_type,
+			t0.prod_customer,
+			t0.prod_norm,
+			t0.prod_material,
+			t0.prod_name,
+			t0.sale_price,
+			sum(t0.prod_out_num) prod_out_num,
+			sum(t0.prod_out_weight) prod_out_weight,
+			sum(t0.prod_cha_weight) prod_cha_weight,
+			sum(t0.prod_ret_weight) prod_ret_weight,
+			sum(t0.sale_amt) sale_amt
+		from bsl_report_sale_semi_info t0
+		where t0.data_date between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+			<if test="prodCustomer != null" >
+				and t0.prod_customer like #{prodCustomer,jdbcType=VARCHAR} 
+			</if>
+			<if test="contractType != null" >
+				and t0.contract_type = #{contractType,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodNorm != null" >
+				and t0.prod_norm like #{prodNorm,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodMaterial != null" >
+				and t0.prod_material = #{prodMaterial,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodName != null" >
+				and t0.prod_name like #{prodName,jdbcType=VARCHAR} 
+			</if>
+		group by 
+			t0.prod_customer,
+			t0.contract_type,
+			t0.prod_norm,
+			t0.prod_material,
+			t0.prod_name,
+			t0.sale_price
+  	</select>
+  	
+	  <resultMap id="SemiSaleReportInfoHJMap" type="com.bsl.reportbean.BslSemiSaleReportHJInfo" >
+	    <result column="prod_out_num" property="prodOutNum" jdbcType="REAL" />
+	    <result column="prod_out_weight" property="prodOutWeight" jdbcType="REAL" />
+	    <result column="prod_cha_weight" property="prodChaWeight" jdbcType="REAL" />
+	    <result column="prod_ret_weight" property="prodRetWeight" jdbcType="REAL" />
+	    <result column="sale_amt" property="saleAmt" jdbcType="REAL" />
+	  </resultMap>
+	   <!-- 半成品销售出库报表合计 -->
+	  <select id="selectSemiSaleReportInfoHJ" resultMap="SemiSaleReportInfoHJMap" parameterType="com.bsl.select.QueryCriteria">
+	  	select 
+			sum(t0.prod_out_num) prod_out_num,
+			sum(t0.prod_out_weight) prod_out_weight,
+			sum(t0.prod_cha_weight) prod_cha_weight,
+			sum(t0.prod_ret_weight) prod_ret_weight,
+			sum(t0.sale_amt) sale_amt
+		from bsl_report_sale_semi_info t0
+		where t0.data_date between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+			<if test="prodCustomer != null" >
+				and t0.prod_customer like #{prodCustomer,jdbcType=VARCHAR} 
+			</if>
+			<if test="contractType != null" >
+				and t0.contract_type = #{contractType,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodNorm != null" >
+				and t0.prod_norm like #{prodNorm,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodMaterial != null" >
+				and t0.prod_material = #{prodMaterial,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodName != null" >
+				and t0.prod_name like #{prodName,jdbcType=VARCHAR} 
+			</if>
+  	</select>
+  	
+  	 <!-- 规格数量统计 -->
+  <select id="countNormSemiSaleReportInfoHJ" resultType="java.lang.Integer" parameterType="com.bsl.select.QueryCriteria">
+	  	select count(1) from 
+		(select 
+			distinct t0.prod_norm,t0.prod_material
+		from bsl_report_sale_semi_info t0
+		where t0.data_date between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+			<if test="prodCustomer != null" >
+				and t0.prod_customer like #{prodCustomer,jdbcType=VARCHAR} 
+			</if>
+			<if test="contractType != null" >
+				and t0.contract_type = #{contractType,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodNorm != null" >
+				and t0.prod_norm like #{prodNorm,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodMaterial != null" >
+				and t0.prod_material = #{prodMaterial,jdbcType=VARCHAR} 
+			</if>
+			<if test="prodName != null" >
+				and t0.prod_name like #{prodName,jdbcType=VARCHAR} 
+			</if>
+		 ) t
+	  </select>
+  	
+  	
+</mapper>

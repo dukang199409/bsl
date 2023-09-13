@@ -90,6 +90,21 @@ public class QueryCriteria {
 	private String dataType;
 	private String prodCustomer;
 	private String prodCompany;
+	private String contractType;
+	private String prodName;
+	
+	public String getProdName() {
+		return prodName;
+	}
+	public void setProdName(String prodName) {
+		this.prodName = prodName;
+	}
+	public String getContractType() {
+		return contractType;
+	}
+	public void setContractType(String contractType) {
+		this.contractType = contractType;
+	}
 
 	public String getProdCustomer() {
 		return prodCustomer;
