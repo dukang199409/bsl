@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bsl.mapper.BslReportSaleSemiInfoMapper">
-  <resultMap id="BaseResultMap" type="com.bsl.pojo.BslReportSaleSemiInfo">
+<mapper namespace="com.bsl.mapper.BslReportSaleProdInfoMapper">
+  <resultMap id="BaseResultMap" type="com.bsl.pojo.BslReportSaleProdInfo">
     <result column="data_date" jdbcType="VARCHAR" property="dataDate" />
     <result column="contract_type" jdbcType="VARCHAR" property="contractType" />
     <result column="prod_customer" jdbcType="VARCHAR" property="prodCustomer" />
     <result column="prod_name" jdbcType="VARCHAR" property="prodName" />
     <result column="prod_norm" jdbcType="VARCHAR" property="prodNorm" />
     <result column="prod_material" jdbcType="CHAR" property="prodMaterial" />
-    <result column="prod_out_num" jdbcType="REAL" property="prodOutNum" />
+    <result column="prod_length" jdbcType="REAL" property="prodLength" />
+    <result column="prod_out_znum" jdbcType="REAL" property="prodOutZnum" />
+    <result column="prod_out_bnum" jdbcType="REAL" property="prodOutBnum" />
     <result column="prod_out_weight" jdbcType="REAL" property="prodOutWeight" />
     <result column="prod_cha_weight" jdbcType="REAL" property="prodChaWeight" />
     <result column="prod_ret_weight" jdbcType="REAL" property="prodRetWeight" />
@@ -76,17 +78,17 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    data_date, contract_type, prod_customer, prod_name, prod_norm, prod_material, prod_out_num, 
-    prod_out_weight, prod_cha_weight, prod_ret_weight, sale_price, sale_amt, remark, 
-    crt_date
+    data_date, contract_type, prod_customer, prod_name, prod_norm, prod_material, prod_length, 
+    prod_out_znum, prod_out_bnum, prod_out_weight, prod_cha_weight, prod_ret_weight, 
+    sale_price, sale_amt, remark, crt_date
   </sql>
-  <select id="selectByExample" parameterType="com.bsl.pojo.BslReportSaleSemiInfoExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.bsl.pojo.BslReportSaleProdInfoExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from bsl_report_sale_semi_info
+    from bsl_report_sale_prod_info
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -94,26 +96,28 @@
       order by ${orderByClause}
     </if>
   </select>
-  <delete id="deleteByExample" parameterType="com.bsl.pojo.BslReportSaleSemiInfoExample">
-    delete from bsl_report_sale_semi_info
+  <delete id="deleteByExample" parameterType="com.bsl.pojo.BslReportSaleProdInfoExample">
+    delete from bsl_report_sale_prod_info
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.bsl.pojo.BslReportSaleSemiInfo">
-    insert into bsl_report_sale_semi_info (data_date, contract_type, prod_customer, 
+  <insert id="insert" parameterType="com.bsl.pojo.BslReportSaleProdInfo">
+    insert into bsl_report_sale_prod_info (data_date, contract_type, prod_customer, 
       prod_name, prod_norm, prod_material, 
-      prod_out_num, prod_out_weight, prod_cha_weight, 
-      prod_ret_weight, sale_price, sale_amt, 
-      remark, crt_date)
+      prod_length, prod_out_znum, prod_out_bnum, 
+      prod_out_weight, prod_cha_weight, prod_ret_weight, 
+      sale_price, sale_amt, remark, 
+      crt_date)
     values (#{dataDate,jdbcType=VARCHAR}, #{contractType,jdbcType=VARCHAR}, #{prodCustomer,jdbcType=VARCHAR}, 
       #{prodName,jdbcType=VARCHAR}, #{prodNorm,jdbcType=VARCHAR}, #{prodMaterial,jdbcType=CHAR}, 
-      #{prodOutNum,jdbcType=REAL}, #{prodOutWeight,jdbcType=REAL}, #{prodChaWeight,jdbcType=REAL}, 
-      #{prodRetWeight,jdbcType=REAL}, #{salePrice,jdbcType=REAL}, #{saleAmt,jdbcType=REAL}, 
-      #{remark,jdbcType=VARCHAR}, #{crtDate,jdbcType=DATE})
+      #{prodLength,jdbcType=REAL}, #{prodOutZnum,jdbcType=REAL}, #{prodOutBnum,jdbcType=REAL}, 
+      #{prodOutWeight,jdbcType=REAL}, #{prodChaWeight,jdbcType=REAL}, #{prodRetWeight,jdbcType=REAL}, 
+      #{salePrice,jdbcType=REAL}, #{saleAmt,jdbcType=REAL}, #{remark,jdbcType=VARCHAR}, 
+      #{crtDate,jdbcType=DATE})
   </insert>
-  <insert id="insertSelective" parameterType="com.bsl.pojo.BslReportSaleSemiInfo">
-    insert into bsl_report_sale_semi_info
+  <insert id="insertSelective" parameterType="com.bsl.pojo.BslReportSaleProdInfo">
+    insert into bsl_report_sale_prod_info
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="dataDate != null">
         data_date,
@@ -133,8 +137,14 @@
       <if test="prodMaterial != null">
         prod_material,
       </if>
-      <if test="prodOutNum != null">
-        prod_out_num,
+      <if test="prodLength != null">
+        prod_length,
+      </if>
+      <if test="prodOutZnum != null">
+        prod_out_znum,
+      </if>
+      <if test="prodOutBnum != null">
+        prod_out_bnum,
       </if>
       <if test="prodOutWeight != null">
         prod_out_weight,
@@ -177,8 +187,14 @@
       <if test="prodMaterial != null">
         #{prodMaterial,jdbcType=CHAR},
       </if>
-      <if test="prodOutNum != null">
-        #{prodOutNum,jdbcType=REAL},
+      <if test="prodLength != null">
+        #{prodLength,jdbcType=REAL},
+      </if>
+      <if test="prodOutZnum != null">
+        #{prodOutZnum,jdbcType=REAL},
+      </if>
+      <if test="prodOutBnum != null">
+        #{prodOutBnum,jdbcType=REAL},
       </if>
       <if test="prodOutWeight != null">
         #{prodOutWeight,jdbcType=REAL},
@@ -203,14 +219,14 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.bsl.pojo.BslReportSaleSemiInfoExample" resultType="java.lang.Long">
-    select count(*) from bsl_report_sale_semi_info
+  <select id="countByExample" parameterType="com.bsl.pojo.BslReportSaleProdInfoExample" resultType="java.lang.Long">
+    select count(*) from bsl_report_sale_prod_info
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update bsl_report_sale_semi_info
+    update bsl_report_sale_prod_info
     <set>
       <if test="row.dataDate != null">
         data_date = #{row.dataDate,jdbcType=VARCHAR},
@@ -230,8 +246,14 @@
       <if test="row.prodMaterial != null">
         prod_material = #{row.prodMaterial,jdbcType=CHAR},
       </if>
-      <if test="row.prodOutNum != null">
-        prod_out_num = #{row.prodOutNum,jdbcType=REAL},
+      <if test="row.prodLength != null">
+        prod_length = #{row.prodLength,jdbcType=REAL},
+      </if>
+      <if test="row.prodOutZnum != null">
+        prod_out_znum = #{row.prodOutZnum,jdbcType=REAL},
+      </if>
+      <if test="row.prodOutBnum != null">
+        prod_out_bnum = #{row.prodOutBnum,jdbcType=REAL},
       </if>
       <if test="row.prodOutWeight != null">
         prod_out_weight = #{row.prodOutWeight,jdbcType=REAL},
@@ -260,14 +282,16 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update bsl_report_sale_semi_info
+    update bsl_report_sale_prod_info
     set data_date = #{row.dataDate,jdbcType=VARCHAR},
       contract_type = #{row.contractType,jdbcType=VARCHAR},
       prod_customer = #{row.prodCustomer,jdbcType=VARCHAR},
       prod_name = #{row.prodName,jdbcType=VARCHAR},
       prod_norm = #{row.prodNorm,jdbcType=VARCHAR},
       prod_material = #{row.prodMaterial,jdbcType=CHAR},
-      prod_out_num = #{row.prodOutNum,jdbcType=REAL},
+      prod_length = #{row.prodLength,jdbcType=REAL},
+      prod_out_znum = #{row.prodOutZnum,jdbcType=REAL},
+      prod_out_bnum = #{row.prodOutBnum,jdbcType=REAL},
       prod_out_weight = #{row.prodOutWeight,jdbcType=REAL},
       prod_cha_weight = #{row.prodChaWeight,jdbcType=REAL},
       prod_ret_weight = #{row.prodRetWeight,jdbcType=REAL},
@@ -280,21 +304,23 @@
     </if>
   </update>
   
-  <!-- 半成品销售出库报表统计 -->
-  <select id="selectSemiSaleReportInfoTJ" resultMap="BaseResultMap" parameterType="com.bsl.select.QueryCriteria">
+  <!-- 产成品销售出库报表统计 -->
+  <select id="selectProdSaleReportInfoTJ" resultMap="BaseResultMap" parameterType="com.bsl.select.QueryCriteria">
 	  	select 
 			t0.contract_type,
 			t0.prod_customer,
 			t0.prod_norm,
 			t0.prod_material,
 			t0.prod_name,
+			t0.prod_length,
 			t0.sale_price,
-			sum(t0.prod_out_num) prod_out_num,
+			sum(t0.prod_out_znum) prod_out_znum,
+			sum(t0.prod_out_bnum) prod_out_bnum,
 			sum(t0.prod_out_weight) prod_out_weight,
 			sum(t0.prod_cha_weight) prod_cha_weight,
 			sum(t0.prod_ret_weight) prod_ret_weight,
 			sum(t0.sale_amt) sale_amt
-		from bsl_report_sale_semi_info t0
+		from bsl_report_sale_prod_info t0
 		where t0.data_date between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
 			<if test="prodCustomer != null" >
 				and t0.prod_customer like #{prodCustomer,jdbcType=VARCHAR} 
@@ -311,31 +337,37 @@
 			<if test="prodName != null" >
 				and t0.prod_name like #{prodName,jdbcType=VARCHAR} 
 			</if>
+			<if test="prodLength != null" >
+				and t0.prod_length = convert(#{prodLength,jdbcType=VARCHAR},DECIMAL(10,3))
+			</if> 
 		group by 
 			t0.prod_customer,
 			t0.contract_type,
 			t0.prod_norm,
 			t0.prod_material,
 			t0.prod_name,
+			t0.prod_length,
 			t0.sale_price
   	</select>
   	
-	  <resultMap id="SemiSaleReportInfoHJMap" type="com.bsl.reportbean.BslSemiSaleReportHJInfo" >
-	    <result column="prod_out_num" property="prodOutNum" jdbcType="REAL" />
+  	<resultMap id="ProdSaleReportInfoHJMap" type="com.bsl.reportbean.BslProdSaleReportHJInfo" >
+	    <result column="prod_out_znum" property="prodOutZnum" jdbcType="REAL" />
+	    <result column="prod_out_bnum" property="prodOutBnum" jdbcType="REAL" />
 	    <result column="prod_out_weight" property="prodOutWeight" jdbcType="REAL" />
 	    <result column="prod_cha_weight" property="prodChaWeight" jdbcType="REAL" />
 	    <result column="prod_ret_weight" property="prodRetWeight" jdbcType="REAL" />
 	    <result column="sale_amt" property="saleAmt" jdbcType="REAL" />
 	  </resultMap>
-	   <!-- 半成品销售出库报表合计 -->
-	  <select id="selectSemiSaleReportInfoHJ" resultMap="SemiSaleReportInfoHJMap" parameterType="com.bsl.select.QueryCriteria">
+	   <!-- 产成品售出库报表合计 -->
+	  <select id="selectProdSaleReportInfoHJ" resultMap="ProdSaleReportInfoHJMap" parameterType="com.bsl.select.QueryCriteria">
 	  	select 
-			sum(t0.prod_out_num) prod_out_num,
+			sum(t0.prod_out_znum) prod_out_znum,
+			sum(t0.prod_out_bnum) prod_out_bnum,
 			sum(t0.prod_out_weight) prod_out_weight,
 			sum(t0.prod_cha_weight) prod_cha_weight,
 			sum(t0.prod_ret_weight) prod_ret_weight,
 			sum(t0.sale_amt) sale_amt
-		from bsl_report_sale_semi_info t0
+		from bsl_report_sale_prod_info t0
 		where t0.data_date between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
 			<if test="prodCustomer != null" >
 				and t0.prod_customer like #{prodCustomer,jdbcType=VARCHAR} 
@@ -352,14 +384,17 @@
 			<if test="prodName != null" >
 				and t0.prod_name like #{prodName,jdbcType=VARCHAR} 
 			</if>
+			<if test="prodLength != null" >
+				and t0.prod_length = convert(#{prodLength,jdbcType=VARCHAR},DECIMAL(10,3))
+			</if> 
   	</select>
   	
   	 <!-- 规格数量统计 -->
-  	<select id="countNormSemiSaleReportInfoHJ" resultType="java.lang.Integer" parameterType="com.bsl.select.QueryCriteria">
+  	<select id="countNormProdSaleReportInfoHJ" resultType="java.lang.Integer" parameterType="com.bsl.select.QueryCriteria">
 	  	select count(1) from 
 		(select 
 			distinct t0.prod_norm,t0.prod_material
-		from bsl_report_sale_semi_info t0
+		from bsl_report_sale_prod_info t0
 		where t0.data_date between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
 			<if test="prodCustomer != null" >
 				and t0.prod_customer like #{prodCustomer,jdbcType=VARCHAR} 
@@ -376,8 +411,10 @@
 			<if test="prodName != null" >
 				and t0.prod_name like #{prodName,jdbcType=VARCHAR} 
 			</if>
+			<if test="prodLength != null" >
+				and t0.prod_length = convert(#{prodLength,jdbcType=VARCHAR},DECIMAL(10,3))
+			</if> 
 		 ) t
 	  </select>
-  	
-  	
+  
 </mapper>

@@ -12,6 +12,7 @@ import com.bsl.select.ErrorCodeInfo;
 import com.bsl.select.QueryCriteria;
 import com.bsl.service.report.ProdMakeReportService;
 import com.bsl.service.report.ProdReportService;
+import com.bsl.service.report.ProdSaleReportService;
 import com.bsl.service.report.RawReportService;
 import com.bsl.service.report.ReportService;
 import com.bsl.service.report.SemiReportService;
@@ -42,6 +43,9 @@ public class ReportController {
 	
 	@Autowired
 	private SemiSaleReportService semiSaleReportService;
+	
+	@Autowired
+	private ProdSaleReportService prodSaleReportService;
 	
 
 	/**
@@ -436,6 +440,76 @@ public class ReportController {
 		return result;
 	}
 	
+	
+	/**
+	 * 产成品销售出库报表-日报
+	 * @param 
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping("/listM7110")
+	@ResponseBody
+	public BSLResult getM7110Report(QueryCriteria queryCriteria){
+		BSLResult result = null;
+		if(StringUtils.isBlank(queryCriteria.getPage())) {
+			result =  BSLResult.build(400, "页码不能为空");
+		}else if(StringUtils.isBlank(queryCriteria.getRows())) {
+			result =  BSLResult.build(400, "每页记录数不能为空");
+		}else{
+			result = prodSaleReportService.getM7110Report(queryCriteria);
+		}
+		return result;
+	}
+	
+	/**
+	 * 产成品销售出库报表统计
+	 * @param 
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping("/listM7110s")
+	@ResponseBody
+	public BSLResult getM7110sReport(QueryCriteria queryCriteria){
+		BSLResult result = null;
+		if(StringUtils.isBlank(queryCriteria.getPage())) {
+			result =  BSLResult.build(400, "页码不能为空");
+		}else if(StringUtils.isBlank(queryCriteria.getRows())) {
+			result =  BSLResult.build(400, "每页记录数不能为空");
+		}else{
+			try {
+				return prodSaleReportService.getM7110sReport(queryCriteria);
+			} catch (Exception e) {
+				DictItemOperation.log.info("===========异常:"+e.getMessage());
+				return BSLResult.build(ErrorCodeInfo.错误类型_交易异常,e.getMessage());
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * 产成品销售出库报表合计
+	 * @param 
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping("/listM7110sHJ")
+	@ResponseBody
+	public BSLResult getM7110sHJReport(QueryCriteria queryCriteria){
+		BSLResult result = null;
+		if(StringUtils.isBlank(queryCriteria.getPage())) {
+			result =  BSLResult.build(400, "页码不能为空");
+		}else if(StringUtils.isBlank(queryCriteria.getRows())) {
+			result =  BSLResult.build(400, "每页记录数不能为空");
+		}else{
+			try {
+				return prodSaleReportService.getM7110sHJReport(queryCriteria);
+			} catch (Exception e) {
+				DictItemOperation.log.info("===========异常:"+e.getMessage());
+				return BSLResult.build(ErrorCodeInfo.错误类型_交易异常,e.getMessage());
+			}
+		}
+		return result;
+	}
 	
 	/**
 	 * 查询库存日照信息
