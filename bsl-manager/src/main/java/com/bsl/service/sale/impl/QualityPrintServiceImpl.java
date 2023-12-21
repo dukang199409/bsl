@@ -155,10 +155,10 @@ public class QualityPrintServiceImpl implements QualityPrintService{
 		}
 		try {
 			int dateInt = Integer.valueOf(carno.substring(1, 9));
-			if(dateInt > 20231221) {
-				return true;
-			}else {
+			if(dateInt >= 20231221) {
 				return false;
+			}else {
+				return true;
 			}
 		} catch (Exception e) {
 			return false;
