@@ -48,7 +48,11 @@ public interface BslProductInfoMapper {
     List<BslProductInfoCollect> querySaleOutBillWaste(QueryExample queryExample);
     List<BslProductInfoCollect> querySaleOutByProds(QueryExample queryExample);
     List<BslOutProductDetailInfo> querySaleOutGroup(QueryCriteria queryCriteria);
+    //20231221之前的使用old
+    List<BslProductQualityInfo> prodQualityInfoOld(QueryCriteria queryCriteria);
+    //20231221之后的使用新的
     List<BslProductQualityInfo> prodQualityInfo(QueryCriteria queryCriteria);
+    
     List<BslSaleCarInfo> prodSaleCarInfo(QueryCriteria queryCriteria);
     List<BslHalfProdMakeInfo> halfProdMakeInfo(QueryExample queryExample);
     

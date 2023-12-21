@@ -1020,6 +1020,83 @@
 
   </select>
   
+  <select id="prodQualityInfoOld" resultMap="ProdQualityResultMap" parameterType="com.bsl.select.QueryCriteria">
+  	select 
+  		p1.prod_out_carno,
+  		c.wx_flag,
+		p1.prod_plan_no,
+		p1.prod_luno,
+		p1.prod_name,
+		p1.prod_norm,	
+		e1.enum_value prod_material,
+		p1.prod_length,
+		p1.sum_prod_num,
+		p1.sum_prod_weight,
+		p1.prod_ruc,
+		e2.enum_value prod_level,
+		q.chemical_C,
+		q.chemical_C, 
+		q.chemical_Mn, 
+		q.chemical_Si, 
+		q.chemical_S, 
+		q.chemical_P, 
+    	q.chemical_Ti, 
+    	q.chemical_Ni, 
+    	q.chemical_Cr, 
+    	q.chemical_Cu, 
+    	q.chemical_Nb, 
+    	case when p1.prod_norm = 'F86*86*8' or p1.prod_norm = '86*86*8' 
+    	then ROUND(q.mechanical_s * 1.12)else ROUND(q.mechanical_s * 1.1) end mechanical_s,
+    	case when p1.prod_norm = 'F86*86*8' or p1.prod_norm = '86*86*8' 
+    	then ROUND(q.mechanical_b * 1.05) else ROUND(q.mechanical_b * 1.03) end mechanical_b,
+    	case when p1.prod_norm = 'F86*86*8' or p1.prod_norm = '86*86*8' 
+    	then ROUND(q.mechanical_l - 5) else ROUND(q.mechanical_l - 3) end mechanical_l,
+    	case when q.impact_T is null then 20 else ROUND(q.impact_T) end impact_T,
+    	case when q.impact_N1 is null or q.impact_N1 = ''
+    	then '合格' else q.impact_N1 end impact_N1,
+    	case when q.impact_N2 is null or q.impact_N2 = ''
+    	then '合格' else q.impact_N2 end impact_N2,
+    	case when q.impact_N3 is null or q.impact_N3 = ''
+    	then '合格' else q.impact_N3 end impact_N3,
+    	case when q.bendWC is null or q.bendWC = ''
+    	then '合格' else q.bendWC end bendWC,
+    	case when q.bendYB is null or q.bendYB = ''
+    	then '合格' else q.bendYB end bendYB
+	from(	
+		select 
+			p.prod_out_carno,
+			p.prod_plan_no,
+			p.prod_luno,
+			p.prod_name,
+			p.prod_norm,	
+			p.prod_material,
+			p.prod_length,
+			p.prod_ruc,
+			sum(p.prod_num) sum_prod_num,
+			sum(p.prod_rel_weight) sum_prod_weight,
+			p.prod_level
+		from bsl_product_info p
+		where p.prod_status in ('4','7')
+		<if test="prodOutCarnosList != null and prodOutCarnosList != ''" >
+        	and prod_out_carno in
+        	<foreach collection="prodOutCarnosList" index="index" item="item" open="(" separator="," close=")">
+        		#{item}
+        	</foreach>
+    	</if> 
+		group by p.prod_out_carno,p.prod_plan_no,p.prod_luno,p.prod_name,
+		p.prod_norm,p.prod_material,p.prod_length,p.prod_level,p.prod_ruc
+	) p1
+	left join bsl_luno_quality q
+	on p1.prod_luno = q.lu_id
+	left join bsl_enum_info e1
+	on e1.enum_english_name = 'prodMaterial' and e1.enum_key = p1.prod_material
+	left join bsl_enum_info e2
+	on e2.enum_english_name = 'prodLevel' and e2.enum_key = p1.prod_level
+	left join bsl_car_retcha_info c
+	on p1.prod_out_carno = c.car_no
+
+  </select>
+  
   <resultMap id="ProdSaleCarResultMap" type="com.bsl.reportbean.BslSaleCarInfo" >
     <result column="prod_out_carno" property="prodOutCarno" jdbcType="VARCHAR" />
     <result column="sum_prod_num" property="sumProdNum" jdbcType="INTEGER" />

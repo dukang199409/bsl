@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.bsl.common.pojo.BSLException;
 import com.bsl.common.pojo.EasyUIDataGridResult;
 import com.bsl.common.utils.BSLResult;
@@ -109,10 +108,16 @@ public class QualityPrintServiceImpl implements QualityPrintService{
 		prodOutCarnosList.add(prodOutCarno);
 		queryCriteria.setProdOutCarnosList(prodOutCarnosList);
 		
+		List<BslProductQualityInfo> lists = new ArrayList<BslProductQualityInfo>();
+		//调用sql查询,20231221之前的调用老处理方法
+		if(before1221(prodOutCarno)) {
+			lists = bslProductInfoMapper.prodQualityInfoOld(queryCriteria);
+		}else {
+			lists = bslProductInfoMapper.prodQualityInfo(queryCriteria);
+		}
+		
 		//分页处理
 		PageHelper.startPage(1,500);
-		//调用sql查询
-		List<BslProductQualityInfo> lists = bslProductInfoMapper.prodQualityInfo(queryCriteria);
 		PageInfo<BslProductQualityInfo> pageInfo = new PageInfo<BslProductQualityInfo>(lists);
 		return BSLResult.ok(lists,"qualityPrintServiceImpl","getCarDeatilInfo",pageInfo.getTotal(),lists);
 	}
@@ -124,10 +129,42 @@ public class QualityPrintServiceImpl implements QualityPrintService{
 	public List<BslProductQualityInfo> getCarDetailByList(List<String> cars) {
 		QueryCriteria queryCriteria = new QueryCriteria();
 		queryCriteria.setProdOutCarnosList(cars);
-		List<BslProductQualityInfo> lists = bslProductInfoMapper.prodQualityInfo(queryCriteria);
+		
+		List<BslProductQualityInfo> lists = new ArrayList<BslProductQualityInfo>();
+		//调用sql查询,20231221之前的调用老处理方法
+		if(cars.size()>0) {
+			if(before1221(cars.get(0))) {
+				lists = bslProductInfoMapper.prodQualityInfoOld(queryCriteria);
+			}else {
+				lists = bslProductInfoMapper.prodQualityInfo(queryCriteria);
+			}
+		}else {
+			lists = bslProductInfoMapper.prodQualityInfoOld(queryCriteria);
+		}
 		return lists;
 	}
-
+	
+	/**
+	 * 判断日期是否大于20231221
+	 * @param carno
+	 * @return
+	 */
+	public boolean before1221(String carno) {
+		if(carno.length()<9) {
+			return false;
+		}
+		try {
+			int dateInt = Integer.valueOf(carno.substring(1, 9));
+			if(dateInt > 20231221) {
+				return true;
+			}else {
+				return false;
+			}
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
 	/**
 	 * 记录打印次数
 	 */
