@@ -971,12 +971,9 @@
     	q.chemical_Cr, 
     	q.chemical_Cu, 
     	q.chemical_Nb, 
-    	case when p1.prod_norm = 'F86*86*8' or p1.prod_norm = '86*86*8' 
-    	then ROUND(q.mechanical_s * 1.12)else ROUND(q.mechanical_s * 1.1) end mechanical_s,
-    	case when p1.prod_norm = 'F86*86*8' or p1.prod_norm = '86*86*8' 
-    	then ROUND(q.mechanical_b * 1.05) else ROUND(q.mechanical_b * 1.03) end mechanical_b,
-    	case when p1.prod_norm = 'F86*86*8' or p1.prod_norm = '86*86*8' 
-    	then ROUND(q.mechanical_l - 5) else ROUND(q.mechanical_l - 3) end mechanical_l,
+    	ROUND(q.mechanical_s * 1.05) mechanical_s,
+    	ROUND(q.mechanical_b * 1.02) mechanical_b,
+    	ROUND(q.mechanical_l - 1) mechanical_l,
     	case when q.impact_T is null then 20 else ROUND(q.impact_T) end impact_T,
     	case when q.impact_N1 is null or q.impact_N1 = ''
     	then '合格' else q.impact_N1 end impact_N1,
