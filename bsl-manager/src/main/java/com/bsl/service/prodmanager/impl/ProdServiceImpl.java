@@ -1401,6 +1401,9 @@ public class ProdServiceImpl implements ProdService {
 		if(!DictItemOperation.产品状态_已入库.equals(oldBslProductInfo.getProdStatus())){
 			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "只有在库产品允许拆分！");
 		}
+		//记录原先重量
+		Float prodParentWeight = oldBslProductInfo.getProdRelWeight();
+		int prodParentNum = oldBslProductInfo.getProdNum();
 		//开始拆分
 		if(queryCriteria.getProdNum1() == null || Integer.valueOf(queryCriteria.getProdNum1()) == 0){
 			throw new BSLException(ErrorCodeInfo.错误类型_参数为空, "包1支数不能为空");
@@ -1440,16 +1443,18 @@ public class ProdServiceImpl implements ProdService {
 			if(StringUtils.isBlank(queryCriteria.getProdRelWeight4()) || Float.valueOf(queryCriteria.getProdRelWeight4()) == 0){
 				throw new BSLException(ErrorCodeInfo.错误类型_参数为空, "包4有支数时重量不能为空");
 			}else{
-				prodWeight4 = Float.valueOf(queryCriteria.getProdRelWeight3());
+				prodWeight4 = Float.valueOf(queryCriteria.getProdRelWeight4());
 			}
 		}
 		
 		//校验总支数、总重量
-		if(oldBslProductInfo.getProdNum() != (prodNum1+prodNum2+prodNum3+prodNum4)){
+		if(prodParentNum != (prodNum1+prodNum2+prodNum3+prodNum4)){
 			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "拆分后总支数应等于原产品支数");
 		}
-		if(oldBslProductInfo.getProdRelWeight() < (prodWeight1+prodWeight2+prodWeight3+prodWeight4)){
-			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "拆分后总重量不能大于原产品重量");
+		if(prodParentWeight < (prodWeight1+prodWeight2+prodWeight3+prodWeight4)){
+			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "拆分后总重量不能大于原产品重量"
+					+",原重量:"+prodParentWeight+",拆分重量分别为:"+prodWeight1+","+prodWeight2+","+
+					prodWeight3+","+prodWeight4);
 		}
 		
 		//开始拆分
@@ -1492,7 +1497,7 @@ public class ProdServiceImpl implements ProdService {
 		bslStockChangeDetailRaw.setProdId(prodId);//产品编号
 		bslStockChangeDetailRaw.setTransCode(DictItemOperation.库存变动交易码_删除);//交易码
 		bslStockChangeDetailRaw.setProdType(DictItemOperation.产品类型_成品);//产品类型
-		bslStockChangeDetailRaw.setRubbishWeight(oldBslProductInfo.getProdRelWeight());//重量
+		bslStockChangeDetailRaw.setRubbishWeight(prodParentWeight);//重量
 		bslStockChangeDetailRaw.setInputuser(queryCriteria.getProdInputuser());//录入人
 		bslStockChangeDetailRaw.setRemark("拆分删除");
 		bslStockChangeDetailRaw.setCrtDate(new Date());
