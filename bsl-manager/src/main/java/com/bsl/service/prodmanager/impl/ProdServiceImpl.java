@@ -1,5 +1,6 @@
 package com.bsl.service.prodmanager.impl;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -1451,7 +1452,9 @@ public class ProdServiceImpl implements ProdService {
 		if(prodParentNum != (prodNum1+prodNum2+prodNum3+prodNum4)){
 			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "拆分后总支数应等于原产品支数");
 		}
-		if(prodParentWeight < (prodWeight1+prodWeight2+prodWeight3+prodWeight4)){
+		BigDecimal prodParentWeightDecimal = new BigDecimal(Float.toString(prodParentWeight));
+		BigDecimal prodSubWeightDecimal = new BigDecimal(Float.toString(prodWeight1+prodWeight2+prodWeight3+prodWeight4));
+		if(prodParentWeightDecimal.compareTo(prodSubWeightDecimal) < 0){
 			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "拆分后总重量不能大于原产品重量"
 					+",原重量:"+prodParentWeight+",拆分重量分别为:"+prodWeight1+","+prodWeight2+","+
 					prodWeight3+","+prodWeight4);
