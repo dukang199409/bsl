@@ -624,6 +624,8 @@ var TT = BSL = {
         	return '510L';
         } else if(val == 'Q'){
         	return '610L';
+        } else if(val == 'R'){
+        	return 'Q550D';
         } else {
         	return val; 
         }
