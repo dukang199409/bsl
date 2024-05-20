@@ -136,9 +136,9 @@ public class SemiFinishedProdServiceImpl implements SemiFinishedProdService {
 //			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "产品炉号必须是纵剪带指令对应炉号");
 //		}
 		//校验钢种
-		if(!makePlanInfoExe.getProdMaterial().equals(bslProductInfo.getProdMaterial())){
-			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "产品钢种必须是纵剪带指令指定钢种");
-		}
+//		if(!makePlanInfoExe.getProdMaterial().equals(bslProductInfo.getProdMaterial())){
+//			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "产品钢种必须是纵剪带指令指定钢种");
+//		}
 		//获取正在出库中的卷板
 		BslProductInfo rawExe = rawOutputService.getRawExe(makePlanInfoExe.getPlanId());
 		if(rawExe == null){
@@ -319,9 +319,9 @@ public class SemiFinishedProdServiceImpl implements SemiFinishedProdService {
 			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "产品炉号不允许修改");
 		}*/
 		//校验钢种
-		if(!oldBslProductInfo.getProdMaterial().equals(bslProductInfo.getProdMaterial())){
-			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "产品钢种不允许修改");
-		}
+//		if(!oldBslProductInfo.getProdMaterial().equals(bslProductInfo.getProdMaterial())){
+//			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "钢种不允许修改");
+//		}
 		//校验父级卷板号
 		if(!oldBslProductInfo.getProdParentNo().equals(bslProductInfo.getProdParentNo())){
 			//校验钢卷号必须是因为该指令出库的钢卷号

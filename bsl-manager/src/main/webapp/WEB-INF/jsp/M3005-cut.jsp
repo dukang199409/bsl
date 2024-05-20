@@ -16,7 +16,7 @@
 	            </td>   
 	            <td width="120"  align="right">产品生产指令:</td>
 	            <td width="210"  align="right">
-	            	<input name="prodPlanNo" readonly="readonly" class="easyui-textbox" data-options="required:true" style="width:200px;"/>
+	            	<input name="prodPlanNo"  class="easyui-textbox" data-options="required:false" style="width:200px;"/>
 	            </td>      
 	        </tr>
 	        <tr> 
