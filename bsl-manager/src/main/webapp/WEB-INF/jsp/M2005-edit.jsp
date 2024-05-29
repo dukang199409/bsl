@@ -83,6 +83,10 @@
 	            </td>
 	        </tr> 
 		    <tr> 
+		    	<td width="120"  align="right">炉(批)号:</td>
+	            <td width="210"  align="right">
+	            	<input name="prodLuno" class="easyui-textbox" data-options="required:true,validType:'length[0,32]'" style="width:200px;"/>
+	            </td>  
 	            <td width="120" align="right">入库仓库/区:</td>
 	            <td width="210" align="right">
 	            	<select name="prodRuc" class="easyui-combobox" panelHeight="auto" data-options="required:true,editable:true" style="width:200px;">
