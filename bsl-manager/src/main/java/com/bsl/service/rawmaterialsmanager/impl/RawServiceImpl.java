@@ -347,8 +347,36 @@ public class RawServiceImpl implements RawService {
 					List<BslProductInfo> prodList = bslProductInfoMapper.selectByExample(exampleProd);
 					if(prodList != null && prodList.size()>0){
 						for (BslProductInfo bslProductInfoProd : prodList) {
-							//修改纵剪带炉号
+							//修改产品炉号
 							bslProductInfoProd.setProdLuno(bslProductInfo.getProdLuno());
+							bslProductInfoMapper.updateByPrimaryKeySelective(bslProductInfoProd);
+						}
+					}
+				}
+			}
+		}
+		
+		//如果修改了使用单位，更新纵剪带，成品使用单位
+		if(!oldBslProductInfo.getProdUseCompany().equals(bslProductInfo.getProdUseCompany())){
+			//获取子产品信息
+			BslProductInfoExample exampleHalf = new BslProductInfoExample();
+			Criteria criteriaHalf = exampleHalf.createCriteria();
+			criteriaHalf.andProdParentNoEqualTo(bslProductInfo.getProdId());
+			List<BslProductInfo> halfList = bslProductInfoMapper.selectByExample(exampleHalf);
+			if(halfList != null && halfList.size()>0){
+				for (BslProductInfo bslProductInfoHalf : halfList) {
+					//修改纵剪带使用单位
+					bslProductInfoHalf.setProdUseCompany(bslProductInfo.getProdUseCompany());
+					bslProductInfoMapper.updateByPrimaryKeySelective(bslProductInfoHalf);
+					//修改产品使用单位
+					BslProductInfoExample exampleProd = new BslProductInfoExample();
+					Criteria criteriaProd = exampleProd.createCriteria();
+					criteriaProd.andProdParentNoEqualTo(bslProductInfoHalf.getProdId());
+					List<BslProductInfo> prodList = bslProductInfoMapper.selectByExample(exampleProd);
+					if(prodList != null && prodList.size()>0){
+						for (BslProductInfo bslProductInfoProd : prodList) {
+							//修改产品使用单位
+							bslProductInfoProd.setProdUseCompany(bslProductInfo.getProdUseCompany());
 							bslProductInfoMapper.updateByPrimaryKeySelective(bslProductInfoProd);
 						}
 					}
@@ -537,6 +565,10 @@ public class RawServiceImpl implements RawService {
 		if(!DictItemOperation.产品状态_已入库.equals(oldBslProductInfo.getProdStatus())){
 			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "原卷板状态必须是在库才能删除");
 		}
+		//删除需要备注原因
+		if(StringUtils.isBlank(oldBslProductInfo.getRemark())) {
+			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "请先修改产品备注，说明删除原因。");
+		}
 		int resultStock = bslProductInfoMapper.deleteByPrimaryKey(prodId);
 		if(resultStock<0){
 			throw new BSLException(ErrorCodeInfo.错误类型_数据库错误,"sql执行异常！");
@@ -554,6 +586,7 @@ public class RawServiceImpl implements RawService {
 		bslStockChangeDetailRaw.setProdType(DictItemOperation.产品类型_卷板);//产品类型
 		bslStockChangeDetailRaw.setRubbishWeight(oldBslProductInfo.getProdRelWeight());//重量
 		bslStockChangeDetailRaw.setInputuser(oldBslProductInfo.getProdInputuser());//录入人
+		bslStockChangeDetailRaw.setRemark(oldBslProductInfo.getRemark());//备注
 		bslStockChangeDetailRaw.setCrtDate(new Date());
 		int resultStockRaw = bslStockChangeDetailMapper.insert(bslStockChangeDetailRaw);
 		if(resultStockRaw<0){

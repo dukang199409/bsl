@@ -336,7 +336,7 @@
         		$.messager.alert('提示','只有超级管理员才允许删除产品信息!');
         		return ;
         	}
-        	$.messager.confirm('确认','确定删除本条记录？',function(r){
+        	$.messager.confirm('确认','删除记录前请先修改产品备注，说明删除原因。确定删除本条记录？',function(r){
         	    if (r){
         	    	var params = {"prodId":ids};
                 	$.post("/raw/delete",params, function(data){

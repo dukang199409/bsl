@@ -404,6 +404,10 @@ public class DclProdServiceImpl implements DclProdService {
 		if(!DictItemOperation.产品状态_已入库.equals(oldBslProductInfo.getProdStatus())){
 			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "只有未处理的待处理品才允许删除");
 		}
+		//删除需要备注原因
+		if(StringUtils.isBlank(oldBslProductInfo.getRemark())) {
+			throw new BSLException(ErrorCodeInfo.错误类型_状态校验错误, "请先修改产品备注，说明删除原因。");
+		}
 		//开始删除
 		int result = bslProductInfoMapper.deleteByPrimaryKey(prodId);
 		if(result<0){
@@ -421,6 +425,7 @@ public class DclProdServiceImpl implements DclProdService {
 		bslStockChangeDetailRaw.setProdType(DictItemOperation.产品类型_待处理品);//待处理品类型
 		bslStockChangeDetailRaw.setRubbishWeight(oldBslProductInfo.getProdRelWeight());//重量
 		bslStockChangeDetailRaw.setInputuser(oldBslProductInfo.getProdInputuser());//录入人
+		bslStockChangeDetailRaw.setRemark(oldBslProductInfo.getRemark());//备注
 		bslStockChangeDetailRaw.setCrtDate(new Date());
 		int resultStockRaw = bslStockChangeDetailMapper.insert(bslStockChangeDetailRaw);
 		if(resultStockRaw<0){
