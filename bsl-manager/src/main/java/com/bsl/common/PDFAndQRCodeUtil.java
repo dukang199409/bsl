@@ -1,13 +1,7 @@
 package com.bsl.common;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import com.bsl.common.pojo.BSLException;
 import com.bsl.common.utils.FileUtil;

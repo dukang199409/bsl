@@ -328,6 +328,7 @@ public class PrintPdfController {
 		//获取出库仓库
 		JedisClient jedisClient = (JedisClient)SpringContextUtils.getBean("jedisClient");
 		String prodRuc = "";
+		String bsplanRemark = "";
 		String[] prodRucs =queryExample.getProdRucs();
 		List<String> listProdRucs = new ArrayList<String>();
 		if(prodRucs!= null && prodRucs.length>0){
@@ -349,6 +350,8 @@ public class PrintPdfController {
 				if(prodIdsList == null || prodIdsList.size()<=0){
 					bslSaleInfoDetails = new ArrayList<BslProductInfoCollect>();
 				}
+				//赋值备注信息
+				bsplanRemark = bslBsPlanInfo.getRemark();
 				//表头
 				List<PDFCell> headList = new ArrayList<>();
 				headList.add(new PDFCell("销售出库单", CreatePdfUtil.headfont, Element.ALIGN_CENTER, 7, true));
@@ -417,7 +420,7 @@ public class PrintPdfController {
 					footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
 				}
 				footList.add(new PDFCell("备   注：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
-				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 7, true));
+				footList.add(new PDFCell(bsplanRemark, CreatePdfUtil.textfont, Element.ALIGN_LEFT, 7, true));
 				footList.add(new PDFCell("收货签名：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
 				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
 				footList.add(new PDFCell("签收日期：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
@@ -535,7 +538,7 @@ public class PrintPdfController {
 					footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
 				}
 				footList.add(new PDFCell("备   注：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
-				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 7, true));
+				footList.add(new PDFCell(bslBsPlanInfo.getRemark(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 7, true));
 				footList.add(new PDFCell("收货签名：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
 				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
 				footList.add(new PDFCell("签收日期：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
@@ -641,7 +644,7 @@ public class PrintPdfController {
 					footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
 				}
 				footList.add(new PDFCell("备   注：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
-				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 8, true));
+				footList.add(new PDFCell(bslBsPlanInfo.getRemark(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 8, true));
 				footList.add(new PDFCell("收货签名：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
 				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
 				footList.add(new PDFCell("签收日期：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
@@ -756,7 +759,7 @@ public class PrintPdfController {
 					}
 				}
 				footList.add(new PDFCell("备   注：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 3, true));
-				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 10, true));
+				footList.add(new PDFCell(bslBsPlanInfo.getRemark(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 10, true));
 				footList.add(new PDFCell("收货签名：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 3, true));
 				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT,4, true));
 				footList.add(new PDFCell("签收日期：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 3, true));
@@ -1170,7 +1173,7 @@ public class PrintPdfController {
 					footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_CENTER, 1, true));
 				}
 				footList.add(new PDFCell("备   注：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
-				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 7, true));
+				footList.add(new PDFCell(bslBsPlanInfo.getRemark(), CreatePdfUtil.textfont, Element.ALIGN_LEFT, 7, true));
 				footList.add(new PDFCell("收货签名：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
 				footList.add(new PDFCell("", CreatePdfUtil.textfont, Element.ALIGN_LEFT, 3, true));
 				footList.add(new PDFCell("签收日期：", CreatePdfUtil.keyfont, Element.ALIGN_CENTER, 2, true));
